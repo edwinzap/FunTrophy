@@ -1,4 +1,4 @@
-﻿namespace FunTrophy.Model
+﻿namespace FunTrophy.API.Model
 {
     public class TrackOrder
     {
@@ -7,7 +7,7 @@
         public int ColorId { get; set; }
         public int TrackId { get; set; }
 
-        public virtual Color Color { get; set; }
-        public virtual Track Track { get; set; }
+        public Color Color { get; set; }
+        public Track Track { get; set; }
     }
 }

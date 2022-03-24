@@ -1,4 +1,4 @@
-﻿namespace FunTrophy.Model
+﻿namespace FunTrophy.API.Model
 {
     public class Team
     {
@@ -10,8 +10,8 @@
         public virtual Race Race { get; set; }
         public virtual Color Color { get; set; }
 
-        public virtual ICollection<TrackTime> TrackTimes { get; set; }
-        public virtual ICollection<TimeAdjustement> TimeAdjustements { get; set; }
+        public List<TrackTime> TrackTimes { get; set; }
+        public List<TimeAdjustement> TimeAdjustements { get; set; }
     }
 
     public enum TeamType

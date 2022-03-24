@@ -1,4 +1,4 @@
-﻿namespace FunTrophy.Model
+﻿namespace FunTrophy.API.Model
 {
     public class Race
     {
@@ -6,7 +6,7 @@
         public string Name { get; set; }
         public DateTime Date { get; set; }
 
-        public virtual ICollection<Team> Teams { get; set; }
-        public virtual ICollection<Track> Tracks { get; set; }
+        public List<Team> Teams { get; set; }
+        public List<Track> Tracks { get; set; }
     }
 }
