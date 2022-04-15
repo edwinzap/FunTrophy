@@ -16,6 +16,7 @@ namespace FunTrophy.API
         public DbSet<Team> Teams { get; set; }
         public DbSet<TrackTime> TrackTimes { get; set; }
         public DbSet<TimeAdjustement> TimeAdjustements { get; set; }
+        public DbSet<TimeAdjustementCategory> TimeAdjustementCategories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

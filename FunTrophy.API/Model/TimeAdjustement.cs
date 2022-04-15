@@ -4,10 +4,10 @@
     {
         public int Id { get; set; }
         public TimeSpan Time { get; set; }
-        public int? TrackId { get; set; }
+        public int CategoryId { get; set; }
         public int TeamId { get; set; }
 
-        public Track? Track { get; set; }
+        public TimeAdjustementCategory Category { get; set; }
         public Team Team { get; set; }
     }
 }

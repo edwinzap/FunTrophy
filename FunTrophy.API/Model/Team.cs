@@ -3,6 +3,8 @@
     public class Team
     {
         public int Id { get; set; }
+        public int Number { get; set; }
+
         public TeamType Type { get; set; }
         public int ColorId { get; set; }
         public int RaceId { get; set; }
