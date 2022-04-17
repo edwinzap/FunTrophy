@@ -1,5 +1,6 @@
 ﻿using FunTrophy.API.Mappers;
 using FunTrophy.API.Services;
+using FunTrophy.API.Services.Contracts;
 
 namespace FunTrophy.API
 {
@@ -8,12 +9,14 @@ namespace FunTrophy.API
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
             services.AddTransient<IRaceService, RaceService>();
+            services.AddTransient<IColorService, ColorService>();
             return services;
         }
 
         public static IServiceCollection AddMappers(this IServiceCollection services)
         {
-            services.AddTransient<IMapper, Mapper>();
+            services.AddTransient<IRaceMapper, RaceMapper>();
+            services.AddTransient<IColorMapper, ColorMapper>();
             return services;
         }
     }

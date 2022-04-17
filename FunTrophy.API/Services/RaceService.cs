@@ -1,4 +1,5 @@
 ﻿using FunTrophy.API.Mappers;
+using FunTrophy.API.Services.Contracts;
 using FunTrophy.Shared.Model;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,14 +7,14 @@ namespace FunTrophy.API.Services
 {
     public class RaceService : ServiceBase, IRaceService
     {
-        private readonly IMapper _mapper;
+        private readonly IRaceMapper _mapper;
 
-        public RaceService(FunTrophyContext dbContext, IMapper mapper) : base(dbContext)
+        public RaceService(FunTrophyContext dbContext, IRaceMapper mapper) : base(dbContext)
         {
             _mapper = mapper;
         }
 
-        public async Task<RaceDto> GetRace(int raceId)
+        public async Task<RaceDto> Get(int raceId)
         {
             var race = await _dbContext.Races.FindAsync(raceId);
             if (race == null)
@@ -23,7 +24,7 @@ namespace FunTrophy.API.Services
             return _mapper.Map(race);
         }
 
-        public async Task<int> CreateRace(AddOrUpdateRaceDto race)
+        public async Task<int> Create(AddOrUpdateRaceDto race)
         {
             var dbRace = _mapper.Map(race);
             _dbContext.Races.Add(dbRace);
@@ -32,13 +33,13 @@ namespace FunTrophy.API.Services
             return dbRace.Id;
         }
 
-        public Task<List<RaceDto>> GetAllRaces()
+        public Task<List<RaceDto>> GetAll()
         {
             var task = _dbContext.Races.Select(x => _mapper.Map(x)).ToListAsync();
             return task;
         }
 
-        public async Task RemoveRace(int raceId)
+        public async Task Remove(int raceId)
         {
             var race = await _dbContext.Races.FindAsync(raceId);
             if (race == null)
@@ -49,7 +50,7 @@ namespace FunTrophy.API.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task UpdateRace(int raceId, AddOrUpdateRaceDto race)
+        public async Task Update(int raceId, AddOrUpdateRaceDto race)
         {
             var dbRace = await _dbContext.Races.FindAsync(raceId);
             if (dbRace == null)

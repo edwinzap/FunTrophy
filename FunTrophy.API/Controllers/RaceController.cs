@@ -1,4 +1,4 @@
-using FunTrophy.API.Services;
+using FunTrophy.API.Services.Contracts;
 using FunTrophy.Shared.Model;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,7 +26,7 @@ namespace FunTrophy.API.Controllers
         [ProducesResponseType(typeof(RaceDto), 200)]
         public async Task<IActionResult> GetRace(int raceId)
         {
-            var race = await _raceService.GetRace(raceId);
+            var race = await _raceService.Get(raceId);
             return Ok(race);
         }
 
@@ -39,10 +39,10 @@ namespace FunTrophy.API.Controllers
         [ProducesResponseType(typeof(int), 200)]
         public async Task<IActionResult> CreateRace([FromBody] AddOrUpdateRaceDto race)
         {
-            var raceId = await _raceService.CreateRace(race);
+            var raceId = await _raceService.Create(race);
             return Ok(raceId);
         }
-        
+
         /// <summary>
         /// Remove the race with the given Id
         /// </summary>
@@ -52,7 +52,7 @@ namespace FunTrophy.API.Controllers
         [ProducesResponseType(200)]
         public async Task<IActionResult> RemoveRace(int raceId)
         {
-            await _raceService.RemoveRace(raceId);
+            await _raceService.Remove(raceId);
             return Ok();
         }
 
@@ -66,7 +66,7 @@ namespace FunTrophy.API.Controllers
         [ProducesResponseType(200)]
         public async Task<IActionResult> UpdateRace(int raceId, [FromBody] AddOrUpdateRaceDto race)
         {
-            await _raceService.UpdateRace(raceId, race);
+            await _raceService.Update(raceId, race);
             return Ok();
         }
 
@@ -78,7 +78,7 @@ namespace FunTrophy.API.Controllers
         [ProducesResponseType(typeof(List<RaceDto>), 200)]
         public async Task<IActionResult> GetAllRaces()
         {
-            var races = await _raceService.GetAllRaces();
+            var races = await _raceService.GetAll();
             return Ok(races);
         }
     }
