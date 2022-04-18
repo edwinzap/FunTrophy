@@ -2,6 +2,7 @@ using Bogus;
 using FluentAssertions;
 using FunTrophy.Api.IntegrationTests.Utils;
 using FunTrophy.API.Mappers;
+using FunTrophy.API.Model;
 using FunTrophy.API.Services;
 using FunTrophy.Infrastructure;
 using FunTrophy.Shared.Model;
@@ -28,13 +29,30 @@ namespace FunTrophy.Api.IntegrationTests
         [Fact]
         public void AddTrackOrder_TrackOrder_Add()
         {
-            var trackOrderDto = new Faker<AddTrackOrderDto>().Generate();
-            var result = Sut.AddTrackOrder(trackOrderDto);
+            var color = new Faker<Color>().Generate();
+            var track = new Faker<Track>().Generate();
+
+            Arrange(ctx =>
+            {
+                ctx.Add(color);
+                ctx.Add(track);
+            });
+
+            var trackOrderDto = new Faker<AddTrackOrderDto>()
+                .RuleFor(x => x.ColorId, color.Id)
+                .RuleFor(x => x.TrackId, track.Id)
+                .Generate();
+            
+            var dbTrackOrder = new Faker<TrackOrder>().Generate();
+            _fakeMapper.Setup(x => x.Map(It.IsAny<AddTrackOrderDto>()))
+                .Returns(dbTrackOrder);
+
+            var result = Sut.AddTrackOrder(It.IsAny<AddTrackOrderDto>());
 
             var trackOrder = _dbContext.TrackOrders.First(x => x.Id == result.Id);
-            trackOrder.SortOrder.Should().Be(trackOrderDto.SortOrder);
-            trackOrder.TrackId.Should().Be(trackOrderDto.TrackId);
-            trackOrder.ColorId.Should().Be(trackOrderDto.ColorId);
+            trackOrder.SortOrder.Should().Be(dbTrackOrder.SortOrder);
+            trackOrder.TrackId.Should().Be(dbTrackOrder.TrackId);
+            trackOrder.ColorId.Should().Be(dbTrackOrder.ColorId);
         }
     }
 }
