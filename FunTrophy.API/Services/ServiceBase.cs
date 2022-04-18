@@ -1,4 +1,6 @@
-﻿namespace FunTrophy.API.Services
+﻿using FunTrophy.Infrastructure;
+
+namespace FunTrophy.API.Services
 {
     public class ServiceBase
     {

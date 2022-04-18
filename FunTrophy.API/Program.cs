@@ -1,4 +1,5 @@
 using FunTrophy.API;
+using FunTrophy.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

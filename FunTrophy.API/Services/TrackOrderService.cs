@@ -1,5 +1,6 @@
 ﻿using FunTrophy.API.Mappers;
 using FunTrophy.API.Services.Contracts;
+using FunTrophy.Infrastructure;
 using FunTrophy.Shared.Model;
 using Microsoft.EntityFrameworkCore;
 
@@ -42,7 +43,6 @@ namespace FunTrophy.API.Services
             }
 
             var dbTrackOrders = await _dbContext.TrackOrders.Where(x => x.ColorId == dbTrackOrder.ColorId).ToListAsync();
-
         }
     }
 }

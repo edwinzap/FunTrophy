@@ -1,7 +1,7 @@
 ﻿using FunTrophy.API.Model;
 using Microsoft.EntityFrameworkCore;
 
-namespace FunTrophy.API
+namespace FunTrophy.Infrastructure
 {
     public class FunTrophyContext : DbContext
     {

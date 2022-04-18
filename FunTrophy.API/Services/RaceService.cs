@@ -1,5 +1,6 @@
 ﻿using FunTrophy.API.Mappers;
 using FunTrophy.API.Services.Contracts;
+using FunTrophy.Infrastructure;
 using FunTrophy.Shared.Model;
 using Microsoft.EntityFrameworkCore;
 
