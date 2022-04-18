@@ -48,7 +48,6 @@ namespace FunTrophy.API.Services
                 throw new KeyNotFoundException();
             }
             dbTrack.Name = track.Name;
-            dbTrack.Number = track.Number;
 
             _dbContext.Tracks.Update(dbTrack);
             await _dbContext.SaveChangesAsync();
