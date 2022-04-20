@@ -22,7 +22,7 @@ namespace FunTrophy.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("FunTrophy.API.Model.Color", b =>
+            modelBuilder.Entity("FunTrophy.Infrastructure.Model.Color", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -39,7 +39,7 @@ namespace FunTrophy.Infrastructure.Migrations
                     b.ToTable("Colors");
                 });
 
-            modelBuilder.Entity("FunTrophy.API.Model.Race", b =>
+            modelBuilder.Entity("FunTrophy.Infrastructure.Model.Race", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -59,7 +59,7 @@ namespace FunTrophy.Infrastructure.Migrations
                     b.ToTable("Races");
                 });
 
-            modelBuilder.Entity("FunTrophy.API.Model.Team", b =>
+            modelBuilder.Entity("FunTrophy.Infrastructure.Model.Team", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -92,7 +92,7 @@ namespace FunTrophy.Infrastructure.Migrations
                     b.ToTable("Teams");
                 });
 
-            modelBuilder.Entity("FunTrophy.API.Model.TimeAdjustement", b =>
+            modelBuilder.Entity("FunTrophy.Infrastructure.Model.TimeAdjustment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -115,10 +115,10 @@ namespace FunTrophy.Infrastructure.Migrations
 
                     b.HasIndex("TeamId");
 
-                    b.ToTable("TimeAdjustements");
+                    b.ToTable("TimeAdjustments");
                 });
 
-            modelBuilder.Entity("FunTrophy.API.Model.TimeAdjustementCategory", b =>
+            modelBuilder.Entity("FunTrophy.Infrastructure.Model.TimeAdjustmentCategory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -132,10 +132,10 @@ namespace FunTrophy.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TimeAdjustementCategories");
+                    b.ToTable("TimeAdjustmentCategories");
                 });
 
-            modelBuilder.Entity("FunTrophy.API.Model.Track", b =>
+            modelBuilder.Entity("FunTrophy.Infrastructure.Model.Track", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -157,7 +157,7 @@ namespace FunTrophy.Infrastructure.Migrations
                     b.ToTable("Tracks");
                 });
 
-            modelBuilder.Entity("FunTrophy.API.Model.TrackOrder", b =>
+            modelBuilder.Entity("FunTrophy.Infrastructure.Model.TrackOrder", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -183,7 +183,7 @@ namespace FunTrophy.Infrastructure.Migrations
                     b.ToTable("TrackOrders");
                 });
 
-            modelBuilder.Entity("FunTrophy.API.Model.TrackTime", b =>
+            modelBuilder.Entity("FunTrophy.Infrastructure.Model.TrackTime", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -212,15 +212,15 @@ namespace FunTrophy.Infrastructure.Migrations
                     b.ToTable("TrackTimes");
                 });
 
-            modelBuilder.Entity("FunTrophy.API.Model.Team", b =>
+            modelBuilder.Entity("FunTrophy.Infrastructure.Model.Team", b =>
                 {
-                    b.HasOne("FunTrophy.API.Model.Color", "Color")
+                    b.HasOne("FunTrophy.Infrastructure.Model.Color", "Color")
                         .WithMany("Teams")
                         .HasForeignKey("ColorId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("FunTrophy.API.Model.Race", "Race")
+                    b.HasOne("FunTrophy.Infrastructure.Model.Race", "Race")
                         .WithMany("Teams")
                         .HasForeignKey("RaceId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -231,15 +231,15 @@ namespace FunTrophy.Infrastructure.Migrations
                     b.Navigation("Race");
                 });
 
-            modelBuilder.Entity("FunTrophy.API.Model.TimeAdjustement", b =>
+            modelBuilder.Entity("FunTrophy.Infrastructure.Model.TimeAdjustment", b =>
                 {
-                    b.HasOne("FunTrophy.API.Model.TimeAdjustementCategory", "Category")
+                    b.HasOne("FunTrophy.Infrastructure.Model.TimeAdjustmentCategory", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("FunTrophy.API.Model.Team", "Team")
+                    b.HasOne("FunTrophy.Infrastructure.Model.Team", "Team")
                         .WithMany("TimeAdjustements")
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -250,9 +250,9 @@ namespace FunTrophy.Infrastructure.Migrations
                     b.Navigation("Team");
                 });
 
-            modelBuilder.Entity("FunTrophy.API.Model.Track", b =>
+            modelBuilder.Entity("FunTrophy.Infrastructure.Model.Track", b =>
                 {
-                    b.HasOne("FunTrophy.API.Model.Race", "Race")
+                    b.HasOne("FunTrophy.Infrastructure.Model.Race", "Race")
                         .WithMany("Tracks")
                         .HasForeignKey("RaceId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -261,15 +261,15 @@ namespace FunTrophy.Infrastructure.Migrations
                     b.Navigation("Race");
                 });
 
-            modelBuilder.Entity("FunTrophy.API.Model.TrackOrder", b =>
+            modelBuilder.Entity("FunTrophy.Infrastructure.Model.TrackOrder", b =>
                 {
-                    b.HasOne("FunTrophy.API.Model.Color", "Color")
+                    b.HasOne("FunTrophy.Infrastructure.Model.Color", "Color")
                         .WithMany("TrackOrders")
                         .HasForeignKey("ColorId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("FunTrophy.API.Model.Track", "Track")
+                    b.HasOne("FunTrophy.Infrastructure.Model.Track", "Track")
                         .WithMany("TrackOrders")
                         .HasForeignKey("TrackId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -280,15 +280,15 @@ namespace FunTrophy.Infrastructure.Migrations
                     b.Navigation("Track");
                 });
 
-            modelBuilder.Entity("FunTrophy.API.Model.TrackTime", b =>
+            modelBuilder.Entity("FunTrophy.Infrastructure.Model.TrackTime", b =>
                 {
-                    b.HasOne("FunTrophy.API.Model.Team", "Team")
+                    b.HasOne("FunTrophy.Infrastructure.Model.Team", "Team")
                         .WithMany("TrackTimes")
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("FunTrophy.API.Model.Track", "Track")
+                    b.HasOne("FunTrophy.Infrastructure.Model.Track", "Track")
                         .WithMany("TrackTimes")
                         .HasForeignKey("TrackId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -299,28 +299,28 @@ namespace FunTrophy.Infrastructure.Migrations
                     b.Navigation("Track");
                 });
 
-            modelBuilder.Entity("FunTrophy.API.Model.Color", b =>
+            modelBuilder.Entity("FunTrophy.Infrastructure.Model.Color", b =>
                 {
                     b.Navigation("Teams");
 
                     b.Navigation("TrackOrders");
                 });
 
-            modelBuilder.Entity("FunTrophy.API.Model.Race", b =>
+            modelBuilder.Entity("FunTrophy.Infrastructure.Model.Race", b =>
                 {
                     b.Navigation("Teams");
 
                     b.Navigation("Tracks");
                 });
 
-            modelBuilder.Entity("FunTrophy.API.Model.Team", b =>
+            modelBuilder.Entity("FunTrophy.Infrastructure.Model.Team", b =>
                 {
                     b.Navigation("TimeAdjustements");
 
                     b.Navigation("TrackTimes");
                 });
 
-            modelBuilder.Entity("FunTrophy.API.Model.Track", b =>
+            modelBuilder.Entity("FunTrophy.Infrastructure.Model.Track", b =>
                 {
                     b.Navigation("TrackOrders");
 

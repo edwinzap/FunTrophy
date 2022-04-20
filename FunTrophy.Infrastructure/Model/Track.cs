@@ -1,8 +1,7 @@
-﻿namespace FunTrophy.API.Model
+﻿namespace FunTrophy.Infrastructure.Model
 {
-    public class Track
+    public class Track : EntityBase
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public int RaceId { get; set; }
 

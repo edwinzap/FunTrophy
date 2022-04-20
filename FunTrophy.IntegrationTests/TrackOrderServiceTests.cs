@@ -2,7 +2,7 @@ using Bogus;
 using FluentAssertions;
 using FunTrophy.Api.IntegrationTests.Utils;
 using FunTrophy.API.Mappers;
-using FunTrophy.API.Model;
+using FunTrophy.Infrastructure.Model;
 using FunTrophy.API.Services;
 using FunTrophy.Infrastructure;
 using FunTrophy.Shared.Model;

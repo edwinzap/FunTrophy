@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FunTrophy.Infrastructure.Migrations
 {
-    public partial class InitializeData : Migration
+    public partial class InitDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -37,7 +37,7 @@ namespace FunTrophy.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TimeAdjustementCategories",
+                name: "TimeAdjustmentCategories",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -46,7 +46,7 @@ namespace FunTrophy.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TimeAdjustementCategories", x => x.Id);
+                    table.PrimaryKey("PK_TimeAdjustmentCategories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -96,7 +96,7 @@ namespace FunTrophy.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TimeAdjustements",
+                name: "TimeAdjustments",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -107,16 +107,16 @@ namespace FunTrophy.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TimeAdjustements", x => x.Id);
+                    table.PrimaryKey("PK_TimeAdjustments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TimeAdjustements_Teams_TeamId",
+                        name: "FK_TimeAdjustments_Teams_TeamId",
                         column: x => x.TeamId,
                         principalTable: "Teams",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_TimeAdjustements_TimeAdjustementCategories_CategoryId",
+                        name: "FK_TimeAdjustments_TimeAdjustmentCategories_CategoryId",
                         column: x => x.CategoryId,
-                        principalTable: "TimeAdjustementCategories",
+                        principalTable: "TimeAdjustmentCategories",
                         principalColumn: "Id");
                 });
 
@@ -182,13 +182,13 @@ namespace FunTrophy.Infrastructure.Migrations
                 column: "RaceId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TimeAdjustements_CategoryId",
-                table: "TimeAdjustements",
+                name: "IX_TimeAdjustments_CategoryId",
+                table: "TimeAdjustments",
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TimeAdjustements_TeamId",
-                table: "TimeAdjustements",
+                name: "IX_TimeAdjustments_TeamId",
+                table: "TimeAdjustments",
                 column: "TeamId");
 
             migrationBuilder.CreateIndex(
@@ -220,7 +220,7 @@ namespace FunTrophy.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "TimeAdjustements");
+                name: "TimeAdjustments");
 
             migrationBuilder.DropTable(
                 name: "TrackOrders");
@@ -229,7 +229,7 @@ namespace FunTrophy.Infrastructure.Migrations
                 name: "TrackTimes");
 
             migrationBuilder.DropTable(
-                name: "TimeAdjustementCategories");
+                name: "TimeAdjustmentCategories");
 
             migrationBuilder.DropTable(
                 name: "Teams");

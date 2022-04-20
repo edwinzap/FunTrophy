@@ -1,4 +1,4 @@
-﻿using ApiTeamType = FunTrophy.API.Model.TeamType;
+﻿using ApiTeamType = FunTrophy.Infrastructure.Model.TeamType;
 using TeamType = FunTrophy.Shared.Model.TeamType;
 
 namespace FunTrophy.API.Mappers
