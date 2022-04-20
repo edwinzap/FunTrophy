@@ -4,11 +4,11 @@ using System;
 
 namespace FunTrophy.Api.IntegrationTests
 {
-    public abstract class ServiceTest<IService> : DbIntegrationTest
+    public abstract class RepositoryTest<IService> : DbIntegrationTest
     {
         protected FunTrophyContext _dbContext;
 
-        protected ServiceTest(FunTrophyDbIntegrationFixture fixture) : base(fixture)
+        protected RepositoryTest(FunTrophyDbIntegrationFixture fixture) : base(fixture)
         {
         }
 

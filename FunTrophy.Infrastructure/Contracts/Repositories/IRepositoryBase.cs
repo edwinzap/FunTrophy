@@ -8,5 +8,7 @@ namespace FunTrophy.Infrastructure.Contracts.Repositories
         Task<TEntity> Get(int id);
         Task<List<TEntity>> GetAll();
         Task Update(TEntity entity);
+
+        Task Remove(int id);
     }
 }

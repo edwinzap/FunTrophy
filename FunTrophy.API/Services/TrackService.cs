@@ -1,57 +1,44 @@
 ﻿using FunTrophy.API.Mappers;
 using FunTrophy.API.Services.Contracts;
-using FunTrophy.Infrastructure;
+using FunTrophy.Infrastructure.Contracts.Repositories;
 using FunTrophy.Shared.Model;
-using Microsoft.EntityFrameworkCore;
 
 namespace FunTrophy.API.Services
 {
     public class TrackService : ServiceBase, ITrackService
     {
+        private readonly ITrackRepository _repository;
         private readonly ITrackMapper _mapper;
 
-        public TrackService(FunTrophyContext dbContext, ITrackMapper mapper) : base(dbContext)
+        public TrackService(ITrackRepository repository, ITrackMapper mapper)
         {
+            _repository = repository;
             _mapper = mapper;
         }
 
-        public async Task<int> Create(AddTrackDto track)
+        public Task<int> Create(AddTrackDto track)
         {
             var dbTrack = _mapper.Map(track);
-            _dbContext.Tracks.Add(dbTrack);
-            await _dbContext.SaveChangesAsync();
-
-            return dbTrack.Id;
+            return _repository.Add(dbTrack);
         }
 
-        public Task<List<TrackDto>> GetAll()
+        public async Task<List<TrackDto>> GetAll()
         {
-            var task = _dbContext.Tracks.Select(x => _mapper.Map(x)).ToListAsync();
-            return task;
+            var dbTracks = await _repository.GetAll();
+            var tracks = dbTracks.Select(x => _mapper.Map(x)).ToList();
+            return tracks;
         }
 
-        public async Task Remove(int trackId)
+        public Task Remove(int trackId)
         {
-            var race = await _dbContext.Tracks.FindAsync(trackId);
-            if (race == null)
-            {
-                throw new KeyNotFoundException();
-            }
-            _dbContext.Tracks.Remove(race);
-            await _dbContext.SaveChangesAsync();
+            return _repository.Remove(trackId);
         }
 
         public async Task Update(int trackId, UpdateTrackDto track)
         {
-            var dbTrack = await _dbContext.Tracks.FindAsync(trackId);
-            if (dbTrack == null)
-            {
-                throw new KeyNotFoundException();
-            }
+            var dbTrack = await _repository.Get(trackId);
             dbTrack.Name = track.Name;
-
-            _dbContext.Tracks.Update(dbTrack);
-            await _dbContext.SaveChangesAsync();
+            await _repository.Update(dbTrack);
         }
     }
 }

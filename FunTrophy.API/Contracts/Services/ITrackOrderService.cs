@@ -6,8 +6,8 @@ namespace FunTrophy.API.Services.Contracts
     {
         Task<List<TrackOrderDto>> GetAll(int colorId);
 
-        Task<int> AddTrackOrder(AddTrackOrderDto trackOrder);
+        Task<int> Create(AddTrackOrderDto trackOrder);
 
-        Task UpdateTrackOrder(int trackId, int sortOrder);
+        Task Update(int trackId, int sortOrder);
     }
 }

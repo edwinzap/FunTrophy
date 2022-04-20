@@ -37,5 +37,12 @@ namespace FunTrophy.Infrastructure.Repositories
             _dbSet.Update(entity);
             return _dbContext.SaveChangesAsync();
         }
+
+        public async Task Remove(int id)
+        {
+            var entity = await _dbSet.FirstAsync(x => x.Id == id);
+            _dbSet.Remove(entity);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }
