@@ -1,8 +1,8 @@
-﻿using FunTrophy.Api.IntegrationTests.Utils;
-using FunTrophy.Infrastructure;
+﻿using FunTrophy.Infrastructure;
+using FunTrophy.Tests.Utils;
 using System;
 
-namespace FunTrophy.Api.IntegrationTests
+namespace FunTrophy.API.IntegrationTests
 {
     public abstract class RepositoryTest<IService> : DbIntegrationTest
     {

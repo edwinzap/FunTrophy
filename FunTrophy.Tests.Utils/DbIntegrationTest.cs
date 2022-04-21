@@ -1,10 +1,9 @@
 ﻿using FunTrophy.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using System;
 using Xunit;
 
-namespace FunTrophy.Api.IntegrationTests.Utils
+namespace FunTrophy.Tests.Utils
 {
     [Collection(nameof(FunTrophyDbIntegrationCollection))]
     public abstract class DbIntegrationTest : IDisposable
@@ -19,11 +18,11 @@ namespace FunTrophy.Api.IntegrationTests.Utils
         }
 
         protected Func<FunTrophyContext> CreateDbContext => () =>
-         {
-             var ctx = _fixture.CreateDbContext();
-             ctx.Database.UseTransaction(_tran.GetDbTransaction());
-             return ctx;
-         };
+          {
+              var ctx = _fixture.CreateDbContext();
+              ctx.Database.UseTransaction(_tran.GetDbTransaction());
+              return ctx;
+          };
 
         protected void Arrange(Action<FunTrophyContext> arrange)
         {
