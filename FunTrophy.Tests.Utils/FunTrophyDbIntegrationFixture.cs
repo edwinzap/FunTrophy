@@ -2,10 +2,9 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System;
 using Xunit;
 
-namespace FunTrophy.Api.IntegrationTests.Utils
+namespace FunTrophy.Tests.Utils
 {
     public class FunTrophyDbIntegrationFixture : IDisposable
     {
@@ -24,9 +23,9 @@ namespace FunTrophy.Api.IntegrationTests.Utils
         }
 
         public Func<FunTrophyContext> CreateDbContext => () =>
-             new FunTrophyContext(new DbContextOptionsBuilder<FunTrophyContext>()
-                 .UseSqlServer(_connection)
-                 .Options);
+              new FunTrophyContext(new DbContextOptionsBuilder<FunTrophyContext>()
+                  .UseSqlServer(_connection)
+                  .Options);
 
         public void Dispose()
         {
