@@ -31,5 +31,10 @@ namespace FunTrophy.API.Mappers
                 Track = _trackMapper.Map(trackOrder.Track)
             };
         }
+
+        public List<TrackOrderDto> Map(List<TrackOrder> trackOrders)
+        {
+            return trackOrders.Select(x => Map(x)).ToList();
+        }
     }
 }

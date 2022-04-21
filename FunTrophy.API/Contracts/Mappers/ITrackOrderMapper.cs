@@ -8,5 +8,7 @@ namespace FunTrophy.API.Mappers
         TrackOrder Map(AddTrackOrderDto trackOrder);
 
         TrackOrderDto Map(TrackOrder trackOrder);
+
+        List<TrackOrderDto> Map(List<TrackOrder> trackOrders);
     }
 }

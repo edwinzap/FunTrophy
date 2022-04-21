@@ -6,6 +6,9 @@ namespace FunTrophy.API.Mappers
     public interface IRaceMapper
     {
         RaceDto Map(Race race);
+
         Race Map(AddOrUpdateRaceDto race);
+
+        List<RaceDto> Map(List<Race> tracks);
     }
 }

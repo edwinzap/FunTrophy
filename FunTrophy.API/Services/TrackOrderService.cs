@@ -22,9 +22,10 @@ namespace FunTrophy.API.Services
             return _repository.Add(dbTrackOrder);
         }
 
-        public Task<List<TrackOrderDto>> GetAll(int colorId)
+        public async Task<List<TrackOrderDto>> GetAll(int colorId)
         {
-            throw new NotImplementedException();
+            var dbTrackOrders = await _repository.GetAll(colorId);
+            return _mapper.Map(dbTrackOrders);
         }
 
         public async Task Update(int trackOrderId, int sortOrder)

@@ -1,6 +1,7 @@
 ﻿using FunTrophy.Infrastructure.Contracts.Repositories;
 using FunTrophy.Infrastructure.Model;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace FunTrophy.Infrastructure.Repositories
 {
@@ -20,9 +21,14 @@ namespace FunTrophy.Infrastructure.Repositories
             return _dbSet.FirstAsync(x => x.Id == id);
         }
 
-        public Task<List<TEntity>> GetAll()
+        public Task<List<TEntity>> GetAll(Expression<Func<TEntity, bool>>? filter = null)
         {
-            return _dbSet.ToListAsync();
+            IQueryable<TEntity> query = _dbSet;
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+            return query.ToListAsync();
         }
 
         public async Task<int> Add(TEntity entity)

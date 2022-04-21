@@ -1,4 +1,5 @@
 ﻿using FunTrophy.Infrastructure.Model;
+using System.Linq.Expressions;
 
 namespace FunTrophy.Infrastructure.Contracts.Repositories
 {
@@ -6,7 +7,7 @@ namespace FunTrophy.Infrastructure.Contracts.Repositories
     {
         Task<int> Add(TEntity entity);
         Task<TEntity> Get(int id);
-        Task<List<TEntity>> GetAll();
+        Task<List<TEntity>> GetAll(Expression<Func<TEntity, bool>>? filter = null);
         Task Update(TEntity entity);
 
         Task Remove(int id);

@@ -27,8 +27,7 @@ namespace FunTrophy.API.Services
         public async Task<List<TeamDto>> GetAll()
         {
             var dbTeams = await _repository.GetAll();
-            var teams = dbTeams.Select(x => _mapper.Map(x)).ToList();
-            return teams;
+            return _mapper.Map(dbTeams);
         }
 
         public async Task Remove(int teamId)

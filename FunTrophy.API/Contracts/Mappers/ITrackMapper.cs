@@ -8,5 +8,7 @@ namespace FunTrophy.API.Mappers
         Track Map(AddTrackDto track);
 
         TrackDto Map(Track track);
+
+        List<TrackDto> Map(List<Track> tracks);
     }
 }

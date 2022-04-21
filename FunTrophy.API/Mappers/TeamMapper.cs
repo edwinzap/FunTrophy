@@ -33,5 +33,10 @@ namespace FunTrophy.API.Mappers
                 Type = _typeMapper.Map(team.Type)
             };
         }
+
+        public List<TeamDto> Map(List<Team> teams)
+        {
+            return teams.Select(x => Map(x)).ToList();
+        }
     }
 }

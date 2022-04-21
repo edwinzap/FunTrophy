@@ -21,5 +21,10 @@ namespace FunTrophy.API.Mappers
                 Code = color.Code
             };
         }
+
+        public List<ColorDto> Map(List<Color> colors)
+        {
+            return colors.Select(x => Map(x)).ToList();
+        }
     }
 }

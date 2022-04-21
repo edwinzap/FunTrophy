@@ -25,8 +25,7 @@ namespace FunTrophy.API.Services
         public async Task<List<ColorDto>> GetAll()
         {
             var dbColors = await _repository.GetAll();
-            var colors = dbColors.Select(x => _mapper.Map(x)).ToList();
-            return colors;
+            return _mapper.Map(dbColors);
         }
 
         public Task Remove(int colorId)

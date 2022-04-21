@@ -6,6 +6,8 @@ using FunTrophy.Infrastructure.Model;
 using FunTrophy.Shared.Model;
 using FunTrophy.Tests.Utils;
 using Moq;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace FunTrophy.API.UnitTests
@@ -22,6 +24,8 @@ namespace FunTrophy.API.UnitTests
 
             _fakeMapper.Setup(x => x.Map(It.IsAny<AddTrackOrderDto>()))
                 .Returns(Some.Generated<TrackOrder>());
+            _fakeRepository.Setup(x => x.GetAll(It.IsAny<int>()))
+                .ReturnsAsync(Some.Generated<TrackOrder>(0, 3));
         }
 
         private TrackOrderService Sut => new TrackOrderService(
@@ -34,7 +38,7 @@ namespace FunTrophy.API.UnitTests
         public void Create_TrackOrder_Map()
         {
             var trackOrderDto = Some.Generated<AddTrackOrderDto>();
-            
+
             Sut.Create(trackOrderDto);
 
             _fakeMapper.Verify(x => x.Map(trackOrderDto), Times.Once);
@@ -53,7 +57,7 @@ namespace FunTrophy.API.UnitTests
         }
 
         [Fact]
-        public async void Create_GotId_ReturnsTaskWithId()
+        public async Task Create_GotId_ReturnTaskWithId()
         {
             var id = Some.Int();
             _fakeRepository.Setup(x => x.Add(It.IsAny<TrackOrder>()))
@@ -65,5 +69,42 @@ namespace FunTrophy.API.UnitTests
         }
 
         #endregion Create
+
+        #region GetAll
+
+        [Fact]
+        public async Task GetAll_ColorId_GetAllOfColor()
+        {
+            var colorId = Some.Int();
+
+            await Sut.GetAll(colorId);
+
+            _fakeRepository.Verify(x => x.GetAll(colorId), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetAll_GotTrackOrders_Map()
+        {
+            var trackOrders = Some.Generated<TrackOrder>(0, 3);
+            _fakeRepository.Setup(x => x.GetAll(It.IsAny<int>()))
+                .ReturnsAsync(trackOrders);
+
+            await Sut.GetAll(Some.Int());
+            _fakeMapper.Verify(x => x.Map(trackOrders), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetAll_GotMappedTrackOrders_ReturnTrackOrdersOfColor()
+        {
+            var trackOrders = Some.Generated<TrackOrderDto>(0, 3);
+            _fakeMapper.Setup(x => x.Map(It.IsAny<List<TrackOrder>>()))
+                .Returns(trackOrders);
+
+            var result = await Sut.GetAll(Some.Int());
+
+            result.Should().BeEquivalentTo(trackOrders);
+        }
+
+        #endregion GetAll
     }
 }
