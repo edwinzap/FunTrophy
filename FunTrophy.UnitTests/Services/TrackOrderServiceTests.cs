@@ -34,7 +34,7 @@ namespace FunTrophy.API.UnitTests
         public void Create_TrackOrder_Map()
         {
             var trackOrderDto = Some.Generated<AddTrackOrderDto>();
-
+            
             Sut.Create(trackOrderDto);
 
             _fakeMapper.Verify(x => x.Map(trackOrderDto), Times.Once);
