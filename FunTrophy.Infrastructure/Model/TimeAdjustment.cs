@@ -1,13 +1,12 @@
-﻿namespace FunTrophy.API.Model
+﻿namespace FunTrophy.Infrastructure.Model
 {
-    public class TimeAdjustement
+    public class TimeAdjustment : EntityBase
     {
-        public int Id { get; set; }
         public TimeSpan Time { get; set; }
         public int CategoryId { get; set; }
         public int TeamId { get; set; }
 
-        public TimeAdjustementCategory Category { get; set; }
+        public TimeAdjustmentCategory Category { get; set; }
         public Team Team { get; set; }
     }
 }

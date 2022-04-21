@@ -1,4 +1,4 @@
-﻿using FunTrophy.API.Model;
+﻿using FunTrophy.Infrastructure.Model;
 using FunTrophy.Shared.Model;
 
 namespace FunTrophy.API.Mappers

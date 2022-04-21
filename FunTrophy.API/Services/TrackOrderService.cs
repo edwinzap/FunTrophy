@@ -1,27 +1,25 @@
 ﻿using FunTrophy.API.Mappers;
 using FunTrophy.API.Services.Contracts;
-using FunTrophy.Infrastructure;
+using FunTrophy.Infrastructure.Contracts.Repositories;
 using FunTrophy.Shared.Model;
-using Microsoft.EntityFrameworkCore;
 
 namespace FunTrophy.API.Services
 {
     public class TrackOrderService : ServiceBase, ITrackOrderService
     {
+        private readonly ITrackOrderRepository _repository;
         private readonly ITrackOrderMapper _mapper;
 
-        public TrackOrderService(FunTrophyContext dbContext, ITrackOrderMapper mapper) : base(dbContext)
+        public TrackOrderService(ITrackOrderRepository repository, ITrackOrderMapper mapper)
         {
+            _repository = repository;
             _mapper = mapper;
         }
 
-        public async Task<int> AddTrackOrder(AddTrackOrderDto trackOrder)
+        public Task<int> Create(AddTrackOrderDto trackOrder)
         {
             var dbTrackOrder = _mapper.Map(trackOrder);
-            _dbContext.TrackOrders.Add(dbTrackOrder);
-            await _dbContext.SaveChangesAsync();
-
-            return dbTrackOrder.Id;
+            return _repository.Add(dbTrackOrder);
         }
 
         public Task<List<TrackOrderDto>> GetAll(int colorId)
@@ -29,20 +27,15 @@ namespace FunTrophy.API.Services
             throw new NotImplementedException();
         }
 
-        public async Task UpdateTrackOrder(int trackId, int sortOrder)
+        public async Task Update(int trackOrderId, int sortOrder)
         {
-            var dbTrackOrder = await _dbContext.TrackOrders.FindAsync(trackId);
-            if (dbTrackOrder == null)
-            {
-                throw new KeyNotFoundException();
-            }
-
+            var dbTrackOrder = await _repository.Get(trackOrderId);
             if (dbTrackOrder.SortOrder == sortOrder)
             {
                 return;
             }
 
-            var dbTrackOrders = await _dbContext.TrackOrders.Where(x => x.ColorId == dbTrackOrder.ColorId).ToListAsync();
+            //Todo: continue
         }
     }
 }

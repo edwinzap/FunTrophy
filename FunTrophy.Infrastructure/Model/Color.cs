@@ -1,8 +1,7 @@
-﻿namespace FunTrophy.API.Model
+﻿namespace FunTrophy.Infrastructure.Model
 {
-    public class Color
+    public class Color : EntityBase
     {
-        public int Id { get; set; }
         public string Code { get; set; }
 
         public List<Team> Teams { get; set; }

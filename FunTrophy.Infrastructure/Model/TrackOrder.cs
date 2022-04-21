@@ -1,8 +1,7 @@
-﻿namespace FunTrophy.API.Model
+﻿namespace FunTrophy.Infrastructure.Model
 {
-    public class TrackOrder
+    public class TrackOrder : EntityBase
     {
-        public int Id { get; set; }
         public int SortOrder { get; set; }
         public int ColorId { get; set; }
         public int TrackId { get; set; }

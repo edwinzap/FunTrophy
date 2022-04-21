@@ -1,8 +1,7 @@
-﻿namespace FunTrophy.API.Model
+﻿namespace FunTrophy.Infrastructure.Model
 {
-    public class Team
+    public class Team : EntityBase
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public int Number { get; set; }
 
@@ -14,7 +13,7 @@
         public virtual Color Color { get; set; }
 
         public List<TrackTime> TrackTimes { get; set; }
-        public List<TimeAdjustement> TimeAdjustements { get; set; }
+        public List<TimeAdjustment> TimeAdjustements { get; set; }
     }
 
     public enum TeamType

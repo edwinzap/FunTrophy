@@ -1,4 +1,4 @@
-﻿using FunTrophy.API.Model;
+﻿using FunTrophy.Infrastructure.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace FunTrophy.Infrastructure
@@ -15,8 +15,8 @@ namespace FunTrophy.Infrastructure
         public DbSet<TrackOrder> TrackOrders { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<TrackTime> TrackTimes { get; set; }
-        public DbSet<TimeAdjustement> TimeAdjustements { get; set; }
-        public DbSet<TimeAdjustementCategory> TimeAdjustementCategories { get; set; }
+        public DbSet<TimeAdjustment> TimeAdjustments { get; set; }
+        public DbSet<TimeAdjustmentCategory> TimeAdjustmentCategories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

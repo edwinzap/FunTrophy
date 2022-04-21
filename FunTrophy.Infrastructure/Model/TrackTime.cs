@@ -1,8 +1,7 @@
-﻿namespace FunTrophy.API.Model
+﻿namespace FunTrophy.Infrastructure.Model
 {
-    public class TrackTime
+    public class TrackTime : EntityBase
     {
-        public int Id { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public int TrackId { get; set; }

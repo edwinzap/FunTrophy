@@ -1,68 +1,51 @@
 ﻿using FunTrophy.API.Mappers;
 using FunTrophy.API.Services.Contracts;
-using FunTrophy.Infrastructure;
+using FunTrophy.Infrastructure.Contracts.Repositories;
 using FunTrophy.Shared.Model;
-using Microsoft.EntityFrameworkCore;
 
 namespace FunTrophy.API.Services
 {
     public class RaceService : ServiceBase, IRaceService
     {
+        private readonly IRaceRepository _repository;
         private readonly IRaceMapper _mapper;
 
-        public RaceService(FunTrophyContext dbContext, IRaceMapper mapper) : base(dbContext)
+        public RaceService(IRaceRepository repository, IRaceMapper mapper)
         {
+            _repository = repository;
             _mapper = mapper;
         }
 
         public async Task<RaceDto> Get(int raceId)
         {
-            var race = await _dbContext.Races.FindAsync(raceId);
-            if (race == null)
-            {
-                throw new KeyNotFoundException();
-            }
+            var race = await _repository.Get(raceId);
             return _mapper.Map(race);
         }
 
-        public async Task<int> Create(AddOrUpdateRaceDto race)
+        public Task<int> Create(AddOrUpdateRaceDto race)
         {
             var dbRace = _mapper.Map(race);
-            _dbContext.Races.Add(dbRace);
-            await _dbContext.SaveChangesAsync();
-
-            return dbRace.Id;
+            return _repository.Add(dbRace);
         }
 
-        public Task<List<RaceDto>> GetAll()
+        public async Task<List<RaceDto>> GetAll()
         {
-            var task = _dbContext.Races.Select(x => _mapper.Map(x)).ToListAsync();
-            return task;
+            var dbRace = await _repository.GetAll();
+            var races = dbRace.Select(x => _mapper.Map(x)).ToList();
+            return races;
         }
 
-        public async Task Remove(int raceId)
+        public Task Remove(int raceId)
         {
-            var race = await _dbContext.Races.FindAsync(raceId);
-            if (race == null)
-            {
-                throw new KeyNotFoundException();
-            }
-            _dbContext.Races.Remove(race);
-            await _dbContext.SaveChangesAsync();
+            return _repository.Remove(raceId);
         }
 
         public async Task Update(int raceId, AddOrUpdateRaceDto race)
         {
-            var dbRace = await _dbContext.Races.FindAsync(raceId);
-            if (dbRace == null)
-            {
-                throw new KeyNotFoundException();
-            }
+            var dbRace = await _repository.Get(raceId);
             dbRace.Name = race.Name;
             dbRace.Date = race.Date;
-            
-            _dbContext.Races.Update(dbRace);
-            await _dbContext.SaveChangesAsync();
+            await _repository.Update(dbRace);
         }
     }
 }

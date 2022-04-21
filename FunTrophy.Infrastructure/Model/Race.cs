@@ -1,8 +1,7 @@
-﻿namespace FunTrophy.API.Model
+﻿namespace FunTrophy.Infrastructure.Model
 {
-    public class Race
+    public class Race : EntityBase
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public DateTime Date { get; set; }
 
