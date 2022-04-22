@@ -4,6 +4,7 @@ using FunTrophy.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FunTrophy.Infrastructure.Migrations
 {
     [DbContext(typeof(FunTrophyContext))]
-    partial class FunTrophyContextModelSnapshot : ModelSnapshot
+    [Migration("20220422145857_AddColorRaceId")]
+    partial class AddColorRaceId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -135,12 +137,7 @@ namespace FunTrophy.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RaceId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("RaceId");
 
                     b.ToTable("TimeAdjustmentCategories");
                 });
@@ -269,17 +266,6 @@ namespace FunTrophy.Infrastructure.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("Team");
-                });
-
-            modelBuilder.Entity("FunTrophy.Infrastructure.Model.TimeAdjustmentCategory", b =>
-                {
-                    b.HasOne("FunTrophy.Infrastructure.Model.Race", "Race")
-                        .WithMany()
-                        .HasForeignKey("RaceId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Race");
                 });
 
             modelBuilder.Entity("FunTrophy.Infrastructure.Model.Track", b =>

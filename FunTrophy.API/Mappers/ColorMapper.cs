@@ -14,12 +14,18 @@ namespace FunTrophy.API.Mappers
             };
         }
 
-        public Color Map(AddOrUpdateColorDto color)
+        public Color Map(AddColorDto color)
         {
             return new Color
             {
+                RaceId = color.RaceId,
                 Code = color.Code
             };
+        }
+
+        public List<ColorDto> Map(List<Color> colors)
+        {
+            return colors.Select(x => Map(x)).ToList();
         }
     }
 }

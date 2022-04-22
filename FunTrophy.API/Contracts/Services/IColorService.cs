@@ -4,12 +4,12 @@ namespace FunTrophy.API.Services.Contracts
 {
     public interface IColorService
     {
-        Task<List<ColorDto>> GetAll();
+        Task<List<ColorDto>> GetAll(int raceId);
 
-        Task<int> Create(AddOrUpdateColorDto color);
+        Task<int> Create(AddColorDto color);
 
         Task Remove(int colorId);
 
-        Task Update(int colorId, AddOrUpdateColorDto color);
+        Task Update(int colorId, UpdateColorDto color);
     }
 }

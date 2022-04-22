@@ -30,9 +30,8 @@ namespace FunTrophy.API.Services
 
         public async Task<List<RaceDto>> GetAll()
         {
-            var dbRace = await _repository.GetAll();
-            var races = dbRace.Select(x => _mapper.Map(x)).ToList();
-            return races;
+            var dbRaces = await _repository.GetAll();
+            return _mapper.Map(dbRaces);
         }
 
         public Task Remove(int raceId)

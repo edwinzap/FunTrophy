@@ -63,9 +63,9 @@ namespace FunTrophy.API.Controllers
         /// <returns>List of tracks</returns>
         [HttpGet("")]
         [ProducesResponseType(typeof(List<TrackDto>), 200)]
-        public async Task<IActionResult> GetAllTracks()
+        public async Task<IActionResult> GetAllTracks(int raceId)
         {
-            var tracks = await _trackService.GetAll();
+            var tracks = await _trackService.GetAll(raceId);
             return Ok(tracks);
         }
     }

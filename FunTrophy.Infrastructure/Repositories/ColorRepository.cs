@@ -7,6 +7,12 @@ namespace FunTrophy.Infrastructure.Repositories
     {
         public ColorRepository(FunTrophyContext dbContext) : base(dbContext)
         {
+            
+        }
+
+        public Task<List<Color>> GetAll(int raceId)
+        {
+            return GetAll(x => x.RaceId == raceId);
         }
     }
 }

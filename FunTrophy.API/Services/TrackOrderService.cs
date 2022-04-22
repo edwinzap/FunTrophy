@@ -22,20 +22,48 @@ namespace FunTrophy.API.Services
             return _repository.Add(dbTrackOrder);
         }
 
-        public Task<List<TrackOrderDto>> GetAll(int colorId)
+        public async Task<List<TrackOrderDto>> GetAll(int colorId)
         {
-            throw new NotImplementedException();
+            var dbTrackOrders = await _repository.GetAll(colorId);
+            return _mapper.Map(dbTrackOrders);
         }
 
         public async Task Update(int trackOrderId, int sortOrder)
         {
-            var dbTrackOrder = await _repository.Get(trackOrderId);
-            if (dbTrackOrder.SortOrder == sortOrder)
+            var trackOrder = await _repository.Get(trackOrderId);
+            if (trackOrder.SortOrder == sortOrder)
             {
                 return;
             }
 
-            //Todo: continue
+            var trackOrders = await _repository.GetAll(trackOrder.ColorId);
+            var originalSortOrder = trackOrder.SortOrder;
+
+            foreach (var item in trackOrders)
+            {
+                if (item.Id == trackOrderId)
+                {
+                    trackOrder.SortOrder = sortOrder;
+                    continue;
+                }
+
+                if (originalSortOrder >= sortOrder)
+                {
+                    if (item.SortOrder >= sortOrder)
+                    {
+                        item.SortOrder++;
+                    }
+                }
+                else
+                {
+                    if (item.SortOrder <= sortOrder)
+                    {
+                        item.SortOrder--;
+                    }
+                }
+            }
+            
+            await _repository.Update(trackOrders);
         }
     }
 }

@@ -8,5 +8,7 @@ namespace FunTrophy.API.Mappers
         Team Map(AddTeamDto team);
 
         TeamDto Map(Team team);
+
+        List<TeamDto> Map(List<Team> teams);
     }
 }

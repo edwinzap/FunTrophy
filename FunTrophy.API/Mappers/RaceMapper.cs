@@ -23,5 +23,10 @@ namespace FunTrophy.API.Mappers
                 Date = race.Date
             };
         }
+
+        public List<RaceDto> Map(List<Race> races)
+        {
+            return races.Select(x => Map(x)).ToList();
+        }
     }
 }

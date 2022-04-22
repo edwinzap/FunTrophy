@@ -22,5 +22,10 @@ namespace FunTrophy.API.Mappers
                 Name = track.Name,
             };
         }
+
+        public List<TrackDto> Map(List<Track> tracks)
+        {
+            return tracks.Select(x => Map(x)).ToList();
+        }
     }
 }
