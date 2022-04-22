@@ -10,7 +10,8 @@ builder.Services.AddDbContext<FunTrophyContext>(options =>
 
 builder.Services
     .AddServices()
-    .AddMappers();
+    .AddMappers()
+    .AddRepositories();
 
 builder.Services.AddControllers();
 
