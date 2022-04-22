@@ -24,7 +24,7 @@ namespace FunTrophy.API.Controllers
         /// <returns>The new color Id</returns>
         [HttpPost("")]
         [ProducesResponseType(typeof(int), 200)]
-        public async Task<IActionResult> CreateColor([FromBody] AddOrUpdateColorDto color)
+        public async Task<IActionResult> CreateColor([FromBody] AddColorDto color)
         {
             var colorId = await _colorService.Create(color);
             return Ok(colorId);
@@ -51,7 +51,7 @@ namespace FunTrophy.API.Controllers
         /// <returns></returns>
         [HttpPut("{colorId}")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> UpdateColor(int colorId, [FromBody] AddOrUpdateColorDto color)
+        public async Task<IActionResult> UpdateColor(int colorId, [FromBody] UpdateColorDto color)
         {
             await _colorService.Update(colorId, color);
             return Ok();
@@ -63,9 +63,9 @@ namespace FunTrophy.API.Controllers
         /// <returns>List of colors</returns>
         [HttpGet("")]
         [ProducesResponseType(typeof(List<TeamDto>), 200)]
-        public async Task<IActionResult> GetAllColors()
+        public async Task<IActionResult> GetAllColors(int raceId)
         {
-            var colors = await _colorService.GetAll();
+            var colors = await _colorService.GetAll(raceId);
             return Ok(colors);
         }
     }

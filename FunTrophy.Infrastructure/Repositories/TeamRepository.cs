@@ -8,5 +8,10 @@ namespace FunTrophy.Infrastructure.Repositories
         public TeamRepository(FunTrophyContext dbContext) : base(dbContext)
         {
         }
+
+        public Task<List<Team>> GetAll(int raceId)
+        {
+            return GetAll(x => x.RaceId == raceId);
+        }
     }
 }

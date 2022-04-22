@@ -16,15 +16,15 @@ namespace FunTrophy.API.Services
             _mapper = mapper;
         }
 
-        public Task<int> Create(AddOrUpdateColorDto color)
+        public Task<int> Create(AddColorDto color)
         {
             var dbColor = _mapper.Map(color);
             return _repository.Add(dbColor);
         }
 
-        public async Task<List<ColorDto>> GetAll()
+        public async Task<List<ColorDto>> GetAll(int raceId)
         {
-            var dbColors = await _repository.GetAll();
+            var dbColors = await _repository.GetAll(raceId);
             return _mapper.Map(dbColors);
         }
 
@@ -33,7 +33,7 @@ namespace FunTrophy.API.Services
             return _repository.Remove(colorId);
         }
 
-        public async Task Update(int colorId, AddOrUpdateColorDto color)
+        public async Task Update(int colorId, UpdateColorDto color)
         {
             var dbColor = await _repository.Get(colorId);
             dbColor.Code = color.Code;

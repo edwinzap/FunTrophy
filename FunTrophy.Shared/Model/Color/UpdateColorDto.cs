@@ -1,6 +1,6 @@
 ﻿namespace FunTrophy.Shared.Model
 {
-    public class AddOrUpdateColorDto
+    public class UpdateColorDto
     {
         public string Code { get; set; }
     }

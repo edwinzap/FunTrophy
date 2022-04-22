@@ -4,7 +4,7 @@ namespace FunTrophy.API.Services.Contracts
 {
     public interface ITrackService
     {
-        Task<List<TrackDto>> GetAll();
+        Task<List<TrackDto>> GetAll(int raceId);
 
         Task<int> Create(AddTrackDto track);
 

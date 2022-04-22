@@ -14,10 +14,11 @@ namespace FunTrophy.API.Mappers
             };
         }
 
-        public Color Map(AddOrUpdateColorDto color)
+        public Color Map(AddColorDto color)
         {
             return new Color
             {
+                RaceId = color.RaceId,
                 Code = color.Code
             };
         }

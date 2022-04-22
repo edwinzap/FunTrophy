@@ -4,7 +4,7 @@ namespace FunTrophy.API.Services.Contracts
 {
     public interface ITeamService
     {
-        Task<List<TeamDto>> GetAll();
+        Task<List<TeamDto>> GetAll(int raceId);
 
         Task<int> Create(AddTeamDto team);
 

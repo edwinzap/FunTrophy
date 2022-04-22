@@ -22,9 +22,9 @@ namespace FunTrophy.API.Services
             return _repository.Add(dbTrack);
         }
 
-        public async Task<List<TrackDto>> GetAll()
+        public async Task<List<TrackDto>> GetAll(int raceId)
         {
-            var dbTracks = await _repository.GetAll();
+            var dbTracks = await _repository.GetAll(raceId);
             return _mapper.Map(dbTracks);
         }
 
