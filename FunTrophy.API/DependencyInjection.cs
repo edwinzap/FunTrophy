@@ -1,6 +1,6 @@
 ﻿using FunTrophy.API.Mappers;
 using FunTrophy.API.Services;
-using FunTrophy.API.Services.Contracts;
+using FunTrophy.API.Contracts.Services;
 using FunTrophy.Infrastructure.Contracts.Repositories;
 using FunTrophy.Infrastructure.Repositories;
 
@@ -15,6 +15,8 @@ namespace FunTrophy.API
             services.AddTransient<ITeamService, TeamService>();
             services.AddTransient<ITrackOrderService, TrackOrderService>();
             services.AddTransient<ITrackService, TrackService>();
+            services.AddTransient<ITimeAdjustmentService, TimeAdjustmentService>();
+            services.AddTransient<ITimeAdjustmentCategoryService, TimeAdjustmentCategoryService>();
             return services;
         }
 
@@ -26,6 +28,8 @@ namespace FunTrophy.API
             services.AddTransient<ITeamTypeMapper, TeamTypeMapper>();
             services.AddTransient<ITrackMapper, TrackMapper>();
             services.AddTransient<ITrackOrderMapper, TrackOrderMapper>();
+            services.AddTransient<ITimeAdjustmentMapper, TimeAdjustmentMapper>();
+            services.AddTransient<ITimeAdjustmentCategoryMapper, TimeAdjustmentCategoryMapper>();
             return services;
         }
 
@@ -36,6 +40,8 @@ namespace FunTrophy.API
             services.AddTransient<ITeamRepository, TeamRepository>();
             services.AddTransient<ITrackOrderRepository, TrackOrderRepository>();
             services.AddTransient<ITrackRepository, TrackRepository>();
+            services.AddTransient<ITimeAdjustmentRepository, TimeAdjustmentRepository>();
+            services.AddTransient<ITimeAdjustmentCategoryRepository, TimeAdjustmentCategoryRepository>();
             return services;
         }
     }

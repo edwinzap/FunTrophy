@@ -1,5 +1,5 @@
-﻿using FunTrophy.API.Mappers;
-using FunTrophy.API.Services.Contracts;
+﻿using FunTrophy.API.Contracts.Services;
+using FunTrophy.API.Mappers;
 using FunTrophy.Infrastructure.Contracts.Repositories;
 using FunTrophy.Shared.Model;
 
@@ -26,6 +26,11 @@ namespace FunTrophy.API.Services
         {
             var dbTrackOrders = await _repository.GetAll(colorId);
             return _mapper.Map(dbTrackOrders);
+        }
+
+        public Task Remove(int trackOrderId)
+        {
+            return _repository.Remove(trackOrderId);
         }
 
         public async Task Update(int trackOrderId, int sortOrder)
@@ -62,7 +67,7 @@ namespace FunTrophy.API.Services
                     }
                 }
             }
-            
+
             await _repository.Update(trackOrders);
         }
     }

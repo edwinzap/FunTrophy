@@ -1,6 +1,6 @@
 ﻿using FunTrophy.Shared.Model;
 
-namespace FunTrophy.API.Services.Contracts
+namespace FunTrophy.API.Contracts.Services
 {
     public interface ITeamService
     {

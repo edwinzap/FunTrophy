@@ -1,4 +1,4 @@
-using FunTrophy.API.Services.Contracts;
+using FunTrophy.API.Contracts.Services;
 using FunTrophy.Shared.Model;
 using Microsoft.AspNetCore.Mvc;
 

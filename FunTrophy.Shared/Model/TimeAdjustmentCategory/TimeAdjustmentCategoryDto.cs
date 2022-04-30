@@ -1,0 +1,8 @@
+﻿namespace FunTrophy.Shared.Model
+{
+    public class TimeAdjustmentCategoryDto
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+}
