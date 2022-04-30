@@ -1,4 +1,4 @@
-using FunTrophy.API.Services.Contracts;
+using FunTrophy.API.Contracts.Services;
 using FunTrophy.Shared.Model;
 using Microsoft.AspNetCore.Mvc;
 
@@ -60,6 +60,7 @@ namespace FunTrophy.API.Controllers
         /// <summary>
         /// Get a list of all teams
         /// </summary>
+        /// <param name="raceId">Race Id</param>
         /// <returns>List of teams</returns>
         [HttpGet("")]
         [ProducesResponseType(typeof(List<TeamDto>), 200)]

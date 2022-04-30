@@ -1,5 +1,5 @@
 ﻿using FunTrophy.API.Mappers;
-using FunTrophy.API.Services.Contracts;
+using FunTrophy.API.Contracts.Services;
 using FunTrophy.Infrastructure.Contracts.Repositories;
 using FunTrophy.Shared.Model;
 
