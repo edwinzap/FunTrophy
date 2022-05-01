@@ -1,3 +1,7 @@
 ﻿.active {
     border: solid 3px black;
 }
+
+textarea {
+    min-height: 10em;
+}
