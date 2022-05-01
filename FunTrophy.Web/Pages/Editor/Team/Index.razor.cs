@@ -1,4 +1,5 @@
 ﻿using FunTrophy.Shared.Model;
+using Microsoft.AspNetCore.Components;
 
 namespace FunTrophy.Web.Pages.Editor.Team
 {
@@ -16,7 +17,7 @@ namespace FunTrophy.Web.Pages.Editor.Team
             set 
             { 
                 currentColorId = value; 
-                OnCurrentColorChanged();
+                UpdateTeamsFilter();
             }
         }
 
@@ -27,9 +28,14 @@ namespace FunTrophy.Web.Pages.Editor.Team
             CurrentColorId = FakeModel.Colors[0].Id;
         }
 
-        private void OnCurrentColorChanged()
+        private void UpdateTeamsFilter()
         {
             Teams = _allTeams.Where(x => x.Color.Id == CurrentColorId).ToList();
+        }
+
+        public void OnCurrentColorChanged(ChangeEventArgs args)
+        {
+            CurrentColorId = int.Parse(args.Value!.ToString()!);
         }
     }
 }

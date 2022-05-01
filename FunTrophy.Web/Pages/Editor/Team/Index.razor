@@ -1,4 +1,4 @@
-﻿@page "/editeur/equipe"
+﻿@page "/editeur/equipes"
 
 <PageTitle>Equipes</PageTitle>
 
@@ -6,7 +6,7 @@
     @foreach (var color in Colors)
     {
         <div class="p-2">
-            <input type="radio" class="btn-check" name="colors" id="color-@color.Id" autocomplete="off" checked>
+            <input type="radio" class="btn-check" name="colors" id="color-@color.Id" autocomplete="off" value="@color.Id" checked=@(CurrentColorId == color.Id) @onchange="OnCurrentColorChanged">
             <label class="btn px-4 @(CurrentColorId == color.Id? "active": "")" style="background-color:@color.Code" for="color-@color.Id">&nbsp;</label>
         </div>
     }
@@ -16,12 +16,16 @@
     <table class="table table-striped table-hover">
         <thead>
             <tr>
-                <th scope="col">Numéro</th>
+                <th scope="col" class="col-md-2 col-lg-1">N°</th>
                 <th scope="col">Nom</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
+            @if (!Teams.Any())
+            {
+                <p class="p-2">Aucun équipe</p>
+            }
             @foreach (var team in Teams)
             {
                 <tr>
@@ -38,17 +42,17 @@
 </div>
 
 <div>
-    <form class="row">
-        <div class="col-auto">
-            <label for="race-name" class="form-label">Nom</label>
-            <input id="race-name" class="form-control" type="text" name="name" placeholder="Nom de la course" />
+    <form class="d-flex">
+        <div class="p-2">
+            <label for="team-name" class="form-label">Nom</label>
+            <input id="team-name" class="form-control" type="text" name="name" placeholder="Nom de la course" />
         </div>
-        <div class="col-auto">
-            <label for="race-date" class="form-label">Date</label>
-            <input id="race-date" class="form-control" type="date" name="date" value="09-05-1995" />
+        <div class="p-2">
+            <label for="team-number" class="form-label">Numéro</label>
+            <input id="team-number" class="form-control" type="number" name="number" placeholder="Nom de la course" min="1"/>
         </div>
-        <div class="col-auto d-flex align-items-end">
-            <button type="submit" class="btn btn-primary">Créer</button>
+        <div class="p-2 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary">Ajouter</button>
         </div>
     </form>
 </div>
