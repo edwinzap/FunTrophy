@@ -20,7 +20,6 @@
     <Folder Include="Pages\Editor\TimeAdjustment\" />
     <Folder Include="Pages\Editor\TimeAdjustmentCategory\" />
     <Folder Include="Pages\Editor\TrackOrder\" />
-    <Folder Include="Pages\Editor\Track\" />
   </ItemGroup>
 
 </Project>

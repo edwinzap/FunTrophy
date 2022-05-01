@@ -31,5 +31,12 @@ namespace FunTrophy.Web
             new TeamDto { Id = 5, Name= "Ebert-Hills", Number = 2, Type = TeamType.Family, Color = Colors[1]},
             new TeamDto { Id = 6, Name= "Rowe, Rowe and Roberts", Number = 3, Type = TeamType.Family, Color = Colors[1]},
         };
+
+        public static List<TrackDto>? Tracks { get; } = new List<TrackDto>
+        {
+            new TrackDto { Id = 1, Name="Roulé-boulé"},
+            new TrackDto { Id = 2, Name="Gonflé à bloc"},
+            new TrackDto { Id = 3, Name="A l'autre boue du monde"},
+        };
     }
 }
