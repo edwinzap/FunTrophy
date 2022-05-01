@@ -10,6 +10,8 @@ namespace FunTrophy.Infrastructure.Repositories
         protected readonly FunTrophyContext _dbContext;
         private readonly DbSet<TEntity> _dbSet;
 
+        public string[] Includes { get; set; }
+
         public RepositoryBase(FunTrophyContext dbContext)
         {
             _dbContext = dbContext;
@@ -18,15 +20,31 @@ namespace FunTrophy.Infrastructure.Repositories
 
         public Task<TEntity> Get(int id)
         {
-            return _dbSet.FirstAsync(x => x.Id == id);
+            var query = _dbSet.AsQueryable();
+            if (Includes.Any())
+            {
+                foreach (var include in Includes)
+                {
+                    query = query.Include(include);
+                }
+            }
+            return query.FirstAsync(x => x.Id == id);
         }
 
         public Task<List<TEntity>> GetAll(Expression<Func<TEntity, bool>>? filter = null)
         {
-            IQueryable<TEntity> query = _dbSet;
+            var query = _dbSet.AsQueryable();
             if (filter != null)
             {
                 query = query.Where(filter);
+            }
+            
+            if (Includes.Any())
+            {
+                foreach (var include in Includes)
+                {
+                    query = query.Include(include);
+                }
             }
             return query.ToListAsync();
         }

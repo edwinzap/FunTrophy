@@ -1,0 +1,57 @@
+﻿@page "/editeur/equipe"
+
+<PageTitle>Equipes</PageTitle>
+
+<div class="d-flex flex-row">
+    @foreach (var color in Colors)
+    {
+        <div class="p-2">
+            <input type="radio" class="btn-check" name="colors" id="color-@color.Id" autocomplete="off" checked>
+            <label class="btn px-4 @(CurrentColorId == color.Id? "active": "")" style="background-color:@color.Code" for="color-@color.Id">&nbsp;</label>
+        </div>
+    }
+</div>
+
+<div class="">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Numéro</th>
+                <th scope="col">Nom</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var team in Teams)
+            {
+                <tr>
+                    <th scope="row">@team.Number</th>
+                    <td>@team.Name</td>
+                    <td>
+                        <a class="btn btn-secondary"><span class="oi oi-pencil"></span></a>
+                        <a class="btn btn-danger"><span class="oi oi-trash"></span></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <form class="row">
+        <div class="col-auto">
+            <label for="race-name" class="form-label">Nom</label>
+            <input id="race-name" class="form-control" type="text" name="name" placeholder="Nom de la course" />
+        </div>
+        <div class="col-auto">
+            <label for="race-date" class="form-label">Date</label>
+            <input id="race-date" class="form-control" type="date" name="date" value="09-05-1995" />
+        </div>
+        <div class="col-auto d-flex align-items-end">
+            <button type="submit" class="btn btn-primary">Créer</button>
+        </div>
+    </form>
+</div>
+
+
+

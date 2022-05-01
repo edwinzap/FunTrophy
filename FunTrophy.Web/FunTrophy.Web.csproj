@@ -7,8 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.4" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FunTrophy.Shared\FunTrophy.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Pages\Editor\TimeAdjustment\" />
+    <Folder Include="Pages\Editor\TimeAdjustmentCategory\" />
+    <Folder Include="Pages\Editor\TrackOrder\" />
+    <Folder Include="Pages\Editor\Track\" />
   </ItemGroup>
 
 </Project>
