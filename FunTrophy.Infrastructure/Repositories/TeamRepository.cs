@@ -7,6 +7,7 @@ namespace FunTrophy.Infrastructure.Repositories
     {
         public TeamRepository(FunTrophyContext dbContext) : base(dbContext)
         {
+            Includes = new string[] { "Color" };
         }
 
         public Task<List<Team>> GetAll(int raceId)

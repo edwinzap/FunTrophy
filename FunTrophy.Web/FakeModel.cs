@@ -38,5 +38,10 @@ namespace FunTrophy.Web
             new TrackDto { Id = 2, Name="Gonflé à bloc"},
             new TrackDto { Id = 3, Name="A l'autre boue du monde"},
         };
+
+        public static List<TrackOrderDto> TrackOrders { get; } = new List<TrackOrderDto>
+        {
+            new TrackOrderDto { Id = 1, SordOrder = 1}
+        };
     }
 }

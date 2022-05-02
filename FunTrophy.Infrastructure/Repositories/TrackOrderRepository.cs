@@ -7,6 +7,7 @@ namespace FunTrophy.Infrastructure.Repositories
     {
         public TrackOrderRepository(FunTrophyContext dbContext) : base(dbContext)
         {
+            Includes = new string[] { "Track" };
         }
 
         public Task<List<TrackOrder>> GetAll(int colorId)

@@ -27,6 +27,7 @@ namespace FunTrophy.API.Mappers
             return new TrackOrderDto
             {
                 Id = trackOrder.Id,
+                ColorId = trackOrder.ColorId,
                 SordOrder = trackOrder.SortOrder,
                 Track = _trackMapper.Map(trackOrder.Track)
             };
