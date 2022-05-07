@@ -7,12 +7,17 @@ namespace FunTrophy.Infrastructure.Repositories
     {
         public TrackOrderRepository(FunTrophyContext dbContext) : base(dbContext)
         {
-            Includes = new string[] { "Track" };
         }
 
         public Task<List<TrackOrder>> GetAll(int colorId)
         {
             return GetAll(x => x.ColorId == colorId);
+        }
+
+        public async Task RemoveAll(int colorId)
+        {
+            var trackOrders = await GetAll(colorId);
+           _dbContext.RemoveRange(trackOrders);
         }
     }
 }

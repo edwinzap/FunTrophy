@@ -10,6 +10,7 @@ namespace FunTrophy.API.Contracts.Services
 
         Task Remove(int trackOrderId);
 
-        Task Update(int trackId, int sortOrder);
+        Task Update(int colorId, List<int> trackIds);
+
     }
 }

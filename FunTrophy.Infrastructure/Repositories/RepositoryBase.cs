@@ -74,5 +74,11 @@ namespace FunTrophy.Infrastructure.Repositories
             _dbSet.Remove(entity);
             await _dbContext.SaveChangesAsync();
         }
+
+        public Task Add(IEnumerable<TEntity> entities)
+        {
+            _dbSet.AddRange(entities);
+            return _dbContext.SaveChangesAsync();
+        }
     }
 }

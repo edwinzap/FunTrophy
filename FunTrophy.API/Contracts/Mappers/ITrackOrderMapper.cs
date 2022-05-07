@@ -7,8 +7,8 @@ namespace FunTrophy.API.Mappers
     {
         TrackOrder Map(AddTrackOrderDto trackOrder);
 
-        TrackOrderDto Map(TrackOrder trackOrder);
+        TrackOrderDto Map(int colorId, TrackOrder? trackOrder, Track track);
 
-        List<TrackOrderDto> Map(List<TrackOrder> trackOrders);
+        List<TrackOrderDto> Map(int colorId, List<TrackOrder> trackOrders, List<Track> tracks);
     }
 }

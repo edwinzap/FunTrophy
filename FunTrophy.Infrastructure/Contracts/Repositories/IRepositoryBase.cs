@@ -7,6 +7,8 @@ namespace FunTrophy.Infrastructure.Contracts.Repositories
     {
         Task<int> Add(TEntity entity);
 
+        Task Add(IEnumerable<TEntity> entities);
+
         Task<TEntity> Get(int id);
 
         Task<List<TEntity>> GetAll(Expression<Func<TEntity, bool>>? filter = null);
