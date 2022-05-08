@@ -1,0 +1,44 @@
+﻿@page "/editeur/couleurs"
+
+<PageTitle>Couleurs</PageTitle>
+
+<div>
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Couleur</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var color in Colors)
+            {
+                <tr>
+                    <td>
+                        <div class="m-1 p-1" style="background-color:@color.Code">
+                            <span>&nbsp;</span>
+                        </div>
+                    </td>
+                    <td>
+                        <a class="btn btn-secondary"><span class="oi oi-pencil"></span></a>
+                        <a class="btn btn-danger"><span class="oi oi-trash"></span></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <form class="row">
+        <div class="col-auto">
+            <input id="race-name" class="form-control form-control-color" type="color" name="name" placeholder="Nom de la course" />
+        </div>
+        <div class="col-auto d-flex align-items-end">
+            <button type="submit" class="btn btn-primary">Ajouter</button>
+        </div>
+    </form>
+</div>
+
+
+

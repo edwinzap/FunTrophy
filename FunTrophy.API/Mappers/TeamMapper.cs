@@ -6,10 +6,12 @@ namespace FunTrophy.API.Mappers
     public class TeamMapper : ITeamMapper
     {
         private readonly ITeamTypeMapper _typeMapper;
+        private readonly IColorMapper _colorMapper;
 
-        public TeamMapper(ITeamTypeMapper typeMapper)
+        public TeamMapper(ITeamTypeMapper typeMapper, IColorMapper colorMapper)
         {
             _typeMapper = typeMapper;
+            _colorMapper = colorMapper;
         }
 
         public Team Map(AddTeamDto team)
@@ -30,6 +32,7 @@ namespace FunTrophy.API.Mappers
                 Id = team.Id,
                 Name = team.Name,
                 Number = team.Number,
+                Color = _colorMapper.Map(team.Color),
                 Type = _typeMapper.Map(team.Type)
             };
         }

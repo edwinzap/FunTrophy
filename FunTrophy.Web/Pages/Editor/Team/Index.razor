@@ -1,0 +1,72 @@
+﻿@page "/editeur/equipes"
+@using FunTrophy.Shared.Model
+
+<PageTitle>Equipes</PageTitle>
+
+<ColorSwitcher Colors=@Colors OnCurrentColorChanged="@((value)=> OnCurrentColorChanged(value))" />
+
+<div class="">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col" class="col-md-2 col-lg-1">N°</th>
+                <th scope="col">Nom</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Teams.Any())
+            {
+                <p class="p-2">Aucune équipe</p>
+            }
+            @foreach (var team in Teams)
+            {
+                <tr>
+                    <th scope="row">@team.Number</th>
+                    <td>@team.Name</td>
+                    <td>
+                        <a class="btn btn-secondary"><span class="oi oi-pencil"></span></a>
+                        <a class="btn btn-danger"><span class="oi oi-trash"></span></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="my-2">
+    <form class="d-flex flex-column flex-lg-row">
+        <div class="p-2">
+            <label for="team-name" class="form-label">Nom</label>
+            <input id="team-name" class="form-control" type="text" name="name" placeholder="Nom de l'équipe" />
+        </div>
+        <div class="p-2">
+            <label for="team-number" class="form-label">Numéro</label>
+            <input id="team-number" class="form-control" type="number" name="number" value="@NewTeamNumber" min="1" />
+        </div>
+        <div class="p-2">
+            <label for="team-type" class="form-label">Type</label>
+            <select class="form-select">
+                @foreach (var type in Enum.GetValues<TeamType>())
+               {
+                   <option value="@type" >@type</option>
+               }
+            </select>
+        </div>
+        <div class="p-2 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary">Ajouter</button>
+        </div>
+    </form>
+</div>
+<div class="d-flex flex-column">
+    <div class="p-2">
+        <label for="import-teams" class="form-label">Importer des équipes</label>
+        <textarea rows=8 id="import-teams" class="form-control" placeholder="Copier-coller ici la liste complète des équipes.&#10;Une équipe par ligne.&#10;Exemple:&#10;Mon équipe;1"></textarea>
+    </div>
+    <div class="p-2">
+        <button class="btn btn-primary">Importer les équipes</button>
+    </div>
+</div>
+
+
+

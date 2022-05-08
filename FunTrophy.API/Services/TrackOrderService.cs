@@ -1,74 +1,60 @@
 ﻿using FunTrophy.API.Contracts.Services;
 using FunTrophy.API.Mappers;
 using FunTrophy.Infrastructure.Contracts.Repositories;
+using FunTrophy.Infrastructure.Model;
 using FunTrophy.Shared.Model;
 
 namespace FunTrophy.API.Services
 {
     public class TrackOrderService : ServiceBase, ITrackOrderService
     {
-        private readonly ITrackOrderRepository _repository;
+        private readonly ITrackOrderRepository _trackOrderRepository;
+        private readonly IColorRepository _colorRepository;
+        private readonly ITrackRepository _trackRepository;
         private readonly ITrackOrderMapper _mapper;
 
-        public TrackOrderService(ITrackOrderRepository repository, ITrackOrderMapper mapper)
+        public TrackOrderService(
+            ITrackOrderRepository trackOrderRepository,
+            IColorRepository colorRepository,
+            ITrackRepository trackRepository,
+            ITrackOrderMapper mapper
+            )
         {
-            _repository = repository;
+            _trackOrderRepository = trackOrderRepository;
+            _colorRepository = colorRepository;
+            _trackRepository = trackRepository;
             _mapper = mapper;
         }
 
         public Task<int> Create(AddTrackOrderDto trackOrder)
         {
             var dbTrackOrder = _mapper.Map(trackOrder);
-            return _repository.Add(dbTrackOrder);
+            return _trackOrderRepository.Add(dbTrackOrder);
         }
 
         public async Task<List<TrackOrderDto>> GetAll(int colorId)
         {
-            var dbTrackOrders = await _repository.GetAll(colorId);
-            return _mapper.Map(dbTrackOrders);
+            var color = await _colorRepository.Get(colorId);
+            var dbTrackOrders = await _trackOrderRepository.GetAll(colorId);
+            var dbTracks = await _trackRepository.GetAll(color.RaceId);
+            return _mapper.Map(colorId, dbTrackOrders, dbTracks);
         }
 
         public Task Remove(int trackOrderId)
         {
-            return _repository.Remove(trackOrderId);
+            return _trackOrderRepository.Remove(trackOrderId);
         }
 
-        public async Task Update(int trackOrderId, int sortOrder)
+        public async Task Update(int colorId, List<int> trackIds)
         {
-            var trackOrder = await _repository.Get(trackOrderId);
-            if (trackOrder.SortOrder == sortOrder)
+            await _trackOrderRepository.RemoveAll(colorId);
+            var trackOrders = trackIds.Select((x, index) => new TrackOrder
             {
-                return;
-            }
-
-            var trackOrders = await _repository.GetAll(trackOrder.ColorId);
-            var originalSortOrder = trackOrder.SortOrder;
-
-            foreach (var item in trackOrders)
-            {
-                if (item.Id == trackOrderId)
-                {
-                    trackOrder.SortOrder = sortOrder;
-                    continue;
-                }
-
-                if (originalSortOrder >= sortOrder)
-                {
-                    if (item.SortOrder >= sortOrder)
-                    {
-                        item.SortOrder++;
-                    }
-                }
-                else
-                {
-                    if (item.SortOrder <= sortOrder)
-                    {
-                        item.SortOrder--;
-                    }
-                }
-            }
-
-            await _repository.Update(trackOrders);
+                ColorId = colorId,
+                TrackId = x,
+                SortOrder = index
+            });
+            await _trackOrderRepository.Add(trackOrders);
         }
     }
 }

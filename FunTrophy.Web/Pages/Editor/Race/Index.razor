@@ -1,0 +1,48 @@
+﻿@page "/editeur/courses"
+
+<PageTitle>Courses</PageTitle>
+
+<div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Date</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var race in Races)
+            {
+                <tr>
+                    <td>@race.Name</td>
+                    <td>@race.Date.ToLongDateString()</td>
+                    <td>
+                        <a class="btn btn-primary"><span class="oi oi-share"></span></a>
+                        <a class="btn btn-secondary"><span class="oi oi-pencil"></span></a>
+                        <a class="btn btn-danger"><span class="oi oi-trash"></span></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <form class="d-flex">
+        <div class="p-2">
+            <label for="race-name" class="form-label">Nom</label>
+            <input id="race-name" class="form-control" type="text" name="name" placeholder="Nom de la course" />
+        </div>
+        <div class="p-2">
+            <label for="race-date" class="form-label">Date</label>
+            <input id="race-date" class="form-control" type="date" name="date" value="09-05-1995" />
+        </div>
+        <div class="p-2 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary">Créer</button>
+        </div>
+    </form>
+</div>
+
+
+

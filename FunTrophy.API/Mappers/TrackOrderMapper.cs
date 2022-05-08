@@ -22,19 +22,30 @@ namespace FunTrophy.API.Mappers
             };
         }
 
-        public TrackOrderDto Map(TrackOrder trackOrder)
+        public TrackOrderDto Map(int colorId, TrackOrder? trackOrder, Track track)
         {
+            if (trackOrder != null && trackOrder.TrackId != track.Id)
+                throw new InvalidDataException();
+
             return new TrackOrderDto
             {
-                Id = trackOrder.Id,
-                SordOrder = trackOrder.SortOrder,
-                Track = _trackMapper.Map(trackOrder.Track)
+                ColorId = colorId,
+                SordOrder = trackOrder?.SortOrder,
+                Track = _trackMapper.Map(track)
             };
         }
 
-        public List<TrackOrderDto> Map(List<TrackOrder> trackOrders)
+        public List<TrackOrderDto> Map(int colorId, List<TrackOrder> trackOrders, List<Track> tracks)
         {
-            return trackOrders.Select(x => Map(x)).ToList();
+            var mappedTrackOrders = tracks
+                .Select(track =>
+                {
+                    var trackOrder = trackOrders.FirstOrDefault(x => x.TrackId == track.Id);
+                    return Map(colorId, trackOrder, track);
+                })
+                .OrderBy(x => x.SordOrder)
+                .ToList();
+            return mappedTrackOrders;
         }
     }
 }

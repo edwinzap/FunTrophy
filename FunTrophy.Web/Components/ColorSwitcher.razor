@@ -1,0 +1,38 @@
+﻿@using FunTrophy.Shared.Model
+
+<div class="d-flex flex-row">
+    @foreach (var color in Colors)
+    {
+        <div class="p-2" @key=color.Id>
+            <input type="radio" class="btn-check" name="colors" id="color-@color.Id" autocomplete="off" value="@color.Id" checked=@(CurrentColorId == color.Id) @onchange="CurrentColorChanged">
+            <label class="btn px-4 @(CurrentColorId == color.Id? "active": "")" style="background-color:@color.Code" for="color-@color.Id">&nbsp;</label>
+        </div>
+    }
+</div>
+
+@code {
+    private int CurrentColorId { get; set; }
+
+    private List<ColorDto> _colors = new List<ColorDto>();
+    [Parameter]
+    public List<ColorDto> Colors {
+        get => _colors; 
+        set
+        {
+            if (value == _colors)
+                return;
+            _colors = value;
+            if (_colors.Any())
+               CurrentColorId = _colors.First().Id;
+        }
+    }
+
+    [Parameter]
+    public EventCallback<int> OnCurrentColorChanged { get; set; }
+
+    private void CurrentColorChanged(ChangeEventArgs args)
+    {
+        CurrentColorId = int.Parse(args.Value!.ToString()!);
+        OnCurrentColorChanged.InvokeAsync(CurrentColorId);
+    }
+}

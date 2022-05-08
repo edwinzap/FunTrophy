@@ -46,14 +46,14 @@ namespace FunTrophy.API.Controllers
         /// <summary>
         /// Update the track order with the given Id
         /// </summary>
-        /// <param name="trackOrderId">TrackOrder Id</param>
-        /// <param name="sortOrder">Sort order</param>
+        /// <param name="colorId">Color Id</param>
+        /// <param name="trackIds">Sorted track ids</param>
         /// <returns></returns>
         [HttpPut("{trackOrderId}")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> UpdateTrackOrder(int trackOrderId, int sortOrder)
+        public async Task<IActionResult> UpdateTrackOrder(int colorId, List<int> trackIds)
         {
-            await _trackOrderService.Update(trackOrderId, sortOrder);
+            await _trackOrderService.Update(colorId, trackIds);
             return Ok();
         }
     }
