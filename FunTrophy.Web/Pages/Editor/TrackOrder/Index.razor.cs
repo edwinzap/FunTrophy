@@ -1,14 +1,12 @@
 ﻿using FunTrophy.Shared.Model;
-using Microsoft.AspNetCore.Components;
 
 namespace FunTrophy.Web.Pages.Editor.TrackOrder
 {
     public partial class Index
     {
         public List<ColorDto> Colors { get; set; }
-        public List<TrackDto> Tracks { get; set; }
         public List<TrackOrderDto> TrackOrders { get; set; }
-        
+
         private int currentColorId;
 
         public int CurrentColorId
@@ -24,8 +22,7 @@ namespace FunTrophy.Web.Pages.Editor.TrackOrder
         public Index()
         {
             Colors = FakeModel.Colors;
-            Tracks = FakeModel.Tracks;
-            CurrentColorId = Tracks.Select(x => x.Id).FirstOrDefault();
+            CurrentColorId = Colors[0].Id;
         }
 
         private void GetTrackOrdersForCurrentColor()
@@ -33,9 +30,9 @@ namespace FunTrophy.Web.Pages.Editor.TrackOrder
             TrackOrders = FakeModel.TrackOrders.Where(x => x.ColorId == currentColorId).ToList();
         }
 
-        public void OnCurrentColorChanged(ChangeEventArgs args)
+        public void OnCurrentColorChanged(int colorId)
         {
-            CurrentColorId = int.Parse(args.Value!.ToString()!);
+            CurrentColorId = colorId;
         }
     }
 }

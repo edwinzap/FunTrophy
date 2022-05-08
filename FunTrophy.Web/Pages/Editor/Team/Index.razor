@@ -1,16 +1,9 @@
 ﻿@page "/editeur/equipes"
+@using FunTrophy.Shared.Model
 
 <PageTitle>Equipes</PageTitle>
 
-<div class="d-flex flex-row">
-    @foreach (var color in Colors)
-    {
-        <div class="p-2">
-            <input type="radio" class="btn-check" name="colors" id="color-@color.Id" autocomplete="off" value="@color.Id" checked=@(CurrentColorId == color.Id) @onchange="OnCurrentColorChanged">
-            <label class="btn px-4 @(CurrentColorId == color.Id? "active": "")" style="background-color:@color.Code" for="color-@color.Id">&nbsp;</label>
-        </div>
-    }
-</div>
+<ColorSwitcher Colors=@Colors OnCurrentColorChanged="@((value)=> OnCurrentColorChanged(value))" />
 
 <div class="">
     <table class="table table-striped">
@@ -24,7 +17,7 @@
         <tbody>
             @if (!Teams.Any())
             {
-                <p class="p-2">Aucun équipe</p>
+                <p class="p-2">Aucune équipe</p>
             }
             @foreach (var team in Teams)
             {
@@ -42,7 +35,7 @@
 </div>
 
 <div class="my-2">
-    <form class="d-flex">
+    <form class="d-flex flex-column flex-lg-row">
         <div class="p-2">
             <label for="team-name" class="form-label">Nom</label>
             <input id="team-name" class="form-control" type="text" name="name" placeholder="Nom de l'équipe" />
@@ -50,6 +43,15 @@
         <div class="p-2">
             <label for="team-number" class="form-label">Numéro</label>
             <input id="team-number" class="form-control" type="number" name="number" value="@NewTeamNumber" min="1" />
+        </div>
+        <div class="p-2">
+            <label for="team-type" class="form-label">Type</label>
+            <select class="form-select">
+                @foreach (var type in Enum.GetValues<TeamType>())
+               {
+                   <option value="@type" >@type</option>
+               }
+            </select>
         </div>
         <div class="p-2 d-flex align-items-end">
             <button type="submit" class="btn btn-primary">Ajouter</button>

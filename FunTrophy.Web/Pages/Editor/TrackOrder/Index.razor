@@ -1,14 +1,18 @@
 ﻿@page "/editeur/ordreparcours"
 
 <PageTitle>Ordre des parcours</PageTitle>
+<ColorSwitcher Colors=@Colors OnCurrentColorChanged="@((value)=> OnCurrentColorChanged(value))" />
 
-<div class="d-flex flex-row">
-    @foreach (var color in Colors)
-    {
-        <div class="p-2">
-            <input type="radio" class="btn-check" name="colors" id="color-@color.Id" autocomplete="off" value="@color.Id" checked=@(CurrentColorId == color.Id) @onchange="OnCurrentColorChanged">
-            <label class="btn px-4 @(CurrentColorId == color.Id? "active": "")" style="background-color:@color.Code" for="color-@color.Id">&nbsp;</label>
-        </div>
-    }
+<div class="flex-column">
+    <div class="p-2">
+        <ul class="list-group col-lg-6 col-md-12">
+            @foreach (var track in TrackOrders)
+            {
+                <li class="list-group-item">@track.Track.Name</li>
+            }
+        </ul>
+    </div>
+    <div class="p-2">
+        <button class="btn btn-primary">Enregistrer</button>
+    </div>
 </div>
-

@@ -1,33 +1,34 @@
 ﻿using FunTrophy.Shared.Model;
-using Microsoft.AspNetCore.Components;
 
 namespace FunTrophy.Web.Pages.Editor.Team
 {
     public partial class Index
     {
         #region Properties
+
         public List<TeamDto> Teams { get; set; }
         public List<ColorDto> Colors { get; set; }
 
         public int NewTeamNumber => Teams.OrderBy(x => x.Number).Select(x => x.Number).LastOrDefault() + 1;
 
-        private int currentColorId;
+        private int _currentColorId;
 
         public int CurrentColorId
         {
-            get { return currentColorId; }
+            get => _currentColorId;
             set
             {
-                currentColorId = value;
+                _currentColorId = value;
                 GetTeamsForCurrentColor();
             }
         }
-        #endregion
+
+        #endregion Properties
 
         public Index()
         {
             Colors = FakeModel.Colors;
-            CurrentColorId = FakeModel.Colors[0].Id;
+            CurrentColorId = Colors[0].Id;
         }
 
         private void GetTeamsForCurrentColor()
@@ -35,9 +36,9 @@ namespace FunTrophy.Web.Pages.Editor.Team
             Teams = FakeModel.Teams.Where(x => x.Color.Id == CurrentColorId).ToList();
         }
 
-        public void OnCurrentColorChanged(ChangeEventArgs args)
+        public void OnCurrentColorChanged(int colorId)
         {
-            CurrentColorId = int.Parse(args.Value!.ToString()!);
+            CurrentColorId = colorId;
         }
     }
 }
