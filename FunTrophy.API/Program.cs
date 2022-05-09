@@ -3,7 +3,17 @@ using FunTrophy.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
+var corsPolicyName = "FunTrophy";
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: corsPolicyName, policy =>
+    {
+        policy.WithOrigins("https://localhost:7010");
+    });
+});
+
 
 // Add services to the container.
 builder.Services.AddDbContext<FunTrophyContext>(options =>
@@ -35,6 +45,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(corsPolicyName);
 
 app.UseAuthorization();
 
