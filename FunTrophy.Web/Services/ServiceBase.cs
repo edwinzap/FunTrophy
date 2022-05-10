@@ -40,5 +40,12 @@ namespace FunTrophy.Web.Services
                 throw new KeyNotFoundException();
             return response;
         }
+
+        protected async Task DeleteAsync(string url)
+        {
+            var response = await _httpClient.DeleteAsync(url);
+            if (response == null)
+                throw new KeyNotFoundException();
+        }
     }
 }

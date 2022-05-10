@@ -1,8 +1,8 @@
 ﻿using FunTrophy.Shared.Model;
 
-namespace FunTrophy.Web.Pages.Editor.TrackOrder
+namespace FunTrophy.Web.Pages.Editor
 {
-    public partial class Index
+    public partial class TrackOrdersPage
     {
         public List<ColorDto> Colors { get; set; }
         public List<TrackOrderDto> TrackOrders { get; set; }
@@ -19,7 +19,7 @@ namespace FunTrophy.Web.Pages.Editor.TrackOrder
             }
         }
 
-        public Index()
+        public TrackOrdersPage()
         {
             Colors = FakeModel.Colors;
             CurrentColorId = Colors[0].Id;

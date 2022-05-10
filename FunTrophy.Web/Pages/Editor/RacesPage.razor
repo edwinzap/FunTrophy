@@ -2,7 +2,15 @@
 
 <PageTitle>Courses</PageTitle>
 
-<div>
+@if (AppState.IsRaceSelected)
+{
+    <h2>@AppState.Race.Name</h2>
+    <p>@AppState.Race.Date.ToLongDateString()</p>
+    <button class="btn btn-primary" @onclick="ClearSelectedRace">Changer de course...</button>
+}
+else
+{
+    <div>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -18,11 +26,15 @@
                     <td>@race.Name</td>
                     <td>@race.Date.ToLongDateString()</td>
                     <td>
-                        <button class="btn btn-primary" onclick="@(() => SelectRace(race))"><span class="oi oi-share"></span></button>
-                        <button class="btn btn-secondary" onclick="@(() => EditRace(race.Id))"><span class="oi oi-pencil"></span></button>
-                        <button class="btn btn-danger" onclick="@(() => RemoveRace(race.Id))"><span class="oi oi-trash"></span></button>
+                        <button class="btn btn-primary" @onclick="() => SelectRace(race)"><span class="oi oi-share"></span></button>
+                        <button class="btn btn-secondary" @onclick="() => EditRace(race.Id)"><span class="oi oi-pencil"></span></button>
+                        <button class="btn btn-danger" @onclick="ConfirmDeleteRace"><span class="oi oi-trash"></span></button>
                     </td>
                 </tr>
+                <Confirm @ref="DeleteConfirmation" 
+                ConfirmationTitle="Supprimer la course"
+                ConfirmationMessage=@($"Es-tu sûr de vouloir supprimer '{race.Name}'?")
+                ConfirmationChanged=@((confirm) => DeleteRace(confirm, race.Id))></Confirm>
             }
         </tbody>
     </table>
@@ -43,6 +55,9 @@
         </div>
     </form>
 </div>
+}
+
+
 
 
 
