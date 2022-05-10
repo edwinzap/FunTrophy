@@ -18,9 +18,9 @@
                     <td>@race.Name</td>
                     <td>@race.Date.ToLongDateString()</td>
                     <td>
-                        <button class="btn btn-primary" onclick="@SelectRace(race)"><span class="oi oi-share"></span></button>
-                        <button class="btn btn-secondary" onclick="@EditRace(race.Id)"><span class="oi oi-pencil"></span></button>
-                        <button class="btn btn-danger" onclick="@RemoveRace(race.Id)"><span class="oi oi-trash"></span></button>
+                        <button class="btn btn-primary" onclick="@(() => SelectRace(race))"><span class="oi oi-share"></span></button>
+                        <button class="btn btn-secondary" onclick="@(() => EditRace(race.Id))"><span class="oi oi-pencil"></span></button>
+                        <button class="btn btn-danger" onclick="@(() => RemoveRace(race.Id))"><span class="oi oi-trash"></span></button>
                     </td>
                 </tr>
             }

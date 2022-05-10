@@ -14,10 +14,11 @@ namespace FunTrophy.Web.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<RaceDto>> GetRaces()
+        public async Task<List<RaceDto>> GetRaces()
         {
+            return FakeModel.Races;
             var url = GetUrl();
-            return GetAsync<List<RaceDto>>(url);
+            return await GetAsync<List<RaceDto>>(url);
         }
 
         public Task Remove(int raceId)

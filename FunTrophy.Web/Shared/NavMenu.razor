@@ -1,4 +1,6 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@inject AppState AppState
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">Fun Trophy</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -14,31 +16,37 @@
                 <span class="oi oi-home" aria-hidden="true"></span> Home
             </NavLink>
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="editeur/courses">
-                <span class="oi oi-pencil" aria-hidden="true"></span> Courses
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="editeur/couleurs">
-                <span class="oi oi-pencil" aria-hidden="true"></span> Couleurs
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="editeur/equipes">
-                <span class="oi oi-pencil" aria-hidden="true"></span> Equipes
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="editeur/parcours">
-                <span class="oi oi-pencil" aria-hidden="true"></span> Parcours
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="editeur/ordreparcours">
-                <span class="oi oi-pencil" aria-hidden="true"></span> Ordre des parcours
-            </NavLink>
-        </div>
+        @if (!AppState.IsRaceSelected)
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="editeur/courses">
+                    <span class="oi oi-pencil" aria-hidden="true"></span> Courses
+                </NavLink>
+            </div>
+        }
+        @if (AppState.IsRaceSelected)
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="editeur/couleurs">
+                    <span class="oi oi-pencil" aria-hidden="true"></span> Couleurs
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="editeur/equipes">
+                    <span class="oi oi-pencil" aria-hidden="true"></span> Equipes
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="editeur/parcours">
+                    <span class="oi oi-pencil" aria-hidden="true"></span> Parcours
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="editeur/ordreparcours">
+                    <span class="oi oi-pencil" aria-hidden="true"></span> Ordre des parcours
+                </NavLink>
+            </div>
+        }
     </nav>
 </div>
 
@@ -50,5 +58,15 @@
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+
+    protected override void OnInitialized()
+    {
+        AppState.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        AppState.OnChange -= StateHasChanged;
     }
 }

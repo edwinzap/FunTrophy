@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Net.Http.Json;
 using System.Text.Json;
 
 namespace FunTrophy.Web.Services
@@ -34,38 +35,10 @@ namespace FunTrophy.Web.Services
 
         protected async Task<T> GetAsync<T>(string url) where T: class
         {
-            using var response = await _httpClient.GetAsync(url);
-            return await ParseResult<T>(response);
-
-        }
-
-        protected async Task<T> ParseResult<T>(HttpResponseMessage response)
-        {
-            if (response.IsSuccessStatusCode)
-            {
-                try
-                {
-                    var result = await JsonSerializer.DeserializeAsync<T>(await response.Content.ReadAsStreamAsync());
-                    if (result == null)
-                        throw new Exception("Result is empty");
-                    return result;
-                }
-                catch
-                {
-                    throw new Exception("Error parsing json from result");
-                }
-
-            }
-
-            var errorJson = await response.Content.ReadAsStringAsync();
-            switch (response.StatusCode)
-            {
-                case HttpStatusCode.NotFound:
-                    throw new KeyNotFoundException(errorJson);
-                case HttpStatusCode.BadRequest:
-                default:
-                    throw new Exception(errorJson);
-            }
+            var response = await _httpClient.GetFromJsonAsync<T>(url);
+            if (response == null)
+                throw new KeyNotFoundException();
+            return response;
         }
     }
 }

@@ -8,7 +8,10 @@ namespace FunTrophy.Web.Pages.Editor.Race
     public partial class Index
     {
         [Inject]
-        ISessionStorageService SessionStorageService { get; set; } = default!;
+        public NavigationManager NavigationManager { get; set; }
+
+        [Inject]
+        AppState AppState { get; set; }
 
         [Inject]
         IRaceService RaceService { get; set; } = default!;
@@ -32,7 +35,8 @@ namespace FunTrophy.Web.Pages.Editor.Race
 
         private async Task SelectRace(RaceDto race)
         {
-            await SessionStorageService.SetItemAsync("race", race);
+            AppState.Race = race;
+            NavigationManager.NavigateTo("editeur/couleurs");
         }
 
         private async Task EditRace(int raceId)
