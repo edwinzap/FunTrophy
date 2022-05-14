@@ -1,6 +1,6 @@
 ﻿@page "/editeur/couleurs"
 
-<RedirectToSelectRace/>
+<RedirectToSelectRace />
 <PageTitle>Couleurs</PageTitle>
 
 <div>
@@ -21,8 +21,8 @@
                         </div>
                     </td>
                     <td>
-                        <a class="btn btn-secondary"><span class="oi oi-pencil"></span></a>
-                        <a class="btn btn-danger"><span class="oi oi-trash"></span></a>
+                        <button class="btn btn-secondary"><span class="oi oi-pencil"></span></button>
+                        <button class="btn btn-danger" @onclick="() => RemoveColor(color.Id)"><span class="oi oi-trash"></span></button>
                     </td>
                 </tr>
             }
@@ -31,14 +31,14 @@
 </div>
 
 <div>
-    <form class="row">
+    <div class="row">
         <div class="col-auto">
-            <input id="race-name" class="form-control form-control-color" type="color" name="name" placeholder="Nom de la course" />
+            <input class="form-control form-control-color" type="color" name="name" @bind-value="@ColorPickerValue" placeholder="Nom de la course" />
         </div>
         <div class="col-auto d-flex align-items-end">
-            <button type="submit" class="btn btn-primary">Ajouter</button>
+            <button class="btn btn-primary" @onclick="@AddColor">Ajouter</button>
         </div>
-    </form>
+    </div>
 </div>
 
 

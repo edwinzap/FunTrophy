@@ -286,6 +286,11 @@ namespace FunTrophy.Tests.Utils
             return String(Int(minLength, maxLength));
         }
 
+        public static string CompanyName()
+        {
+            return new Faker().Company.CompanyName();
+        }
+
         public static MailAddress MailAddress()
         {
             return new Faker<MailAddress>().CustomInstantiator((Faker f) => new MailAddress(f.Internet.Email() ?? "")).Generate();

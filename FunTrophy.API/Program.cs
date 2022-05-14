@@ -10,7 +10,9 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: corsPolicyName, policy =>
     {
-        policy.WithOrigins("https://localhost:7010");
+        policy.WithOrigins("https://localhost:7010")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
     });
 });
 
@@ -22,7 +24,8 @@ builder.Services.AddDbContext<FunTrophyContext>(options =>
 builder.Services
     .AddServices()
     .AddMappers()
-    .AddRepositories();
+    .AddFakeRepositories();
+    //.AddRepositories();
 
 builder.Services.AddControllers();
 

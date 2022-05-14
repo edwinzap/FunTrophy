@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FunTrophy.Fake\FunTrophy.Fake.csproj" />
     <ProjectReference Include="..\FunTrophy.Infrastructure\FunTrophy.Infrastructure.csproj" />
     <ProjectReference Include="..\FunTrophy.Shared\FunTrophy.Shared.csproj" />
   </ItemGroup>

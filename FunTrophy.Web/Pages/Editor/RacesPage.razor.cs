@@ -18,19 +18,14 @@ namespace FunTrophy.Web.Pages.Editor
 
         public Confirm DeleteConfirmation { get; set; }
 
-        public List<RaceDto> Races { get; set; }
-
-        public RacesPage()
-        {
-            //Races = FakeModel.Races;
-        }
+        public List<RaceDto> Races { get; set; } = new();
 
         protected override async Task OnInitializedAsync()
         {
-            await GetRaces();
+            await LoadRaces();
         }
 
-        private async Task GetRaces()
+        private async Task LoadRaces()
         {
             Races = await RaceService.GetRaces();
         }
@@ -60,7 +55,7 @@ namespace FunTrophy.Web.Pages.Editor
             if (confirmDelete)
             {
                 await RaceService.Remove(raceId);
-                await GetRaces();
+                await LoadRaces();
             }
         }
     }

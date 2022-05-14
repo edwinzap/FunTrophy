@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
 
 namespace FunTrophy.Web.Services
@@ -15,7 +16,7 @@ namespace FunTrophy.Web.Services
             _basePath = basePath;
         }
 
-        protected string GetUrl(Dictionary<string, string> queryParameters)
+        protected string GetUrl(Dictionary<string, object> queryParameters)
         {
             if (queryParameters == null || !queryParameters.Any())
             {
@@ -23,7 +24,7 @@ namespace FunTrophy.Web.Services
             }
 
             var url = _basePath + "?";
-            var parameters = string.Join("&", queryParameters.Select(p => $"{p.Key}={p.Key}"));
+            var parameters = string.Join("&", queryParameters.Select(p => $"{p.Key}={p.Value.ToString()}"));
             url += parameters;
             return url;
         }
@@ -39,6 +40,35 @@ namespace FunTrophy.Web.Services
             if (response == null)
                 throw new KeyNotFoundException();
             return response;
+        }
+
+        protected async Task PostAsync(string url, object body)
+        {
+            var json = JsonSerializer.Serialize(body);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync(url, content);
+
+            if (response == null)
+                throw new KeyNotFoundException();
+        }
+
+
+        protected async Task<T> PostAsync<T>(string url, object body)
+        {
+            var json = JsonSerializer.Serialize(body);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync(url, content);
+
+            if (response == null)
+                throw new KeyNotFoundException();
+
+            var responseJson = await response.Content.ReadAsStringAsync();
+            var result = JsonSerializer.Deserialize<T>(responseJson);
+
+            if (result == null)
+                throw new NullReferenceException();
+
+            return result;
         }
 
         protected async Task DeleteAsync(string url)

@@ -3,6 +3,8 @@ using FunTrophy.API.Services;
 using FunTrophy.API.Contracts.Services;
 using FunTrophy.Infrastructure.Contracts.Repositories;
 using FunTrophy.Infrastructure.Repositories;
+using FunTrophy.Fake.Repositories;
+using FunTrophy.Fake;
 
 namespace FunTrophy.API
 {
@@ -40,6 +42,20 @@ namespace FunTrophy.API
             services.AddTransient<ITeamRepository, TeamRepository>();
             services.AddTransient<ITrackOrderRepository, TrackOrderRepository>();
             services.AddTransient<ITrackRepository, TrackRepository>();
+            services.AddTransient<ITimeAdjustmentRepository, TimeAdjustmentRepository>();
+            services.AddTransient<ITimeAdjustmentCategoryRepository, TimeAdjustmentCategoryRepository>();
+            return services;
+        }
+
+        public static IServiceCollection AddFakeRepositories(this IServiceCollection services)
+        {
+            services.AddSingleton<FakeDbContext>();
+            services.AddTransient<IColorRepository, FakeColorRepository>();
+            services.AddTransient<IRaceRepository, FakeRaceRepository>();
+            services.AddTransient<ITeamRepository, FakeTeamRepository>();
+            services.AddTransient<ITrackRepository, FakeTrackRepository>();
+            
+            services.AddTransient<ITrackOrderRepository, TrackOrderRepository>();
             services.AddTransient<ITimeAdjustmentRepository, TimeAdjustmentRepository>();
             services.AddTransient<ITimeAdjustmentCategoryRepository, TimeAdjustmentCategoryRepository>();
             return services;
