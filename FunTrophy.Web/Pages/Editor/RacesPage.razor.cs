@@ -16,9 +16,13 @@ namespace FunTrophy.Web.Pages.Editor
         [Inject]
         private IRaceService RaceService { get; set; } = default!;
 
-        public Confirm DeleteConfirmation { get; set; }
+        private Confirm DeleteConfirmation { get; set; }
 
-        public List<RaceDto> Races { get; set; } = new();
+        private List<RaceDto> Races { get; set; } = new();
+
+        private int? DeleteRaceId { get; set; }
+
+        private AddOrUpdateRaceDto addRace = new() { Name = "Fun Trophy", Date = DateTime.Now };
 
         protected override async Task OnInitializedAsync()
         {
@@ -41,22 +45,33 @@ namespace FunTrophy.Web.Pages.Editor
             AppState.Race = null;
         }
 
-        private async Task EditRace(int raceId)
+        private void ConfirmDeleteRace(RaceDto race)
         {
+            DeleteRaceId = race.Id;
+            var message = $"Es-tu sûr de vouloir supprimer '{race.Name}'?";
+            DeleteConfirmation.Show(message);
         }
 
-        private void ConfirmDeleteRace()
+        private async Task AddRace()
         {
-            DeleteConfirmation.Show();
+            await RaceService.Add(addRace);
+            await LoadRaces();
         }
 
-        private async Task DeleteRace(bool confirmDelete, int raceId)
+        private void EditRace(int raceId)
         {
-            if (confirmDelete)
+
+        }
+
+        private async Task DeleteRace(bool confirmDelete)
+        {
+            if (confirmDelete && DeleteRaceId.HasValue)
             {
-                await RaceService.Remove(raceId);
+                await RaceService.Remove(DeleteRaceId.Value);
                 await LoadRaces();
             }
         }
+
+
     }
 }

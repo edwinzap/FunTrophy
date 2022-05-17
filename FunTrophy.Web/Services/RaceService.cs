@@ -9,9 +9,10 @@ namespace FunTrophy.Web.Services
         {
         }
 
-        public Task Add(AddOrUpdateRaceDto race)
+        public async Task Add(AddOrUpdateRaceDto race)
         {
-            throw new NotImplementedException();
+            var url = GetUrl();
+            await PostAsync(url, race);
         }
 
         public async Task<List<RaceDto>> GetRaces()

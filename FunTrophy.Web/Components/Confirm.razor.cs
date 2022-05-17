@@ -18,6 +18,12 @@ namespace FunTrophy.Web.Components
             StateHasChanged();
         }
 
+        public void Show(string message)
+        {
+            ConfirmationMessage = message;
+            Show();
+        }
+
         [Parameter]
         public EventCallback<bool> ConfirmationChanged { get; set; }
 
