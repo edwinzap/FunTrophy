@@ -1,8 +1,8 @@
 ﻿using FunTrophy.Shared.Model;
 
-namespace FunTrophy.Web.Pages.Editor.Team
+namespace FunTrophy.Web.Pages.Editor
 {
-    public partial class Index
+    public partial class TeamsPage
     {
         #region Properties
 
@@ -25,7 +25,7 @@ namespace FunTrophy.Web.Pages.Editor.Team
 
         #endregion Properties
 
-        public Index()
+        public TeamsPage()
         {
             Colors = FakeModel.Colors;
             CurrentColorId = Colors[0].Id;

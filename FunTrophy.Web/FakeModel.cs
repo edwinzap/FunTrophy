@@ -41,8 +41,8 @@ namespace FunTrophy.Web
 
         public static List<TrackOrderDto> TrackOrders { get; } = new List<TrackOrderDto>
         {
-            new TrackOrderDto { SordOrder = 1, Track = Tracks[0], ColorId = Colors[0].Id },
-            new TrackOrderDto { SordOrder = 2, Track = Tracks[1], ColorId = Colors[0].Id },
+            new TrackOrderDto { SortOrder = 1, Track = Tracks[0], ColorId = Colors[0].Id },
+            new TrackOrderDto { SortOrder = 2, Track = Tracks[1], ColorId = Colors[0].Id },
         };
     }
 }

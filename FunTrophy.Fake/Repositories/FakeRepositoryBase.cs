@@ -1,0 +1,67 @@
+﻿using FunTrophy.Infrastructure.Contracts.Repositories;
+using FunTrophy.Infrastructure.Model;
+using System.Linq.Expressions;
+
+namespace FunTrophy.Fake.Repositories
+{
+    public class FakeRepositoryBase<T> : IRepositoryBase<T> where T : EntityBase
+    {
+        private readonly List<T> _dbSet;
+
+        public FakeRepositoryBase(FakeDbContext dbContext)
+        {
+            _dbSet = dbContext.Get<T>();
+        }
+
+        public Task<int> Add(T entity)
+        {
+            var lastId = _dbSet.OrderBy(x => x.Id).Select(x => x.Id).LastOrDefault();
+            entity.Id = ++lastId;
+            _dbSet.Add(entity);
+            return Task.FromResult(lastId);
+        }
+
+        public Task Add(IEnumerable<T> entities)
+        {
+            var lastId = _dbSet.OrderBy(x => x.Id).Select(x => x.Id).LastOrDefault();
+            foreach (var entity in entities)
+            {
+                entity.Id = ++lastId;
+                _dbSet.Add(entity);
+            }
+            return Task.CompletedTask;
+        }
+
+        public Task<T> Get(int id)
+        {
+            var value = _dbSet.First(x => x.Id == id);
+            return Task.FromResult(value);
+        }
+
+        public Task<List<T>> GetAll(Expression<Func<T, bool>>? filter = null)
+        {
+            var result = _dbSet;
+            if (filter != null)
+            {
+                result = result.AsQueryable().Where(filter).ToList();
+            }
+            return Task.FromResult(result);
+        }
+
+        public Task Remove(int id)
+        {
+            _dbSet.RemoveAll(x => x.Id == id);
+            return Task.CompletedTask;
+        }
+
+        public Task Update(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task Update(IEnumerable<T> entities)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}

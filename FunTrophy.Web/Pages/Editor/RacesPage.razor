@@ -1,0 +1,61 @@
+﻿@page "/editeur/courses"
+
+<PageTitle>Courses</PageTitle>
+
+@if (AppState.IsRaceSelected)
+{
+    <h2>@AppState.Race.Name</h2>
+    <p>@AppState.Race.Date.ToLongDateString()</p>
+    <button class="btn btn-primary" @onclick="ClearSelectedRace">Changer de course...</button>
+}
+else
+{
+    <div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Date</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var race in Races)
+                {
+                    <tr>
+                        <td>@race.Name</td>
+                        <td>@race.Date.ToLongDateString()</td>
+                        <td>
+                            <button class="btn btn-primary" @onclick="() => SelectRace(race)"><span class="oi oi-share"></span></button>
+                            <button class="btn btn-secondary" @onclick="() => EditRace(race.Id)"><span class="oi oi-pencil"></span></button>
+                            <button class="btn btn-danger" @onclick="() => ConfirmDeleteRace(race)"><span class="oi oi-trash"></span></button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <EditForm Model="@addRace" OnValidSubmit="@AddRace" class="d-flex">
+            <div class="p-2">
+                <label for="race-name" class="form-label">Nom</label>
+                <input id="race-name" class="form-control" type="text" @bind-value="@addRace.Name" name="name" placeholder="Nom de la course" />
+            </div>
+            <div class="p-2">
+                <label for="race-date" class="form-label">Date</label>
+                <input id="race-date" class="form-control" type="date" @bind-value="@addRace.Date" name="date" />
+            </div>
+            <div class="p-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary">Créer</button>
+            </div>
+        </EditForm>
+    </div>
+}
+
+<Confirm @ref="DeleteConfirmation"
+         ConfirmationTitle="Supprimer la course"
+         ConfirmationChanged="(confirm) => DeleteRace(confirm)">
+</Confirm>
+
+

@@ -1,0 +1,65 @@
+﻿using FunTrophy.Shared.Model;
+using FunTrophy.Web.Components;
+using FunTrophy.Web.Contracts.Services;
+using Microsoft.AspNetCore.Components;
+
+namespace FunTrophy.Web.Pages.Editor
+{
+    public partial class ColorsPage
+    {
+        [Inject]
+        private AppState AppState { get; set; }
+
+        [Inject]
+        private IColorService ColorService { get; set; } = default!;
+
+        private int? DeleteColorId { get; set; }
+
+        private AddColorDto addColor = new() { Code = "#000" };
+
+        private List<ColorDto> Colors { get; set; } = new();
+
+        private Confirm DeleteConfirmation { get; set; } = default!;
+
+        protected override async Task OnInitializedAsync()
+        {
+            await LoadColors();
+        }
+
+        public async Task LoadColors()
+        {
+            if (AppState.Race != null)
+            {
+                Colors = await ColorService.GetColors(AppState.Race.Id);
+            }
+        }
+
+        private async Task AddColor()
+        {
+            if (AppState.Race == null)
+                return;
+
+            addColor.RaceId = AppState.Race.Id;
+
+            await ColorService.Add(addColor);
+            await LoadColors();
+        }
+
+        private void ConfirmDeleteColor(ColorDto color)
+        {
+            DeleteColorId = color.Id;
+            var message = $"Es-tu sûr de vouloir supprimer cette couleur?";
+            DeleteConfirmation.Show(message);
+        }
+
+        private async Task RemoveColor(bool confirm)
+        {
+            if (confirm && DeleteColorId.HasValue)
+            {
+                await ColorService.Remove(DeleteColorId.Value);
+                await LoadColors();
+
+            }
+        }
+    }
+}

@@ -1,0 +1,12 @@
+﻿@inject AppState AppState
+@inject NavigationManager Navigator
+@code {
+    protected override Task OnInitializedAsync()
+    {
+        if (!AppState.IsRaceSelected)
+        {
+            Navigator.NavigateTo("editeur/courses");
+        }
+        return base.OnInitializedAsync();
+    }
+}

@@ -30,7 +30,7 @@ namespace FunTrophy.API.Mappers
             return new TrackOrderDto
             {
                 ColorId = colorId,
-                SordOrder = trackOrder?.SortOrder,
+                SortOrder = trackOrder?.SortOrder,
                 Track = _trackMapper.Map(track)
             };
         }
@@ -43,7 +43,7 @@ namespace FunTrophy.API.Mappers
                     var trackOrder = trackOrders.FirstOrDefault(x => x.TrackId == track.Id);
                     return Map(colorId, trackOrder, track);
                 })
-                .OrderBy(x => x.SordOrder)
+                .OrderBy(x => x.SortOrder)
                 .ToList();
             return mappedTrackOrders;
         }

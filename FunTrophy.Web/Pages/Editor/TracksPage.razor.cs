@@ -1,13 +1,13 @@
 ﻿using FunTrophy.Shared.Model;
 
-namespace FunTrophy.Web.Pages.Editor.Track
+namespace FunTrophy.Web.Pages.Editor
 {
-    public partial class Index
+    public partial class TracksPage
     {
 
         public List<TrackDto> Tracks { get; set; }
 
-        public Index()
+        public TracksPage()
         {
             Tracks = FakeModel.Tracks;
         }
