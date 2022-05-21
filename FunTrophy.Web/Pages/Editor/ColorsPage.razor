@@ -14,14 +14,14 @@
         <tbody>
             @foreach (var color in Colors)
             {
-                <tr>
+                <tr @key="@color.Id">
                     <td>
                         <div class="m-1 p-1" style="background-color:@color.Code">
                             <span>&nbsp;</span>
                         </div>
                     </td>
                     <td>
-                        <button class="btn btn-secondary"><span class="oi oi-pencil"></span></button>
+                        <button class="btn btn-secondary" @onclick="() => ConfirmEditColor(color)"><span class="oi oi-pencil"></span></button>
                         <button class="btn btn-danger" @onclick="() => ConfirmDeleteColor(color)"><span class="oi oi-trash"></span></button>
                     </td>
                 </tr>
@@ -35,7 +35,7 @@
         <DataAnnotationsValidator />
         <ValidationSummary />
         <div class="col-auto">
-            <input class="form-control form-control-color" type="color" name="name" @bind-value="@addColor.Code" placeholder="Nom de la course" />
+            <input class="form-control form-control-color" type="color" name="name" @bind-value="@addColor.Code"/>
         </div>
         <div class="col-auto d-flex align-items-end">
             <button class="btn btn-primary" type="submit">Ajouter</button>
@@ -44,7 +44,17 @@
 </div>
 
 
-<Confirm @ref="DeleteConfirmation"
+<ConfirmDialog @ref="DeleteDialog"
          ConfirmationTitle="Supprimer la couleur"
          ConfirmationChanged="(confirm) => RemoveColor(confirm)">
-</Confirm>
+</ConfirmDialog>
+
+<EditDialog @ref="EditDialog"
+            ConfirmationTitle="Editer la course"
+            ConfirmationChanged="(confirm) => UpdateColor(confirm)">
+    <div class="d-flex">
+        <div class="col-auto">
+            <input class="form-control form-control-color" type="color" name="name" @bind-value="@updateColor.Code" />
+        </div>
+    </div>
+</EditDialog>

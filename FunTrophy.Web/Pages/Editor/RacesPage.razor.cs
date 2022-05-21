@@ -7,6 +7,8 @@ namespace FunTrophy.Web.Pages.Editor
 {
     public partial class RacesPage
     {
+        #region Properties
+
         [Inject]
         public NavigationManager NavigationManager { get; set; }
 
@@ -16,13 +18,21 @@ namespace FunTrophy.Web.Pages.Editor
         [Inject]
         private IRaceService RaceService { get; set; } = default!;
 
-        private Confirm DeleteConfirmation { get; set; }
+        private ConfirmDialog DeleteDialog { get; set; } = default!;
+
+        private EditDialog EditDialog { get; set; } = default!;
 
         private List<RaceDto> Races { get; set; } = new();
 
         private int? DeleteRaceId { get; set; }
 
         private AddOrUpdateRaceDto addRace = new() { Name = "Fun Trophy", Date = DateTime.Now };
+
+        private AddOrUpdateRaceDto updateRace = new();
+
+        private int? updateRaceId;
+
+        #endregion Properties
 
         protected override async Task OnInitializedAsync()
         {
@@ -31,7 +41,7 @@ namespace FunTrophy.Web.Pages.Editor
 
         private async Task LoadRaces()
         {
-            Races = await RaceService.GetRaces();
+            Races = (await RaceService.GetRaces()).OrderByDescending(x => x.Date).ToList();
         }
 
         private void SelectRace(RaceDto race)
@@ -49,7 +59,7 @@ namespace FunTrophy.Web.Pages.Editor
         {
             DeleteRaceId = race.Id;
             var message = $"Es-tu sûr de vouloir supprimer '{race.Name}'?";
-            DeleteConfirmation.Show(message);
+            DeleteDialog.Show(message);
         }
 
         private async Task AddRace()
@@ -58,20 +68,30 @@ namespace FunTrophy.Web.Pages.Editor
             await LoadRaces();
         }
 
-        private void EditRace(int raceId)
+        private void ConfirmEditRace(RaceDto race)
         {
-
+            updateRace.Name = race.Name;
+            updateRace.Date = race.Date;
+            updateRaceId = race.Id;
+            EditDialog.Show();
         }
 
-        private async Task DeleteRace(bool confirmDelete)
+        private async Task DeleteRace(bool confirm)
         {
-            if (confirmDelete && DeleteRaceId.HasValue)
+            if (confirm && DeleteRaceId.HasValue)
             {
                 await RaceService.Remove(DeleteRaceId.Value);
                 await LoadRaces();
             }
         }
 
-
+        private async Task UpdateRace(bool confirm)
+        {
+            if (confirm && updateRaceId.HasValue)
+            {
+                await RaceService.Update(updateRaceId.Value, updateRace);
+                await LoadRaces();
+            }
+        }
     }
 }

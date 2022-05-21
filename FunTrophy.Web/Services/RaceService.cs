@@ -27,9 +27,10 @@ namespace FunTrophy.Web.Services
             return DeleteAsync(url);
         }
 
-        public Task Update(AddOrUpdateRaceDto race)
+        public Task Update(int raceId, AddOrUpdateRaceDto race)
         {
-            throw new NotImplementedException();
+            var url = GetUrl() + "/" + raceId;
+            return UpdateAsync(url, race);
         }
     }
 }

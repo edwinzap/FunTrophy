@@ -9,6 +9,8 @@ namespace FunTrophy.Web
         {
             services.AddHttpClient<IRaceService, RaceService>(HttpClientConfig());
             services.AddHttpClient<IColorService, ColorService>(HttpClientConfig());
+            services.AddHttpClient<ITeamService, TeamService>(HttpClientConfig());
+            services.AddHttpClient<ITrackService, TrackService>(HttpClientConfig());
            
             return services;
         }

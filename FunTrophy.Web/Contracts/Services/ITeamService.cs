@@ -1,12 +1,12 @@
 ﻿using FunTrophy.Shared.Model;
 
-namespace FunTrophy.API.Contracts.Services
+namespace FunTrophy.Web.Contracts.Services
 {
     public interface ITeamService
     {
-        Task<List<TeamDto>> GetAll(int colorId);
+        Task Add(AddTeamDto team);
 
-        Task<int> Create(AddTeamDto team);
+        Task<List<TeamDto>> GetTeams(int raceId);
 
         Task Remove(int teamId);
 

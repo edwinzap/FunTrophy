@@ -31,9 +31,10 @@ namespace FunTrophy.Web.Services
             return DeleteAsync(url);
         }
 
-        public Task Update(UpdateColorDto color)
+        public Task Update(int colorId, UpdateColorDto color)
         {
-            throw new NotImplementedException();
+            var url = GetUrl() + "/" + colorId;
+            return UpdateAsync(url, color);
         }
     }
 }

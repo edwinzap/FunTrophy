@@ -22,12 +22,12 @@ else
             <tbody>
                 @foreach (var race in Races)
                 {
-                    <tr>
+                    <tr @key="@race.Id">
                         <td>@race.Name</td>
                         <td>@race.Date.ToLongDateString()</td>
                         <td>
                             <button class="btn btn-primary" @onclick="() => SelectRace(race)"><span class="oi oi-share"></span></button>
-                            <button class="btn btn-secondary" @onclick="() => EditRace(race.Id)"><span class="oi oi-pencil"></span></button>
+                            <button class="btn btn-secondary" @onclick="() => ConfirmEditRace(race)"><span class="oi oi-pencil"></span></button>
                             <button class="btn btn-danger" @onclick="() => ConfirmDeleteRace(race)"><span class="oi oi-trash"></span></button>
                         </td>
                     </tr>
@@ -40,11 +40,11 @@ else
         <EditForm Model="@addRace" OnValidSubmit="@AddRace" class="d-flex">
             <div class="p-2">
                 <label for="race-name" class="form-label">Nom</label>
-                <input id="race-name" class="form-control" type="text" @bind-value="@addRace.Name" name="name" placeholder="Nom de la course" />
+                <input id="race-name" class="form-control" type="text" @bind-value="@addRace.Name" placeholder="Nom de la course" />
             </div>
             <div class="p-2">
                 <label for="race-date" class="form-label">Date</label>
-                <input id="race-date" class="form-control" type="date" @bind-value="@addRace.Date" name="date" />
+                <input id="race-date" class="form-control" type="date" @bind-value="@addRace.Date" />
             </div>
             <div class="p-2 d-flex align-items-end">
                 <button type="submit" class="btn btn-primary">Créer</button>
@@ -53,9 +53,25 @@ else
     </div>
 }
 
-<Confirm @ref="DeleteConfirmation"
-         ConfirmationTitle="Supprimer la course"
-         ConfirmationChanged="(confirm) => DeleteRace(confirm)">
-</Confirm>
+<ConfirmDialog @ref="DeleteDialog"
+               ConfirmationTitle="Supprimer la course"
+               ConfirmationChanged="(confirm) => DeleteRace(confirm)">
+</ConfirmDialog>
+
+<EditDialog @ref="EditDialog"
+            ConfirmationTitle="Editer la course"
+            ConfirmationChanged="(confirm) => UpdateRace(confirm)">
+    <div class="d-flex flex-column">
+        <div class="p-2">
+            <label for="race-name" class="form-label">Nom</label>
+            <input id="race-name" class="form-control" type="text" @bind-value="@updateRace.Name" placeholder="Nom de la course" />
+        </div>
+        <div class="p-2">
+            <label for="race-date" class="form-label">Date</label>
+            <input id="race-date" class="form-control" type="date" @bind-value="@updateRace.Date"/>
+        </div>
+    </div>
+</EditDialog>
+
 
 

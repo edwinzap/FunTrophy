@@ -6,10 +6,12 @@ namespace FunTrophy.Fake.Repositories
 {
     public class FakeRepositoryBase<T> : IRepositoryBase<T> where T : EntityBase
     {
+        protected readonly FakeDbContext _dbContext;
         private readonly List<T> _dbSet;
 
         public FakeRepositoryBase(FakeDbContext dbContext)
         {
+            _dbContext = dbContext;
             _dbSet = dbContext.Get<T>();
         }
 
@@ -54,14 +56,16 @@ namespace FunTrophy.Fake.Repositories
             return Task.CompletedTask;
         }
 
-        public Task Update(T entity)
+        public virtual Task Update(T entity)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
-        public Task Update(IEnumerable<T> entities)
+        public virtual Task Update(IEnumerable<T> entities)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return Task.CompletedTask;
         }
     }
 }

@@ -1,33 +1,37 @@
 ﻿@page "/editeur/equipes"
 @using FunTrophy.Shared.Model
 
-<RedirectToSelectRace/>
+<RedirectToSelectRace />
 <PageTitle>Equipes</PageTitle>
 
 <ColorSwitcher Colors=@Colors OnCurrentColorChanged="@((value)=> OnCurrentColorChanged(value))" />
 
-<div class="">
+<div>
     <table class="table table-striped">
         <thead>
             <tr>
                 <th scope="col" class="col-md-2 col-lg-1">N°</th>
                 <th scope="col">Nom</th>
+                <th scope="col">Type</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
             @if (!Teams.Any())
             {
-                <p class="p-2">Aucune équipe</p>
+                <tr class="p-2">
+                    <td colspan=3 class="text-center">Aucune équipe</td>
+                </tr>
             }
             @foreach (var team in Teams)
             {
-                <tr>
+                <tr @key="@team.Id">
                     <th scope="row">@team.Number</th>
                     <td>@team.Name</td>
+                    <td>@team.Type</td>
                     <td>
-                        <a class="btn btn-secondary"><span class="oi oi-pencil"></span></a>
-                        <a class="btn btn-danger"><span class="oi oi-trash"></span></a>
+                        <a class="btn btn-secondary" @onclick="() => ConfirmEditTeam(team)"><span class="oi oi-pencil"></span></a>
+                        <a class="btn btn-danger" @onclick="() => ConfirmDeleteTeam(team)"><span class="oi oi-trash"></span></a>
                     </td>
                 </tr>
             }
@@ -36,38 +40,67 @@
 </div>
 
 <div class="my-2">
-    <form class="d-flex flex-column flex-lg-row">
+    <EditForm Model="@addTeam" OnValidSubmit="@AddTeam" class="d-flex flex-column flex-lg-row">
         <div class="p-2">
             <label for="team-name" class="form-label">Nom</label>
-            <input id="team-name" class="form-control" type="text" name="name" placeholder="Nom de l'équipe" />
+            <input id="team-name" class="form-control" type="text" @bind-value="@addTeam.Name" placeholder="Nom de l'équipe" />
         </div>
         <div class="p-2">
             <label for="team-number" class="form-label">Numéro</label>
-            <input id="team-number" class="form-control" type="number" name="number" value="@NewTeamNumber" min="1" />
+            <input id="team-number" class="form-control" type="number" name="number" value="@addTeam.Number" min="1" />
         </div>
         <div class="p-2">
             <label for="team-type" class="form-label">Type</label>
             <select class="form-select">
                 @foreach (var type in Enum.GetValues<TeamType>())
-               {
-                   <option value="@type" >@type</option>
-               }
+                {
+                    <option value="@type">@type</option>
+                }
             </select>
         </div>
         <div class="p-2 d-flex align-items-end">
             <button type="submit" class="btn btn-primary">Ajouter</button>
         </div>
-    </form>
+    </EditForm>
 </div>
-<div class="d-flex flex-column">
-    <div class="p-2">
-        <label for="import-teams" class="form-label">Importer des équipes</label>
-        <textarea rows=8 id="import-teams" class="form-control" placeholder="Copier-coller ici la liste complète des équipes.&#10;Une équipe par ligne.&#10;Exemple:&#10;Mon équipe;1"></textarea>
+
+<ConfirmDialog @ref="DeleteDialog"
+               ConfirmationTitle="Supprimer l'équipe"
+               ConfirmationChanged="(confirm) => DeleteTeam(confirm)">
+</ConfirmDialog>
+
+<EditDialog @ref="EditDialog"
+            ConfirmationTitle="Editer l'équipe"
+            ConfirmationChanged="(confirm) => UpdateTeam(confirm)">
+    <div class="d-flex flex-column">
+        <div class="p-2">
+            <label for="team-name" class="form-label">Nom</label>
+            <input id="team-name" class="form-control" type="text" @bind-value="@updateTeam.Name" placeholder="Nom de l'équipe" />
+        </div>
+        <div class="p-2">
+            <label for="team-number" class="form-label">Numéro</label>
+            <input id="team-number" class="form-control" type="number" @bind-value="@updateTeam.Number" min="1" />
+        </div>
+        <div class="p-2">
+            <label for="team-type" class="form-label">Type</label>
+            <select id="team-type" class="form-select" @bind="@updateTeam.Type">
+                @foreach (var type in Enum.GetValues<TeamType>())
+                {
+                    <option value="@type">@type</option>
+                }
+            </select>
+        </div>
+        <div class="p-2">
+            <label for="team-color" class="form-label">Color</label>
+            <select id="team-color" class="form-select" @bind="@updateTeam.ColorId">
+                @foreach (var color in Colors)
+                {
+                    <option value="@color.Id" style="background-color:@color.Code">@color.Code</option>
+                }
+            </select>
+        </div>
     </div>
-    <div class="p-2">
-        <button class="btn btn-primary">Importer les équipes</button>
-    </div>
-</div>
+</EditDialog>
 
 
 
