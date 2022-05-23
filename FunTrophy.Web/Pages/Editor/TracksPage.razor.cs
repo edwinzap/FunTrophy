@@ -49,6 +49,8 @@ namespace FunTrophy.Web.Pages.Editor
 
             await TrackService.Add(addTrack);
             await LoadTracks();
+
+            addTrack.Name = string.Empty;
         }
 
         private void ConfirmEditTrack(TrackDto track)

@@ -4,66 +4,72 @@
 <RedirectToSelectRace />
 <PageTitle>Equipes</PageTitle>
 
-<ColorSwitcher Colors=@Colors OnCurrentColorChanged="@((value)=> OnCurrentColorChanged(value))" />
+@if (!Colors.Any())
+{
+    <p>Ajouter d'abord des couleurs</p>
+}
+else
+{
+    <ColorSwitcher Colors=@Colors OnCurrentColorChanged="@((value)=> OnCurrentColorChanged(value))" />
 
-<div>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col" class="col-md-2 col-lg-1">N°</th>
-                <th scope="col">Nom</th>
-                <th scope="col">Type</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (!Teams.Any())
-            {
-                <tr class="p-2">
-                    <td colspan=3 class="text-center">Aucune équipe</td>
+    <div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col" class="col-md-2 col-lg-1">N°</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Type</th>
+                    <th></th>
                 </tr>
-            }
-            @foreach (var team in Teams)
-            {
-                <tr @key="@team.Id">
-                    <th scope="row">@team.Number</th>
-                    <td>@team.Name</td>
-                    <td>@team.Type</td>
-                    <td>
-                        <a class="btn btn-secondary" @onclick="() => ConfirmEditTeam(team)"><span class="oi oi-pencil"></span></a>
-                        <a class="btn btn-danger" @onclick="() => ConfirmDeleteTeam(team)"><span class="oi oi-trash"></span></a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
-
-<div class="my-2">
-    <EditForm Model="@addTeam" OnValidSubmit="@AddTeam" class="d-flex flex-column flex-lg-row">
-        <div class="p-2">
-            <label for="team-name" class="form-label">Nom</label>
-            <input id="team-name" class="form-control" type="text" @bind-value="@addTeam.Name" placeholder="Nom de l'équipe" />
-        </div>
-        <div class="p-2">
-            <label for="team-number" class="form-label">Numéro</label>
-            <input id="team-number" class="form-control" type="number" name="number" value="@addTeam.Number" min="1" />
-        </div>
-        <div class="p-2">
-            <label for="team-type" class="form-label">Type</label>
-            <select class="form-select">
-                @foreach (var type in Enum.GetValues<TeamType>())
+            </thead>
+            <tbody>
+                @if (!Teams.Any())
                 {
-                    <option value="@type">@type</option>
+                    <tr class="p-2">
+                        <td colspan=3 class="text-center">Aucune équipe</td>
+                    </tr>
                 }
-            </select>
-        </div>
-        <div class="p-2 d-flex align-items-end">
-            <button type="submit" class="btn btn-primary">Ajouter</button>
-        </div>
-    </EditForm>
-</div>
+                @foreach (var team in Teams)
+                {
+                    <tr @key="@team.Id">
+                        <th scope="row">@team.Number</th>
+                        <td>@team.Name</td>
+                        <td>@team.Type</td>
+                        <td>
+                            <a class="btn btn-secondary btn-sm" @onclick="() => ConfirmEditTeam(team)"><span class="oi oi-pencil"></span></a>
+                            <a class="btn btn-danger btn-sm" @onclick="() => ConfirmDeleteTeam(team)"><span class="oi oi-trash"></span></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 
+    <div class="my-2">
+        <EditForm Model="@addTeam" OnValidSubmit="@AddTeam" class="d-flex flex-column flex-lg-row">
+            <div class="p-2">
+                <label for="team-name" class="form-label">Nom</label>
+                <input id="team-name" class="form-control" type="text" @bind-value="@addTeam.Name" placeholder="Nom de l'équipe" />
+            </div>
+            <div class="p-2">
+                <label for="team-number" class="form-label">Numéro</label>
+                <input id="team-number" class="form-control" type="number" value="@addTeam.Number" min="1" />
+            </div>
+            <div class="p-2">
+                <label for="team-type" class="form-label">Type</label>
+                <select id="team-type" class="form-select" @bind="@addTeam.Type">
+                    @foreach (var type in Enum.GetValues<TeamType>())
+                    {
+                        <option value="@type">@type</option>
+                    }
+                </select>
+            </div>
+            <div class="p-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary">Ajouter</button>
+            </div>
+        </EditForm>
+    </div>
+}
 <ConfirmDialog @ref="DeleteDialog"
                ConfirmationTitle="Supprimer l'équipe"
                ConfirmationChanged="(confirm) => DeleteTeam(confirm)">

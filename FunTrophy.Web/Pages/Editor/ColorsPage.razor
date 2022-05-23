@@ -16,13 +16,13 @@
             {
                 <tr @key="@color.Id">
                     <td>
-                        <div class="m-1 p-1" style="background-color:@color.Code">
+                        <div class="p-1" style="background-color:@color.Code">
                             <span>&nbsp;</span>
                         </div>
                     </td>
                     <td>
-                        <button class="btn btn-secondary" @onclick="() => ConfirmEditColor(color)"><span class="oi oi-pencil"></span></button>
-                        <button class="btn btn-danger" @onclick="() => ConfirmDeleteColor(color)"><span class="oi oi-trash"></span></button>
+                        <button class="btn btn-secondary btn-sm" @onclick="() => ConfirmEditColor(color)"><span class="oi oi-pencil"></span></button>
+                        <button class="btn btn-danger btn-sm" @onclick="() => ConfirmDeleteColor(color)"><span class="oi oi-trash"></span></button>
                     </td>
                 </tr>
             }

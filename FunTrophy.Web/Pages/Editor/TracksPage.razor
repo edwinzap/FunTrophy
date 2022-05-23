@@ -18,8 +18,8 @@
                 <tr @key="@track.Id">
                     <td>@track.Name</td>
                     <td>
-                        <a class="btn btn-secondary" @onclick="() => ConfirmEditTrack(track)"><span class="oi oi-pencil"></span></a>
-                        <a class="btn btn-danger" @onclick="() => ConfirmDeleteTrack(track)"><span class="oi oi-trash"></span></a>
+                        <a class="btn btn-secondary btn-sm" @onclick="() => ConfirmEditTrack(track)"><span class="oi oi-pencil"></span></a>
+                        <a class="btn btn-danger btn-sm" @onclick="() => ConfirmDeleteTrack(track)"><span class="oi oi-trash"></span></a>
                     </td>
                 </tr>
             }

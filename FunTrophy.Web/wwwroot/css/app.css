@@ -38,9 +38,11 @@ textarea {
     min-height: 10em;
 }
 
-.isDragOver {
-    border-bottom: solid red 2px;
+.slist li.dragged-on {
+    border: 1px solid #127bb8;
+    background: #d4ecfa;
 }
+
 .list-number {
     font-weight: bold;
     border: solid 1px rgba(0,0,0,.5);

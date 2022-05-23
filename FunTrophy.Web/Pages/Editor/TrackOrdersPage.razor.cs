@@ -55,6 +55,7 @@ namespace FunTrophy.Web.Pages.Editor
                     Item = x,
                     Order = index
                 }).ToList();
+            CurrentSaveStatus = SaveStatus.NotSaved;
         }
 
         private async Task OnCurrentColorChanged(int colorId)
@@ -79,10 +80,16 @@ namespace FunTrophy.Web.Pages.Editor
 
         private void HandleDrop(DraggableItem<TrackDto> landingItem)
         {
-            if (draggingItem is null || draggingItem == landingItem)
+            if (draggingItem is null)
                 return;
 
-            int originalOrderLanding = landingItem.Order + 1;
+            if (draggingItem == landingItem)
+            {
+                landingItem.IsDragOver = false;
+                return;
+            }
+
+            int originalOrderLanding = landingItem.Order > draggingItem.Order ? landingItem.Order + 1 : landingItem.Order;
 
             TrackOrders.Where(x => x.Order >= originalOrderLanding).ToList().ForEach(x => x.Order++);
             draggingItem.Order = originalOrderLanding;
@@ -93,7 +100,6 @@ namespace FunTrophy.Web.Pages.Editor
                 item.Order = i++;
                 item.IsDragOver = false;
             }
-            
             CurrentSaveStatus = SaveStatus.NotSaved;
         }
 

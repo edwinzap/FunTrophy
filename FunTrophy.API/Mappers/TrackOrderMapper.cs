@@ -33,7 +33,8 @@ namespace FunTrophy.API.Mappers
                     var trackOrder = trackOrders.FirstOrDefault(x => x.TrackId == track.Id);
                     return Map(colorId, trackOrder, track);
                 })
-                .OrderBy(x => x.SortOrder)
+                .OrderBy(x => x.SortOrder.HasValue)
+                .ThenBy(x => x.SortOrder)
                 .ToList();
             return mappedTrackOrders;
         }

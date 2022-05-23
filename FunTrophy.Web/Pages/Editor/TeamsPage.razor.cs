@@ -61,6 +61,7 @@ namespace FunTrophy.Web.Pages.Editor
             if (CurrentColorId.HasValue)
             {
                 Teams = (await TeamService.GetTeams(CurrentColorId.Value)).OrderBy(x => x.Number).ToList();
+                addTeam.Number = Teams.Select(x => x.Number).OrderBy(x => x).LastOrDefault(0) + 1;
             }
         }
 
@@ -68,7 +69,6 @@ namespace FunTrophy.Web.Pages.Editor
         {
             CurrentColorId = colorId;
             await LoadTeams();
-            addTeam.Number = Teams.Select(x => x.Number).OrderBy(x => x).LastOrDefault(1);
         }
 
         private void ConfirmDeleteTeam(TeamDto team)
@@ -86,6 +86,8 @@ namespace FunTrophy.Web.Pages.Editor
                 addTeam.ColorId = CurrentColorId.Value;
                 await TeamService.Add(addTeam);
                 await LoadTeams();
+
+                addTeam.Name = string.Empty;
             }
         }
 

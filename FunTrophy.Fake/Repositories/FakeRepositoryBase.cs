@@ -15,7 +15,7 @@ namespace FunTrophy.Fake.Repositories
             _dbSet = dbContext.Get<T>();
         }
 
-        public Task<int> Add(T entity)
+        public virtual Task<int> Add(T entity)
         {
             var lastId = _dbSet.OrderBy(x => x.Id).Select(x => x.Id).LastOrDefault();
             entity.Id = ++lastId;
@@ -23,15 +23,12 @@ namespace FunTrophy.Fake.Repositories
             return Task.FromResult(lastId);
         }
 
-        public Task Add(IEnumerable<T> entities)
+        public async Task Add(IEnumerable<T> entities)
         {
-            var lastId = _dbSet.OrderBy(x => x.Id).Select(x => x.Id).LastOrDefault();
             foreach (var entity in entities)
             {
-                entity.Id = ++lastId;
-                _dbSet.Add(entity);
+                await Add(entity);
             }
-            return Task.CompletedTask;
         }
 
         public Task<T> Get(int id)

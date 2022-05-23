@@ -21,6 +21,7 @@ namespace FunTrophy.API.Mappers
                 Name = team.Name,
                 Number = team.Number,
                 ColorId = team.ColorId,
+                Type = _typeMapper.Map(team.Type)
             };
         }
 
