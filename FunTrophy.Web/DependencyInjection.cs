@@ -11,6 +11,7 @@ namespace FunTrophy.Web
             services.AddHttpClient<IColorService, ColorService>(HttpClientConfig());
             services.AddHttpClient<ITeamService, TeamService>(HttpClientConfig());
             services.AddHttpClient<ITrackService, TrackService>(HttpClientConfig());
+            services.AddHttpClient<ITrackOrderService, TrackOrderService>(HttpClientConfig());
            
             return services;
         }

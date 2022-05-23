@@ -10,10 +10,10 @@ namespace FunTrophy.Web.Pages.Editor
         #region Properties
 
         [Inject]
-        public NavigationManager NavigationManager { get; set; }
+        public NavigationManager NavigationManager { get; set; } = default!;
 
         [Inject]
-        private AppState AppState { get; set; }
+        private AppState AppState { get; set; } = default!;
 
         [Inject]
         private IRaceService RaceService { get; set; } = default!;

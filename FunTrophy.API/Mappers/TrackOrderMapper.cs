@@ -12,16 +12,6 @@ namespace FunTrophy.API.Mappers
             _trackMapper = trackMapper;
         }
 
-        public TrackOrder Map(AddTrackOrderDto trackOrder)
-        {
-            return new TrackOrder
-            {
-                ColorId = trackOrder.ColorId,
-                TrackId = trackOrder.TrackId,
-                SortOrder = trackOrder.SortOrder,
-            };
-        }
-
         public TrackOrderDto Map(int colorId, TrackOrder? trackOrder, Track track)
         {
             if (trackOrder != null && trackOrder.TrackId != track.Id)

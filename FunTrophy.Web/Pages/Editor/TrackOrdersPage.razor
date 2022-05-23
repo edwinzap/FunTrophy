@@ -1,19 +1,33 @@
 ﻿@page "/editeur/ordreparcours"
 
-<RedirectToSelectRace/>
+<RedirectToSelectRace />
 <PageTitle>Ordre des parcours</PageTitle>
 <ColorSwitcher Colors=@Colors OnCurrentColorChanged="@((value)=> OnCurrentColorChanged(value))" />
 
 <div class="flex-column">
     <div class="p-2">
-        <ul class="list-group col-lg-6 col-md-12">
-            @foreach (var track in TrackOrders)
+        <ul class="list-group col-lg-6 col-md-12"
+            ondragover="event.preventDefault();"
+            ondragstart="event.dataTransfer.setData('', event.target.id);">
+            @foreach (var track in TrackOrders.OrderBy(x => x.Order))
             {
-                <li class="list-group-item">@track.Track.Name</li>
+                <li class="list-group-item @(track.IsDragOver ? "isDragOver" : "")" @key="@track">
+                    <div @ondrop="() => HandleDrop(track)"
+                     @ondragenter="() => track.IsDragOver = true"
+                     @ondragleave="() => track.IsDragOver = false"
+                     @ondragstart="() => draggingItem = track"
+                     @ondragend="() => draggingItem = null"
+                     draggable=true>
+                        <span class="list-number">@(track.Order +1)</span> @track.Item.Name
+                    </div>
+                </li>
             }
         </ul>
     </div>
-    <div class="p-2">
-        <button class="btn btn-primary">Enregistrer</button>
+    <div class="d-flex">
+        <div class="p-2">
+            <button class="btn btn-primary" @onclick="@UpdateTracksOrder">Enregistrer</button>
+        </div>
+        <div class="p-2"><span class="align-bottom @(CurrentSaveStatus == SaveStatus.Saved ? "oi oi-check text-success" : CurrentSaveStatus == SaveStatus.Saving ?  "oi oi-clock text-info" : "")"></span></div>
     </div>
 </div>

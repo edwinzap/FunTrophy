@@ -54,8 +54,8 @@ namespace FunTrophy.API
             services.AddTransient<IRaceRepository, FakeRaceRepository>();
             services.AddTransient<ITeamRepository, FakeTeamRepository>();
             services.AddTransient<ITrackRepository, FakeTrackRepository>();
+            services.AddTransient<ITrackOrderRepository, FakeTrackOrderRepository>();
             
-            services.AddTransient<ITrackOrderRepository, TrackOrderRepository>();
             services.AddTransient<ITimeAdjustmentRepository, TimeAdjustmentRepository>();
             services.AddTransient<ITimeAdjustmentCategoryRepository, TimeAdjustmentCategoryRepository>();
             return services;

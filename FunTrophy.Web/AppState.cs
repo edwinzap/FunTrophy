@@ -4,8 +4,6 @@ namespace FunTrophy.Web
 {
     public class AppState
     {
-        public bool IsRaceSelected => Race != null;
-
         public event Action OnChange;
 
         private RaceDto? _race;

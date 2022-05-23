@@ -2,7 +2,7 @@
 
 <PageTitle>Courses</PageTitle>
 
-@if (AppState.IsRaceSelected)
+@if (AppState.Race is not null)
 {
     <h2>@AppState.Race.Name</h2>
     <p>@AppState.Race.Date.ToLongDateString()</p>
@@ -22,7 +22,7 @@ else
             <tbody>
                 @foreach (var race in Races)
                 {
-                    <tr @key="@race.Id">
+                    <tr @key="@race">
                         <td>@race.Name</td>
                         <td>@race.Date.ToLongDateString()</td>
                         <td>

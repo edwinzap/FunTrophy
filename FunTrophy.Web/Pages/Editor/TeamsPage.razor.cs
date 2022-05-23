@@ -46,13 +46,13 @@ namespace FunTrophy.Web.Pages.Editor
 
         private async Task LoadColors()
         {
-            if (AppState.Race?.Id != null)
+            if (AppState.Race?.Id == null)
+                return;
+
+            Colors = await ColorService.GetColors(AppState.Race.Id);
+            if (Colors.Any())
             {
-                Colors = await ColorService.GetColors(AppState.Race.Id);
-                if (Colors.Any())
-                {
-                    CurrentColorId = Colors.First().Id;
-                }
+                CurrentColorId = Colors.First().Id;
             }
         }
 
