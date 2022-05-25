@@ -11,7 +11,7 @@
         public virtual Color Color { get; set; }
 
         public List<TrackTime> TrackTimes { get; set; }
-        public List<TimeAdjustment> TimeAdjustements { get; set; }
+        public List<TimeAdjustment> TimeAdjustments { get; set; }
     }
 
     public enum TeamType

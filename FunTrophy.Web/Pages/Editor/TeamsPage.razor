@@ -14,7 +14,7 @@ else if (!Colors.Any())
 }
 else
 {
-    <ColorSwitcher Colors=@Colors OnCurrentColorChanged="@((value)=> OnCurrentColorChanged(value))" />
+    <ColorSwitcher Colors=@Colors OnCurrentColorChanged="(value)=> OnCurrentColorChanged(value)" />
 
     <div>
         <table class="table table-striped">
