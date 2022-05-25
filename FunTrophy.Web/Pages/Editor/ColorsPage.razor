@@ -12,19 +12,36 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var color in Colors)
+            @if (Colors is null)
             {
-                <tr @key="@color.Id">
-                    <td>
-                        <div class="p-1" style="background-color:@color.Code">
-                            <span>&nbsp;</span>
-                        </div>
-                    </td>
-                    <td>
-                        <button class="btn btn-secondary btn-sm" @onclick="() => ConfirmEditColor(color)"><span class="oi oi-pencil"></span></button>
-                        <button class="btn btn-danger btn-sm" @onclick="() => ConfirmDeleteColor(color)"><span class="oi oi-trash"></span></button>
+                <tr>
+                    <td colspan=2 class="text-center">
+                        <div class="spinner-border" role="status" />
                     </td>
                 </tr>
+            }
+            else if (!Colors.Any())
+            {
+                <tr class="p-2">
+                    <td colspan=2 class="text-center">Aucune couleur</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var color in Colors)
+                {
+                    <tr @key="@color.Id">
+                        <td>
+                            <div class="p-1" style="background-color:@color.Code">
+                                <span>&nbsp;</span>
+                            </div>
+                        </td>
+                        <td>
+                            <button class="btn btn-secondary btn-sm" @onclick="() => ConfirmEditColor(color)"><span class="oi oi-pencil"></span></button>
+                            <button class="btn btn-danger btn-sm" @onclick="() => ConfirmDeleteColor(color)"><span class="oi oi-trash"></span></button>
+                        </td>
+                    </tr>
+                }
             }
         </tbody>
     </table>
@@ -35,7 +52,7 @@
         <DataAnnotationsValidator />
         <ValidationSummary />
         <div class="col-auto">
-            <input class="form-control form-control-color" type="color" name="name" @bind-value="@addColor.Code"/>
+            <input class="form-control form-control-color" type="color" name="name" @bind-value="@addColor.Code" />
         </div>
         <div class="col-auto d-flex align-items-end">
             <button class="btn btn-primary" type="submit">Ajouter</button>
@@ -45,8 +62,8 @@
 
 
 <ConfirmDialog @ref="DeleteDialog"
-         ConfirmationTitle="Supprimer la couleur"
-         ConfirmationChanged="(confirm) => RemoveColor(confirm)">
+               ConfirmationTitle="Supprimer la couleur"
+               ConfirmationChanged="(confirm) => RemoveColor(confirm)">
 </ConfirmDialog>
 
 <EditDialog @ref="EditDialog"

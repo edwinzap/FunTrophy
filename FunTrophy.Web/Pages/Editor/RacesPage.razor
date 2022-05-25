@@ -20,17 +20,34 @@ else
                 </tr>
             </thead>
             <tbody>
-                @foreach (var race in Races)
+                @if (Races is null)
                 {
-                    <tr @key="@race">
-                        <td>@race.Name</td>
-                        <td>@race.Date.ToLongDateString()</td>
-                        <td>
-                            <button class="btn btn-primary btn-sm" @onclick="() => SelectRace(race)"><span class="oi oi-share"></span></button>
-                            <button class="btn btn-secondary btn-sm" @onclick="() => ConfirmEditRace(race)"><span class="oi oi-pencil"></span></button>
-                            <button class="btn btn-danger btn-sm" @onclick="() => ConfirmDeleteRace(race)"><span class="oi oi-trash"></span></button>
+                    <tr>
+                        <td colspan=3 class="text-center">
+                            <div class="spinner-border" role="status" />
                         </td>
                     </tr>
+                }
+                else if (!Races.Any())
+                {
+                    <tr class="p-2">
+                        <td colspan=3 class="text-center">Aucune course</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var race in Races)
+                    {
+                        <tr @key="@race">
+                            <td>@race.Name</td>
+                            <td>@race.Date.ToLongDateString()</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm" @onclick="() => SelectRace(race)"><span class="oi oi-share"></span></button>
+                                <button class="btn btn-secondary btn-sm" @onclick="() => ConfirmEditRace(race)"><span class="oi oi-pencil"></span></button>
+                                <button class="btn btn-danger btn-sm" @onclick="() => ConfirmDeleteRace(race)"><span class="oi oi-trash"></span></button>
+                            </td>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>
@@ -68,7 +85,7 @@ else
         </div>
         <div class="p-2">
             <label for="race-date" class="form-label">Date</label>
-            <input id="race-date" class="form-control" type="date" @bind-value="@updateRace.Date"/>
+            <input id="race-date" class="form-control" type="date" @bind-value="@updateRace.Date" />
         </div>
     </div>
 </EditDialog>

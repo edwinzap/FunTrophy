@@ -22,9 +22,9 @@ namespace FunTrophy.Web.Pages.Editor
 
         private EditDialog EditDialog { get; set; } = default!;
 
-        public List<TeamDto> Teams { get; set; } = new();
+        public List<TeamDto>? Teams { get; set; }
 
-        public List<ColorDto> Colors { get; set; } = new();
+        public List<ColorDto>? Colors { get; set; }
 
         private int? DeleteTeamId { get; set; }
 
@@ -60,6 +60,7 @@ namespace FunTrophy.Web.Pages.Editor
         {
             if (CurrentColorId.HasValue)
             {
+                Teams = null;
                 Teams = (await TeamService.GetTeams(CurrentColorId.Value)).OrderBy(x => x.Number).ToList();
                 addTeam.Number = Teams.Select(x => x.Number).OrderBy(x => x).LastOrDefault(0) + 1;
             }

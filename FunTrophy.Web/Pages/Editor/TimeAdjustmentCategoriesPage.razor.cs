@@ -7,6 +7,8 @@ namespace FunTrophy.Web.Pages.Editor
 {
     public partial class TimeAdjustmentCategoriesPage
     {
+        #region Properties
+
         [Inject]
         private AppState AppState { get; set; } = default!;
 
@@ -17,7 +19,7 @@ namespace FunTrophy.Web.Pages.Editor
 
         private EditDialog EditDialog { get; set; } = default!;
 
-        private List<TimeAdjustmentCategoryDto> Categories { get; set; } = new();
+        private List<TimeAdjustmentCategoryDto>? Categories { get; set; }
 
         private AddTimeAdjustmentCategoryDto addCategory = new();
 
@@ -26,6 +28,8 @@ namespace FunTrophy.Web.Pages.Editor
         private int? updateCategoryId;
 
         private int? DeleteCategoryId { get; set; }
+
+        #endregion Properties
 
         protected override async Task OnInitializedAsync()
         {

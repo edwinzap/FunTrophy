@@ -7,8 +7,10 @@ namespace FunTrophy.Web.Pages.Editor
 {
     public partial class TracksPage
     {
+        #region Properties
+
         [Inject]
-        private AppState AppState { get; set; }
+        private AppState AppState { get; set; } = default!;
 
         [Inject]
         private ITrackService TrackService { get; set; } = default!;
@@ -17,7 +19,7 @@ namespace FunTrophy.Web.Pages.Editor
 
         private EditDialog EditDialog { get; set; } = default!;
 
-        private List<TrackDto> Tracks { get; set; } = new();
+        private List<TrackDto>? Tracks { get; set; }
 
         private AddTrackDto addTrack = new();
 
@@ -26,6 +28,8 @@ namespace FunTrophy.Web.Pages.Editor
         private int? updateTrackId;
 
         private int? DeleteTrackId { get; set; }
+
+        #endregion Properties
 
         protected override async Task OnInitializedAsync()
         {

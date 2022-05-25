@@ -22,7 +22,7 @@ namespace FunTrophy.Web.Pages.Editor
 
         private EditDialog EditDialog { get; set; } = default!;
 
-        private List<RaceDto> Races { get; set; } = new();
+        private List<RaceDto>? Races { get; set; }
 
         private int? DeleteRaceId { get; set; }
 

@@ -4,7 +4,11 @@
 <RedirectToSelectRace />
 <PageTitle>Equipes</PageTitle>
 
-@if (!Colors.Any())
+@if (Colors is null)
+{
+    <div class="spinner-border" role="status" />
+}
+else if (!Colors.Any())
 {
     <p>Ajouter d'abord des couleurs</p>
 }
@@ -23,23 +27,34 @@ else
                 </tr>
             </thead>
             <tbody>
-                @if (!Teams.Any())
+                @if (Teams is null)
                 {
-                    <tr class="p-2">
-                        <td colspan=3 class="text-center">Aucune équipe</td>
-                    </tr>
-                }
-                @foreach (var team in Teams)
-                {
-                    <tr @key="@team.Id">
-                        <th scope="row">@team.Number</th>
-                        <td>@team.Name</td>
-                        <td>@team.Type</td>
-                        <td>
-                            <a class="btn btn-secondary btn-sm" @onclick="() => ConfirmEditTeam(team)"><span class="oi oi-pencil"></span></a>
-                            <a class="btn btn-danger btn-sm" @onclick="() => ConfirmDeleteTeam(team)"><span class="oi oi-trash"></span></a>
+                    <tr>
+                        <td colspan=4 class="text-center">
+                            <div class="spinner-border" role="status" />
                         </td>
                     </tr>
+                }
+                else if (!Teams.Any())
+                {
+                    <tr class="p-2">
+                        <td colspan=4 class="text-center">Aucune équipe</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var team in Teams)
+                    {
+                        <tr @key="@team.Id">
+                            <th scope="row">@team.Number</th>
+                            <td>@team.Name</td>
+                            <td>@team.Type</td>
+                            <td>
+                                <a class="btn btn-secondary btn-sm" @onclick="() => ConfirmEditTeam(team)"><span class="oi oi-pencil"></span></a>
+                                <a class="btn btn-danger btn-sm" @onclick="() => ConfirmDeleteTeam(team)"><span class="oi oi-trash"></span></a>
+                            </td>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>

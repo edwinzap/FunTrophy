@@ -15,9 +15,9 @@ namespace FunTrophy.Web.Pages.Editor
         [Inject]
         private IColorService ColorService { get; set; } = default!;
 
-        private List<ColorDto> Colors { get; set; } = new();
+        private List<ColorDto>? Colors { get; set; }
 
-        private List<DraggableItem<TrackDto>> TrackOrders { get; set; } = new();
+        private List<DraggableItem<TrackDto>>? TrackOrders { get; set; }
 
         private int? CurrentColorId { get; set; }
 
@@ -48,6 +48,7 @@ namespace FunTrophy.Web.Pages.Editor
             if (!CurrentColorId.HasValue)
                 return;
 
+            TrackOrders = null;
             var tracks = await TrackOrderService.GetTrackOrders(CurrentColorId.Value);
             TrackOrders = tracks
                 .Select((x, index) => new DraggableItem<TrackDto>

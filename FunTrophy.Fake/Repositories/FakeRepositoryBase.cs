@@ -39,6 +39,7 @@ namespace FunTrophy.Fake.Repositories
 
         public Task<List<T>> GetAll(Expression<Func<T, bool>>? filter = null)
         {
+            Thread.Sleep(200);
             var result = _dbSet;
             if (filter != null)
             {

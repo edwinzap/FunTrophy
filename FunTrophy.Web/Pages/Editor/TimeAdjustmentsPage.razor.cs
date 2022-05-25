@@ -6,8 +6,10 @@ using Microsoft.AspNetCore.Components;
 
 namespace FunTrophy.Web.Pages.Editor
 {
-    public partial class TimeAdjustmentPage
+    public partial class TimeAdjustmentsPage
     {
+        #region Properties
+
         [Inject]
         private AppState AppState { get; set; } = default!;
 
@@ -22,7 +24,7 @@ namespace FunTrophy.Web.Pages.Editor
 
         private ConfirmDialog DeleteDialog { get; set; } = default!;
 
-        private List<TimeAdjustmentDto> TimeAdjustments { get; set; } = new();
+        private List<TimeAdjustmentDto>? TimeAdjustments { get; set; }
 
         private List<TeamDto> Teams { get; set; } = new();
 
@@ -39,6 +41,8 @@ namespace FunTrophy.Web.Pages.Editor
 
         private int? DeleteTimeAdjustmentId { get; set; }
 
+        #endregion Properties
+
         protected override async Task OnInitializedAsync()
         {
             await Task.WhenAll(LoadTeams(), LoadCategories());
@@ -53,6 +57,7 @@ namespace FunTrophy.Web.Pages.Editor
             if (!CurrentTeamId.HasValue && Teams.Any())
             {
                 CurrentTeamId = Teams.First().Id;
+                await LoadTimeAdjustments();
             }
         }
 
@@ -69,6 +74,7 @@ namespace FunTrophy.Web.Pages.Editor
         {
             if (CurrentTeamId.HasValue)
             {
+                TimeAdjustments = null;
                 TimeAdjustments = await TimeAdjustmentService.GetTimeAdjustments(CurrentTeamId.Value);
             }
         }

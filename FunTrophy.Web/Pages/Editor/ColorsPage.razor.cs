@@ -7,8 +7,10 @@ namespace FunTrophy.Web.Pages.Editor
 {
     public partial class ColorsPage
     {
+        #region Properties
+
         [Inject]
-        private AppState AppState { get; set; }
+        private AppState AppState { get; set; } = default!;
 
         [Inject]
         private IColorService ColorService { get; set; } = default!;
@@ -20,11 +22,13 @@ namespace FunTrophy.Web.Pages.Editor
         private UpdateColorDto updateColor = new();
         private int? updateColorId;
 
-        private List<ColorDto> Colors { get; set; } = new();
+        private List<ColorDto>? Colors { get; set; }
 
         private ConfirmDialog DeleteDialog { get; set; } = default!;
 
         private EditDialog EditDialog { get; set; } = default!;
+
+        #endregion Properties
 
         protected override async Task OnInitializedAsync()
         {
@@ -70,7 +74,6 @@ namespace FunTrophy.Web.Pages.Editor
             {
                 await ColorService.Remove(DeleteColorId.Value);
                 await LoadColors();
-
             }
         }
 

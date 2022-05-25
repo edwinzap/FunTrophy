@@ -18,7 +18,7 @@
         <div class="py-2">
             <EditForm Model="@addTimeAdjustment" OnValidSubmit="@AddTimeAdjustment" class="d-flex flex-column">
                 <div class="p-2">
-                    <label for="team-type" class="form-label">Categorie</label>
+                    <label for="team-type" class="form-label">Catégorie</label>
                     <select id="team-type" class="form-select" @bind="@SelectedCategoryId">
                         @foreach (var category in Categories)
                         {
@@ -26,16 +26,16 @@
                         }
                     </select>
                 </div>
-                <div class="d-flex flex-row">
+                <div class="p-2 my-3 d-flex flex-row @(isPositive? "positive": "negative")">
                     <div class="p-2 d-flex flex-column justify-content-end">
                         <InputRadioGroup @bind-Value="@isPositive">
                             <div class="form-check">
-                                <InputRadio Value="false" class="form-check-input"  id="radio-less" />
-                                <label class="form-check-label" for="radio-less">-</label>
+                                <InputRadio Value="false" class="form-check-input" id="radio-less" />
+                                <label class="form-check-label px-2" for="radio-less"><span class="oi oi-minus"></span></label>
                             </div>
                             <div class="form-check">
-                                <InputRadio Value="true" class="form-check-input" id="radio-plus"/>
-                                <label class="form-check-label" for="radio-plus">+</label>
+                                <InputRadio Value="true" class="form-check-input" id="radio-plus" />
+                                <label class="form-check-label px-2" for="radio-plus"><span class="oi oi-plus"></span></label>
                             </div>
                         </InputRadioGroup>
                     </div>
@@ -70,15 +70,32 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var timeAdjustment in TimeAdjustments)
+                @if (TimeAdjustments is null)
                 {
-                    <tr @key="@timeAdjustment.Id">
-                        <td>@timeAdjustment.CategoryName</td>
-                        <td>@timeAdjustment.Time.ToMinutesAndSecondsString()</td>
-                        <td>
-                            <a class="btn btn-danger btn-sm" @onclick="() => ConfirmDeleteTimeAdjustment(timeAdjustment)"><span class="oi oi-trash"></span></a>
+                    <tr>
+                        <td colspan=3 class="text-center">
+                            <div class="spinner-border" role="status" />
                         </td>
                     </tr>
+                }
+                else if (!TimeAdjustments.Any())
+                {
+                    <tr class="p-2">
+                        <td colspan=3 class="text-center">Aucun ajustement</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var timeAdjustment in TimeAdjustments)
+                    {
+                        <tr @key="@timeAdjustment.Id">
+                            <td>@timeAdjustment.CategoryName</td>
+                            <td>@timeAdjustment.Time.ToMinutesAndSecondsString()</td>
+                            <td>
+                                <a class="btn btn-danger btn-sm" @onclick="() => ConfirmDeleteTimeAdjustment(timeAdjustment)"><span class="oi oi-trash"></span></a>
+                            </td>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>
