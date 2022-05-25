@@ -44,20 +44,6 @@ namespace FunTrophy.API.Controllers
         }
 
         /// <summary>
-        /// Update the time adjustment with the given Id
-        /// </summary>
-        /// <param name="timeAdjustmentId">Time adjustment Id</param>
-        /// <param name="timeAdjustment">Time adjustment object</param>
-        /// <returns></returns>
-        [HttpPut("{timeAdjustmentId}")]
-        [ProducesResponseType(200)]
-        public async Task<IActionResult> UpdateTimeAdjustment(int timeAdjustmentId, [FromBody] UpdateTimeAdjustmentDto timeAdjustment)
-        {
-            await _timeAdjustmentService.Update(timeAdjustmentId, timeAdjustment);
-            return Ok();
-        }
-
-        /// <summary>
         /// Get a list of all time adjustments of a team
         /// </summary>
         /// <param name="teamId">Team Id</param>
@@ -66,7 +52,7 @@ namespace FunTrophy.API.Controllers
         [ProducesResponseType(typeof(List<TimeAdjustmentDto>), 200)]
         public async Task<IActionResult> GetAllTimeAdjustments(int teamId)
         {
-            var timeAdjustments = await _timeAdjustmentService.GetAll(teamId);
+            var timeAdjustments = await _timeAdjustmentService.GetAllOfTeam(teamId);
             return Ok(timeAdjustments);
         }
     }

@@ -31,6 +31,9 @@ namespace FunTrophy.Fake
 
         public List<TrackOrder> TrackOrders { get; private set; } = new();
 
+        public List<TimeAdjustmentCategory> TimeAdjustmentCategories { get; private set; } = new();
+        public List<TimeAdjustment> TimeAdjustments { get; private set; } = new();
+
         #region Seed
 
         private void SeedData()
@@ -39,6 +42,7 @@ namespace FunTrophy.Fake
             SeedColors();
             SeedTeams();
             SeedTracks();
+            SeedTimeAdjustmentCategories();
         }
 
         private void SeedRaces()
@@ -88,8 +92,15 @@ namespace FunTrophy.Fake
             }
         }
 
-        private void SeedTrackOrders()
+        private void SeedTimeAdjustmentCategories()
         {
+            var race = Races.Last();
+            TimeAdjustmentCategories = new List<TimeAdjustmentCategory>
+            {
+                new TimeAdjustmentCategory { Id = 1, Name = "Pénalités", Race = race, RaceId = race.Id},
+                new TimeAdjustmentCategory { Id = 2, Name = "Tir à l'arc", Race = race, RaceId = race.Id},
+                new TimeAdjustmentCategory { Id = 3, Name = "Frisbee", Race = race, RaceId = race.Id},
+            };
         }
 
         #endregion Seed

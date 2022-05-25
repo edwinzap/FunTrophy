@@ -22,7 +22,7 @@ namespace FunTrophy.API.Services
             return _repository.Add(dbTimeAdjustment);
         }
 
-        public async Task<List<TimeAdjustmentDto>> GetAll(int teamId)
+        public async Task<List<TimeAdjustmentDto>> GetAllOfTeam(int teamId)
         {
             var dbTimeAdjustments = await _repository.GetAllOfTeam(teamId);
             return _mapper.Map(dbTimeAdjustments);
@@ -31,15 +31,6 @@ namespace FunTrophy.API.Services
         public async Task Remove(int timeAdjustmentId)
         {
             await _repository.Remove(timeAdjustmentId);
-        }
-
-        public async Task Update(int timeAdjustmentId, UpdateTimeAdjustmentDto timeAdjustment)
-        {
-            var dbTimeAdjustment = await _repository.Get(timeAdjustmentId);
-            dbTimeAdjustment.CategoryId = timeAdjustment.CategoryId;
-            dbTimeAdjustment.Time = timeAdjustment.Time;
-
-            await _repository.Update(dbTimeAdjustment);
         }
     }
 }

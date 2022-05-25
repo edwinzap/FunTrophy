@@ -39,7 +39,7 @@ namespace FunTrophy.Infrastructure.Repositories
                 query = query.Where(filter);
             }
             
-            if (Includes.Any())
+            if (Includes?.Any() == true)
             {
                 foreach (var include in Includes)
                 {

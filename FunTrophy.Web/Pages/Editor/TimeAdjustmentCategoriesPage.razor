@@ -1,7 +1,7 @@
-﻿@page "/editeur/parcours"
+﻿@page "/editeur/categories"
 
 <RedirectToSelectRace/>
-<PageTitle>Parcours</PageTitle>
+<PageTitle>Catégories d'ajustement</PageTitle>
 
 <div>
     <table class="table table-striped">
@@ -13,7 +13,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var track in Tracks)
+            @foreach (var track in Categories)
             {
                 <tr @key="@track.Id">
                     <td>@track.Name</td>
@@ -28,10 +28,10 @@
 </div>
 
 <div>
-    <EditForm Model="@addTrack" OnValidSubmit="@AddTrack" class="d-flex">
+    <EditForm Model="@addCategory" OnValidSubmit="@AddTrack" class="d-flex">
         <div class="p-2">
             <label for="race-name" class="form-label">Nom</label>
-            <input id="race-name" class="form-control" type="text" @bind-value="@addTrack.Name" placeholder="Nom du parcours" />
+            <input id="race-name" class="form-control" type="text" @bind-value="@addCategory.Name" placeholder="Nom de la catégorie" />
         </div>
         <div class="p-2 d-flex align-items-end">
             <button type="submit" class="btn btn-primary">Ajouter</button>
@@ -40,17 +40,17 @@
 </div>
 
 <ConfirmDialog @ref="DeleteDialog"
-         ConfirmationTitle="Supprimer le parcours"
+         ConfirmationTitle="Supprimer la catégorie"
          ConfirmationChanged="(confirm) => RemoveTrack(confirm)">
 </ConfirmDialog>
 
 <EditDialog @ref="EditDialog"
-            ConfirmationTitle="Editer le parcours"
+            ConfirmationTitle="Editer la catégorie"
             ConfirmationChanged="(confirm) => UpdateTrack(confirm)">
     <div class="d-flex">
         <div class="p-2 flex-fill">
             <label for="race-name" class="form-label">Nom</label>
-            <input id="race-name" class="form-control" type="text" @bind-value="@updateTrack.Name" placeholder="Nom du parcours" />
+            <input id="race-name" class="form-control" type="text" @bind-value="@updateCategory.Name" placeholder="Nom de la catégorie" />
         </div>
     </div>
 </EditDialog>

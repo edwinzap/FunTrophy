@@ -33,27 +33,27 @@ namespace FunTrophy.API.Controllers
         /// <summary>
         /// Remove the time adjustment category with the given Id
         /// </summary>
-        /// <param name="timeAdjustmentCategoryId">Time adjustment category Id</param>
+        /// <param name="categoryId">Time adjustment category Id</param>
         /// <returns></returns>
-        [HttpDelete("{timeAdjustmentCategoryId}")]
+        [HttpDelete("{categoryId}")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> RemoveTimeAdjustmentCategory(int timeAdjustmentCategoryId)
+        public async Task<IActionResult> RemoveTimeAdjustmentCategory(int categoryId)
         {
-            await _timeAdjustmentCategoryService.Remove(timeAdjustmentCategoryId);
+            await _timeAdjustmentCategoryService.Remove(categoryId);
             return Ok();
         }
 
         /// <summary>
         /// Update the time adjustment category with the given Id
         /// </summary>
-        /// <param name="timeAdjustmentCategoryId">Time adjustment category Id</param>
-        /// <param name="timeAdjustmentCategory">Time adjustment category object</param>
+        /// <param name="categoryId">Time adjustment category Id</param>
+        /// <param name="category">Time adjustment category object</param>
         /// <returns></returns>
-        [HttpPut("{timeAdjustmentCategoryId}")]
+        [HttpPut("{categoryId}")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> UpdateTimeAdjustmentCategory(int timeAdjustmentCategoryId, [FromBody] UpdateTimeAdjustmentCategoryDto timeAdjustmentCategory)
+        public async Task<IActionResult> UpdateTimeAdjustmentCategory(int categoryId, [FromBody] UpdateTimeAdjustmentCategoryDto category)
         {
-            await _timeAdjustmentCategoryService.Update(timeAdjustmentCategoryId, timeAdjustmentCategory);
+            await _timeAdjustmentCategoryService.Update(categoryId, category);
             return Ok();
         }
 
