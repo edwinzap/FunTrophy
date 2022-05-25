@@ -6,14 +6,16 @@ namespace FunTrophy.Fake.Repositories
 {
     public class FakeRepositoryBase<T> : IRepositoryBase<T> where T : EntityBase
     {
+        protected readonly FakeDbContext _dbContext;
         private readonly List<T> _dbSet;
 
         public FakeRepositoryBase(FakeDbContext dbContext)
         {
+            _dbContext = dbContext;
             _dbSet = dbContext.Get<T>();
         }
 
-        public Task<int> Add(T entity)
+        public virtual Task<int> Add(T entity)
         {
             var lastId = _dbSet.OrderBy(x => x.Id).Select(x => x.Id).LastOrDefault();
             entity.Id = ++lastId;
@@ -21,15 +23,12 @@ namespace FunTrophy.Fake.Repositories
             return Task.FromResult(lastId);
         }
 
-        public Task Add(IEnumerable<T> entities)
+        public async Task Add(IEnumerable<T> entities)
         {
-            var lastId = _dbSet.OrderBy(x => x.Id).Select(x => x.Id).LastOrDefault();
             foreach (var entity in entities)
             {
-                entity.Id = ++lastId;
-                _dbSet.Add(entity);
+                await Add(entity);
             }
-            return Task.CompletedTask;
         }
 
         public Task<T> Get(int id)
@@ -40,6 +39,7 @@ namespace FunTrophy.Fake.Repositories
 
         public Task<List<T>> GetAll(Expression<Func<T, bool>>? filter = null)
         {
+            Thread.Sleep(200);
             var result = _dbSet;
             if (filter != null)
             {
@@ -54,14 +54,16 @@ namespace FunTrophy.Fake.Repositories
             return Task.CompletedTask;
         }
 
-        public Task Update(T entity)
+        public virtual Task Update(T entity)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
-        public Task Update(IEnumerable<T> entities)
+        public virtual Task Update(IEnumerable<T> entities)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return Task.CompletedTask;
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace FunTrophy.Web.Components
 {
-    public partial class Confirm
+    public partial class ConfirmDialog
     {
         protected bool ShowConfirmation { get; set; }
 

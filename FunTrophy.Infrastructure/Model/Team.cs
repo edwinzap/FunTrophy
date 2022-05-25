@@ -7,9 +7,7 @@
 
         public TeamType Type { get; set; }
         public int ColorId { get; set; }
-        public int RaceId { get; set; }
 
-        public virtual Race Race { get; set; }
         public virtual Color Color { get; set; }
 
         public List<TrackTime> TrackTimes { get; set; }

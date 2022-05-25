@@ -1,4 +1,7 @@
 ﻿using FunTrophy.Shared.Model;
+using FunTrophy.Web.Components;
+using FunTrophy.Web.Contracts.Services;
+using Microsoft.AspNetCore.Components;
 
 namespace FunTrophy.Web.Pages.Editor
 {
@@ -6,39 +9,115 @@ namespace FunTrophy.Web.Pages.Editor
     {
         #region Properties
 
-        public List<TeamDto> Teams { get; set; }
-        public List<ColorDto> Colors { get; set; }
+        [Inject]
+        private AppState AppState { get; set; } = default!;
 
-        public int NewTeamNumber => Teams.OrderBy(x => x.Number).Select(x => x.Number).LastOrDefault() + 1;
+        [Inject]
+        private ITeamService TeamService { get; set; } = default!;
 
-        private int _currentColorId;
+        [Inject]
+        private IColorService ColorService { get; set; } = default!;
 
-        public int CurrentColorId
-        {
-            get => _currentColorId;
-            set
-            {
-                _currentColorId = value;
-                GetTeamsForCurrentColor();
-            }
-        }
+        private ConfirmDialog DeleteDialog { get; set; } = default!;
+
+        private EditDialog EditDialog { get; set; } = default!;
+
+        public List<TeamDto>? Teams { get; set; }
+
+        public List<ColorDto>? Colors { get; set; }
+
+        private int? DeleteTeamId { get; set; }
+
+        private AddTeamDto addTeam = new();
+
+        private UpdateTeamDto updateTeam = new();
+
+        private int? updateTeamId;
+
+        public int? CurrentColorId { get; set; }
 
         #endregion Properties
 
-        public TeamsPage()
+        protected override async Task OnInitializedAsync()
         {
-            Colors = FakeModel.Colors;
-            CurrentColorId = Colors[0].Id;
+            await LoadColors();
+            await LoadTeams();
         }
 
-        private void GetTeamsForCurrentColor()
+        private async Task LoadColors()
         {
-            Teams = FakeModel.Teams.Where(x => x.Color.Id == CurrentColorId).ToList();
+            if (AppState.Race?.Id == null)
+                return;
+
+            Colors = await ColorService.GetColors(AppState.Race.Id);
+            if (Colors.Any())
+            {
+                CurrentColorId = Colors.First().Id;
+            }
         }
 
-        public void OnCurrentColorChanged(int colorId)
+        private async Task LoadTeams()
+        {
+            if (CurrentColorId.HasValue)
+            {
+                Teams = null;
+                Teams = (await TeamService.GetTeams(CurrentColorId.Value)).OrderBy(x => x.Number).ToList();
+                addTeam.Number = Teams.Select(x => x.Number).OrderBy(x => x).LastOrDefault(0) + 1;
+            }
+        }
+
+        private async Task OnCurrentColorChanged(int colorId)
         {
             CurrentColorId = colorId;
+            await LoadTeams();
+        }
+
+        private void ConfirmDeleteTeam(TeamDto team)
+        {
+            DeleteTeamId = team.Id;
+            var message = $"Es-tu sûr de vouloir supprimer '{team.Name}'";
+            DeleteDialog.Show(message);
+        }
+
+        private async Task AddTeam()
+        {
+            if (AppState.Race?.Id != null && CurrentColorId.HasValue)
+            {
+                addTeam.RaceId = AppState.Race.Id;
+                addTeam.ColorId = CurrentColorId.Value;
+                await TeamService.Add(addTeam);
+                await LoadTeams();
+
+                addTeam.Name = string.Empty;
+            }
+        }
+
+        private void ConfirmEditTeam(TeamDto team)
+        {
+            updateTeam.Number = team.Number;
+            updateTeam.Name = team.Name;
+            updateTeam.Type = team.Type;
+            updateTeam.ColorId = team.Color.Id;
+            updateTeamId = team.Id;
+            EditDialog.Show();
+        }
+
+        private async Task DeleteTeam(bool confirm)
+        {
+            if (confirm && DeleteTeamId.HasValue)
+            {
+                await TeamService.Remove(DeleteTeamId.Value);
+                await LoadTeams();
+            }
+        }
+
+        private async Task UpdateTeam(bool confirm)
+        {
+            if (confirm && updateTeamId.HasValue)
+            {
+                await TeamService.Update(updateTeamId.Value, updateTeam);
+                await LoadTeams();
+            }
         }
     }
 }

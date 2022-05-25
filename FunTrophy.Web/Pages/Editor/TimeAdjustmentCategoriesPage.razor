@@ -1,0 +1,73 @@
+﻿@page "/editeur/categories"
+
+<RedirectToSelectRace />
+<PageTitle>Catégories d'ajustement</PageTitle>
+
+<div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Date</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Categories is null)
+            {
+                <tr>
+                    <td colspan=3 class="text-center">
+                        <div class="spinner-border" role="status" />
+                    </td>
+                </tr>
+            }
+            else if (!Categories.Any())
+            {
+                <tr class="p-2">
+                    <td colspan=3 class="text-center">Aucune catégorie d'ajustement</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var track in Categories)
+                {
+                    <tr @key="@track.Id">
+                        <td>@track.Name</td>
+                        <td>
+                            <a class="btn btn-secondary btn-sm" @onclick="() => ConfirmEditTrack(track)"><span class="oi oi-pencil"></span></a>
+                            <a class="btn btn-danger btn-sm" @onclick="() => ConfirmDeleteTrack(track)"><span class="oi oi-trash"></span></a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <EditForm Model="@addCategory" OnValidSubmit="@AddTrack" class="d-flex">
+        <div class="p-2">
+            <label for="race-name" class="form-label">Nom</label>
+            <input id="race-name" class="form-control" type="text" @bind-value="@addCategory.Name" placeholder="Nom de la catégorie" />
+        </div>
+        <div class="p-2 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary">Ajouter</button>
+        </div>
+    </EditForm>
+</div>
+
+<ConfirmDialog @ref="DeleteDialog"
+               ConfirmationTitle="Supprimer la catégorie"
+               ConfirmationChanged="(confirm) => RemoveTrack(confirm)">
+</ConfirmDialog>
+
+<EditDialog @ref="EditDialog"
+            ConfirmationTitle="Editer la catégorie"
+            ConfirmationChanged="(confirm) => UpdateTrack(confirm)">
+    <div class="d-flex">
+        <div class="p-2 flex-fill">
+            <label for="race-name" class="form-label">Nom</label>
+            <input id="race-name" class="form-control" type="text" @bind-value="@updateCategory.Name" placeholder="Nom de la catégorie" />
+        </div>
+    </div>
+</EditDialog>

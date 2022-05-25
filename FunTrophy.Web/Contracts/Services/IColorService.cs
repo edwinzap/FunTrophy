@@ -7,6 +7,6 @@ namespace FunTrophy.Web.Contracts.Services
         Task Add(AddColorDto color);
         Task<List<ColorDto>> GetColors(int raceId);
         Task Remove(int colorId);
-        Task Update(UpdateColorDto color);
+        Task Update(int colorId, UpdateColorDto color);
     }
 }

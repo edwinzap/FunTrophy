@@ -26,12 +26,6 @@ namespace FunTrophy.API.Services
             _mapper = mapper;
         }
 
-        public Task<int> Create(AddTrackOrderDto trackOrder)
-        {
-            var dbTrackOrder = _mapper.Map(trackOrder);
-            return _trackOrderRepository.Add(dbTrackOrder);
-        }
-
         public async Task<List<TrackOrderDto>> GetAll(int colorId)
         {
             var color = await _colorRepository.Get(colorId);
@@ -40,21 +34,19 @@ namespace FunTrophy.API.Services
             return _mapper.Map(colorId, dbTrackOrders, dbTracks);
         }
 
-        public Task Remove(int trackOrderId)
+        public async Task Update(UpdateTracksOrderDto tracksOrder)
         {
-            return _trackOrderRepository.Remove(trackOrderId);
-        }
+            var colorId = tracksOrder.ColorId;
+            var trackIds = tracksOrder.TrackIds;
 
-        public async Task Update(int colorId, List<int> trackIds)
-        {
             await _trackOrderRepository.RemoveAll(colorId);
-            var trackOrders = trackIds.Select((x, index) => new TrackOrder
+            var trackOrderList = trackIds.Select((x, index) => new TrackOrder
             {
                 ColorId = colorId,
                 TrackId = x,
                 SortOrder = index
             });
-            await _trackOrderRepository.Add(trackOrders);
+            await _trackOrderRepository.Add(trackOrderList);
         }
     }
 }

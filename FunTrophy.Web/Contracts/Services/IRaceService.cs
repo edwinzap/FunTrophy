@@ -10,6 +10,6 @@ namespace FunTrophy.Web.Contracts.Services
 
         Task Add(AddOrUpdateRaceDto race);
 
-        Task Update(AddOrUpdateRaceDto race);
+        Task Update(int raceId, AddOrUpdateRaceDto race);
     }
 }

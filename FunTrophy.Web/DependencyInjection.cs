@@ -9,6 +9,11 @@ namespace FunTrophy.Web
         {
             services.AddHttpClient<IRaceService, RaceService>(HttpClientConfig());
             services.AddHttpClient<IColorService, ColorService>(HttpClientConfig());
+            services.AddHttpClient<ITeamService, TeamService>(HttpClientConfig());
+            services.AddHttpClient<ITrackService, TrackService>(HttpClientConfig());
+            services.AddHttpClient<ITrackOrderService, TrackOrderService>(HttpClientConfig());
+            services.AddHttpClient<ITimeAdjustmentCategoryService, TimeAdjustmentCategoryService>(HttpClientConfig());
+            services.AddHttpClient<ITimeAdjustmentService, TimeAdjustmentService>(HttpClientConfig());
            
             return services;
         }

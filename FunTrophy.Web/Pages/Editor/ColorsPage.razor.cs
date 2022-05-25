@@ -7,8 +7,10 @@ namespace FunTrophy.Web.Pages.Editor
 {
     public partial class ColorsPage
     {
+        #region Properties
+
         [Inject]
-        private AppState AppState { get; set; }
+        private AppState AppState { get; set; } = default!;
 
         [Inject]
         private IColorService ColorService { get; set; } = default!;
@@ -17,9 +19,16 @@ namespace FunTrophy.Web.Pages.Editor
 
         private AddColorDto addColor = new() { Code = "#000" };
 
-        private List<ColorDto> Colors { get; set; } = new();
+        private UpdateColorDto updateColor = new();
+        private int? updateColorId;
 
-        private Confirm DeleteConfirmation { get; set; } = default!;
+        private List<ColorDto>? Colors { get; set; }
+
+        private ConfirmDialog DeleteDialog { get; set; } = default!;
+
+        private EditDialog EditDialog { get; set; } = default!;
+
+        #endregion Properties
 
         protected override async Task OnInitializedAsync()
         {
@@ -45,11 +54,18 @@ namespace FunTrophy.Web.Pages.Editor
             await LoadColors();
         }
 
+        private void ConfirmEditColor(ColorDto color)
+        {
+            updateColor.Code = color.Code;
+            updateColorId = color.Id;
+            EditDialog.Show();
+        }
+
         private void ConfirmDeleteColor(ColorDto color)
         {
             DeleteColorId = color.Id;
             var message = $"Es-tu sûr de vouloir supprimer cette couleur?";
-            DeleteConfirmation.Show(message);
+            DeleteDialog.Show(message);
         }
 
         private async Task RemoveColor(bool confirm)
@@ -58,7 +74,15 @@ namespace FunTrophy.Web.Pages.Editor
             {
                 await ColorService.Remove(DeleteColorId.Value);
                 await LoadColors();
+            }
+        }
 
+        private async Task UpdateColor(bool confirm)
+        {
+            if (confirm && updateColorId.HasValue)
+            {
+                await ColorService.Update(updateColorId.Value, updateColor);
+                await LoadColors();
             }
         }
     }

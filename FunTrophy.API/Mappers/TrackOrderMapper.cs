@@ -12,16 +12,6 @@ namespace FunTrophy.API.Mappers
             _trackMapper = trackMapper;
         }
 
-        public TrackOrder Map(AddTrackOrderDto trackOrder)
-        {
-            return new TrackOrder
-            {
-                ColorId = trackOrder.ColorId,
-                TrackId = trackOrder.TrackId,
-                SortOrder = trackOrder.SortOrder,
-            };
-        }
-
         public TrackOrderDto Map(int colorId, TrackOrder? trackOrder, Track track)
         {
             if (trackOrder != null && trackOrder.TrackId != track.Id)
@@ -43,7 +33,8 @@ namespace FunTrophy.API.Mappers
                     var trackOrder = trackOrders.FirstOrDefault(x => x.TrackId == track.Id);
                     return Map(colorId, trackOrder, track);
                 })
-                .OrderBy(x => x.SortOrder)
+                .OrderBy(x => x.SortOrder.HasValue)
+                .ThenBy(x => x.SortOrder)
                 .ToList();
             return mappedTrackOrders;
         }

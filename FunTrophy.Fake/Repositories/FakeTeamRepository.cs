@@ -9,9 +9,22 @@ namespace FunTrophy.Fake.Repositories
         {
         }
 
-        public Task<List<Team>> GetAll(int raceId)
+        public override Task<int> Add(Team entity)
         {
-            return GetAll(x => x.Color.RaceId == raceId);
+            var color = _dbContext.Colors.Where(x => x.Id == entity.ColorId).First();
+            entity.Color = color;
+            return base.Add(entity);
+        }
+
+        public Task<List<Team>> GetAll(int colorId)
+        {
+            return GetAll(x => x.ColorId == colorId);
+        }
+
+        public override Task Update(Team entity)
+        {
+            entity.Color = _dbContext.Colors.First(x => x.Id == entity.ColorId);
+            return base.Update(entity);
         }
     }
 }

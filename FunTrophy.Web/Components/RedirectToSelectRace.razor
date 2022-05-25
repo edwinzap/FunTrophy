@@ -3,7 +3,7 @@
 @code {
     protected override Task OnInitializedAsync()
     {
-        if (!AppState.IsRaceSelected)
+        if (AppState.Race is null)
         {
             Navigator.NavigateTo("editeur/courses");
         }

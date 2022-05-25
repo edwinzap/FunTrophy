@@ -18,42 +18,28 @@ namespace FunTrophy.API.Controllers
         }
 
         /// <summary>
-        /// Create a new trackOrder
+        /// Get the track orders for the color
         /// </summary>
-        /// <param name="trackOrder">The trackOrder</param>
-        /// <returns>The new trackOrder Id</returns>
-        [HttpPost("")]
-        [ProducesResponseType(typeof(int), 200)]
-        public async Task<IActionResult> CreateTrackOrder([FromBody] AddTrackOrderDto trackOrder)
+        /// <param name="colorId">Color id</param>
+        /// <returns>List of track orders</returns>
+        [HttpGet("")]
+        [ProducesResponseType(typeof(List<TrackOrderDto>), 200)]
+        public async Task<IActionResult> GetTrackOrders(int colorId)
         {
-            var trackOrderId = await _trackOrderService.Create(trackOrder);
-            return Ok(trackOrderId);
-        }
-
-        /// <summary>
-        /// Remove the trackOrder with the given Id
-        /// </summary>
-        /// <param name="trackOrderId">TrackOrder Id</param>
-        /// <returns></returns>
-        [HttpDelete("{trackOrderId}")]
-        [ProducesResponseType(200)]
-        public async Task<IActionResult> RemoveTrackOrder(int trackOrderId)
-        {
-            await _trackOrderService.Remove(trackOrderId);
-            return Ok();
+            var result = await _trackOrderService.GetAll(colorId);
+            return Ok(result);
         }
 
         /// <summary>
         /// Update the track order with the given Id
         /// </summary>
-        /// <param name="colorId">Color Id</param>
-        /// <param name="trackIds">Sorted track ids</param>
+        /// <param name="tracksOrder">Tracks order</param>
         /// <returns></returns>
-        [HttpPut("{trackOrderId}")]
+        [HttpPut("")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> UpdateTrackOrder(int colorId, List<int> trackIds)
+        public async Task<IActionResult> UpdateTracksOrder([FromBody] UpdateTracksOrderDto tracksOrder)
         {
-            await _trackOrderService.Update(colorId, trackIds);
+            await _trackOrderService.Update(tracksOrder);
             return Ok();
         }
     }

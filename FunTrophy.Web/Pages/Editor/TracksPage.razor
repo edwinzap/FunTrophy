@@ -1,6 +1,6 @@
 ﻿@page "/editeur/parcours"
 
-<RedirectToSelectRace/>
+<RedirectToSelectRace />
 <PageTitle>Parcours</PageTitle>
 
 <div>
@@ -13,31 +13,61 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var race in Tracks)
+            @if (Tracks is null)
             {
                 <tr>
-                    <td>@race.Name</td>
-                    <td>
-                        <a class="btn btn-secondary"><span class="oi oi-pencil"></span></a>
-                        <a class="btn btn-danger"><span class="oi oi-trash"></span></a>
+                    <td colspan=3 class="text-center">
+                        <div class="spinner-border" role="status" />
                     </td>
                 </tr>
+            }
+            else if (!Tracks.Any())
+            {
+                <tr class="p-2">
+                    <td colspan=3 class="text-center">Aucun ajustement</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var track in Tracks)
+                {
+                    <tr @key="@track.Id">
+                        <td>@track.Name</td>
+                        <td>
+                            <a class="btn btn-secondary btn-sm" @onclick="() => ConfirmEditTrack(track)"><span class="oi oi-pencil"></span></a>
+                            <a class="btn btn-danger btn-sm" @onclick="() => ConfirmDeleteTrack(track)"><span class="oi oi-trash"></span></a>
+                        </td>
+                    </tr>
+                }
             }
         </tbody>
     </table>
 </div>
 
 <div>
-    <form class="d-flex">
+    <EditForm Model="@addTrack" OnValidSubmit="@AddTrack" class="d-flex">
         <div class="p-2">
             <label for="race-name" class="form-label">Nom</label>
-            <input id="race-name" class="form-control" type="text" name="name" placeholder="Nom du parcours" />
+            <input id="race-name" class="form-control" type="text" @bind-value="@addTrack.Name" placeholder="Nom du parcours" />
         </div>
         <div class="p-2 d-flex align-items-end">
             <button type="submit" class="btn btn-primary">Ajouter</button>
         </div>
-    </form>
+    </EditForm>
 </div>
 
+<ConfirmDialog @ref="DeleteDialog"
+               ConfirmationTitle="Supprimer le parcours"
+               ConfirmationChanged="(confirm) => RemoveTrack(confirm)">
+</ConfirmDialog>
 
-
+<EditDialog @ref="EditDialog"
+            ConfirmationTitle="Editer le parcours"
+            ConfirmationChanged="(confirm) => UpdateTrack(confirm)">
+    <div class="d-flex">
+        <div class="p-2 flex-fill">
+            <label for="race-name" class="form-label">Nom</label>
+            <input id="race-name" class="form-control" type="text" @bind-value="@updateTrack.Name" placeholder="Nom du parcours" />
+        </div>
+    </div>
+</EditDialog>
