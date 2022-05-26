@@ -1,16 +1,22 @@
 ﻿@using FunTrophy.Shared.Model
-<div style="background-color: @(CurrentColor == null ? "white" : CurrentColor.Code)"></div>
-@if (isOpen)
-{
-    <div id="color-list">
-        <ul>
-            @foreach (var color in Colors)
+
+<div class="cs-container">
+    <div class="cs-select" onclick="@(() => ToggleColorSelection())" style="background-color: @(CurrentColor == null ? "white" : CurrentColor.Code)"></div>
+    @if (isOpen)
+    {
+        <div class="cs-list">
+            @if (Colors is not null)
             {
-                <li style="background-color:@color.Code"></li>
+                @foreach (var color in Colors)
+                {
+                    <div class="cs-item" onclick="@(() => SelectColor(color))" style="background-color:@color.Code">
+                        <div class="cs-item-overlay"></div>
+                    </div>
+                }
             }
-        </ul>
-    </div>
-}
+        </div>
+    }
+</div>
 
 
 @code {
@@ -18,9 +24,9 @@
 
     private ColorDto? CurrentColor { get; set; }
 
-    private List<ColorDto> _colors = new List<ColorDto>();
+    private List<ColorDto>? _colors = new List<ColorDto>();
     [Parameter]
-    public List<ColorDto> Colors
+    public List<ColorDto>? Colors
     {
         get => _colors;
         set
@@ -28,7 +34,7 @@
             if (value == _colors)
                 return;
             _colors = value;
-            if (_colors.Any())
+            if (_colors?.Any() == true)
                 CurrentColor = _colors.First();
         }
     }
@@ -36,10 +42,16 @@
     [Parameter]
     public EventCallback<int> OnCurrentColorChanged { get; set; }
 
-    private void CurrentColorChanged(ColorDto color)
+    private void SelectColor(ColorDto color)
     {
         CurrentColor = color;
+        isOpen = false;
         OnCurrentColorChanged.InvokeAsync(color.Id);
+        StateHasChanged();
     }
 
+    private void ToggleColorSelection()
+    {
+        isOpen = !isOpen;
+    }
 }
