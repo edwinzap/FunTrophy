@@ -33,6 +33,8 @@ namespace FunTrophy.Fake
 
         public List<TimeAdjustmentCategory> TimeAdjustmentCategories { get; private set; } = new();
         public List<TimeAdjustment> TimeAdjustments { get; private set; } = new();
+       
+        public List<TrackTime> TrackTimes { get; private set; } = new();
 
         #region Seed
 

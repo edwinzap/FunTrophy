@@ -14,6 +14,7 @@ namespace FunTrophy.Web
             services.AddHttpClient<ITrackOrderService, TrackOrderService>(HttpClientConfig());
             services.AddHttpClient<ITimeAdjustmentCategoryService, TimeAdjustmentCategoryService>(HttpClientConfig());
             services.AddHttpClient<ITimeAdjustmentService, TimeAdjustmentService>(HttpClientConfig());
+            services.AddHttpClient<ITrackTimeService, TrackTimeService>(HttpClientConfig());
            
             return services;
         }

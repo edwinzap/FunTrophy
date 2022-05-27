@@ -7,6 +7,7 @@ namespace FunTrophy.Infrastructure.Repositories
     {
         public TrackTimeRepository(FunTrophyContext dbContext) : base(dbContext)
         {
+            Includes = new string[] { "Track" };
         }
 
         public Task<List<TrackTime>> GetOfColor(int colorId)
