@@ -1,4 +1,5 @@
-﻿using FunTrophy.Infrastructure.Model;
+﻿using FunTrophy.API.Contracts.Mappers;
+using FunTrophy.Infrastructure.Model;
 using FunTrophy.Shared.Model;
 
 namespace FunTrophy.API.Mappers

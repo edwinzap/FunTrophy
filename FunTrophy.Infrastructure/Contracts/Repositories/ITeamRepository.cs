@@ -4,6 +4,6 @@ namespace FunTrophy.Infrastructure.Contracts.Repositories
 {
     public interface ITeamRepository : IRepositoryBase<Team>
     {
-        Task<List<Team>> GetAll(int colorId);
+        Task<List<Team>> GetOfColor(int colorId);
     }
 }

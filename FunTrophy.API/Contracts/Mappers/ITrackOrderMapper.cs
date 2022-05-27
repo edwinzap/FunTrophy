@@ -1,7 +1,7 @@
 ﻿using FunTrophy.Infrastructure.Model;
 using FunTrophy.Shared.Model;
 
-namespace FunTrophy.API.Mappers
+namespace FunTrophy.API.Contracts.Mappers
 {
     public interface ITrackOrderMapper
     {

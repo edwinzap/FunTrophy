@@ -2,8 +2,8 @@
 {
     public class TrackTime : EntityBase
     {
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public DateTime? StartTime { get; set; }
+        public DateTime? EndTime { get; set; }
         public int TrackId { get; set; }
         public int TeamId { get; set; }
 

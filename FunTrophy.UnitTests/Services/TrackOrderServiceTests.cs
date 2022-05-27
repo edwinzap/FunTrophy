@@ -1,4 +1,4 @@
-using FunTrophy.API.Mappers;
+using FunTrophy.API.Contracts.Mappers;
 using FunTrophy.API.Services;
 using FunTrophy.Infrastructure.Contracts.Repositories;
 using FunTrophy.Infrastructure.Model;
@@ -23,7 +23,7 @@ namespace FunTrophy.API.UnitTests
             _fakeTrackRepository = new Mock<ITrackRepository>();
             _fakeMapper = new Mock<ITrackOrderMapper>();
 
-            _fakeTrackOrderRepository.Setup(x => x.GetAll(It.IsAny<int>()))
+            _fakeTrackOrderRepository.Setup(x => x.GetOfColor(It.IsAny<int>()))
                 .ReturnsAsync(Some.Generated<TrackOrder>(0, 3));
             _fakeTrackOrderRepository.Setup(x => x.Get(It.IsAny<int>()))
                 .ReturnsAsync(Some.Generated<TrackOrder>());
@@ -50,7 +50,7 @@ namespace FunTrophy.API.UnitTests
 
             await Sut.GetAll(colorId);
 
-            _fakeTrackOrderRepository.Verify(x => x.GetAll(colorId), Times.Once);
+            _fakeTrackOrderRepository.Verify(x => x.GetOfColor(colorId), Times.Once);
         }
 
         [Fact]
@@ -70,7 +70,7 @@ namespace FunTrophy.API.UnitTests
 
             await Sut.GetAll(colorId);
 
-            _fakeTrackOrderRepository.Verify(x => x.GetAll(colorId), Times.Once);
+            _fakeTrackOrderRepository.Verify(x => x.GetOfColor(colorId), Times.Once);
         }
 
         [Fact]
@@ -94,7 +94,7 @@ namespace FunTrophy.API.UnitTests
 
             _fakeTrackRepository.Setup(x => x.GetAll(It.IsAny<int>()))
                 .ReturnsAsync(tracks);
-            _fakeTrackOrderRepository.Setup(x => x.GetAll(colorId))
+            _fakeTrackOrderRepository.Setup(x => x.GetOfColor(colorId))
                 .ReturnsAsync(trackOrders);
 
             await Sut.GetAll(colorId);

@@ -16,7 +16,7 @@ namespace FunTrophy.Fake.Repositories
             return base.Add(entity);
         }
 
-        public Task<List<Team>> GetAll(int colorId)
+        public Task<List<Team>> GetOfColor(int colorId)
         {
             return GetAll(x => x.ColorId == colorId);
         }
