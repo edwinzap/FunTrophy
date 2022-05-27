@@ -11,17 +11,14 @@ namespace FunTrophy.Web.Services
 
         public Task<List<TeamLapInfoDto>> GetLaps(int colorId)
         {
-            var parameters = new Dictionary<string, object>
-            {
-                { "colorId", colorId }
-            };
-            var url = GetUrl(parameters);
+            var url = GetUrl("colorId", colorId);
             return GetAsync<List<TeamLapInfoDto>>(url);
         }
 
-        public Task<TeamLapInfoDto> SaveLap(int teamId)
+        public Task SaveLap(int teamId)
         {
-            throw new NotImplementedException();
+            var url = GetUrl("teamId", teamId);
+            return PostAsync(url, null);
         }
     }
 }

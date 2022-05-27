@@ -32,14 +32,14 @@ else
             ondragstart="event.dataTransfer.setData('', event.target.id);">
                     @foreach (var track in TrackOrders.OrderBy(x => x.Order))
                     {
-                        <li class="list-group-item @(track.IsDragOver && track != draggingItem ? "dragged-on" : "")" @key="@track">
+                        <li class="list-group-item grabbable @(track.IsDragOver && track != draggingItem ? "dragged-on" : "")" @key="@track">
                             <div @ondrop="() => HandleDrop(track)"
                      @ondragenter="() => track.IsDragOver = true"
                      @ondragleave="() => track.IsDragOver = false"
                      @ondragstart="() => draggingItem = track"
                      @ondragend="() => draggingItem = null"
                      draggable=true>
-                                <span class="list-number">@(track.Order +1)</span> @track.Item.Name
+                                <span class="list-number">@(track.Order +1)</span> @track.Item.Name <i class="float-end fas fa-ellipsis-vertical"></i>
                             </div>
                         </li>
                     }

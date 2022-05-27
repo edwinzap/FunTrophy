@@ -64,7 +64,6 @@ namespace FunTrophy.Web.Pages
         {
             if (CurrentColorId.HasValue)
             {
-                Laps = null;
                 Laps = await TrackTimeService.GetLaps(CurrentColorId.Value);
             }
         }
@@ -77,7 +76,8 @@ namespace FunTrophy.Web.Pages
 
         private async Task OnStopClicked(int teamId)
         {
-            throw new NotImplementedException();
+            await TrackTimeService.SaveLap(teamId);
+            await LoadLaps();
         }
     }
 }

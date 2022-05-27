@@ -49,7 +49,7 @@
                                                 {
                                                     @(DateTime.Now.Subtract(lap.CurrentTrackStartTime.Value).ToMinutesAndSecondsString())
                                                 }
-                                                <span class="ms-2 oi oi-media-stop"></span>
+                                                <span class="ms-2 fas fa-stop"></span>
                                             </button>
                                         </div>
                                     </div>
@@ -63,7 +63,7 @@
                                         @if (lap.CurrentTrack is null)
                                         {
                                             <div class="col-lg-6 d-grid">
-                                                <button class="btn btn-primary" @onclick="() => OnStopClicked(lap.Team.Id)"><span class="oi oi-media-play"></span></button>
+                                                <button class="btn btn-primary" @onclick="() => OnStopClicked(lap.Team.Id)"><span class="fas fa-play"></span></button>
                                             </div>
                                         }
                                     </div>

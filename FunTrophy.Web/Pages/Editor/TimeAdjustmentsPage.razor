@@ -1,8 +1,8 @@
-﻿@page "/editeur/ajustements"
+﻿@page "/editeur/bonus-malus"
 @using FunTrophy.Web.Helpers
 
 <RedirectToSelectRace />
-<PageTitle>Parcours</PageTitle>
+<PageTitle>Bonus-malus</PageTitle>
 
 @if (Colors is null)
 {
@@ -107,7 +107,7 @@ else
                     else if (!TimeAdjustments.Any())
                     {
                         <tr class="p-2">
-                            <td colspan=3 class="text-center">Aucun ajustement</td>
+                            <td colspan=3 class="text-center">Aucun bonus-malus</td>
                         </tr>
                     }
                     else
@@ -130,6 +130,6 @@ else
 }
 
 <ConfirmDialog @ref="DeleteDialog"
-               ConfirmationTitle="Supprimer l'ajustement'"
+               ConfirmationTitle="Supprimer le bonus-malus"
                ConfirmationChanged="(confirm) => RemoveTimeAdjustment(confirm)">
 </ConfirmDialog>

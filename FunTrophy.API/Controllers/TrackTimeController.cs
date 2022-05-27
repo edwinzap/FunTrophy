@@ -21,13 +21,13 @@ namespace FunTrophy.API.Controllers
         /// Save the lap for the team
         /// </summary>
         /// <param name="teamId">Team id</param>
-        /// <returns>New lap info</returns>
+        /// <returns></returns>
         [HttpPost("")]
-        [ProducesResponseType(typeof(int), 200)]
+        [ProducesResponseType(200)]
         public async Task<IActionResult> SaveTeamLap(int teamId)
         {
-            var lapInfo = await _trackTimeService.SaveTeamLap(teamId);
-            return Ok(lapInfo);
+            await _trackTimeService.SaveTeamLap(teamId);
+            return Ok();
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace FunTrophy.API.Controllers
         /// <param name="colorId">Color id</param>
         /// <returns>List of lap infos</returns>
         [HttpGet("")]
-        [ProducesResponseType(typeof(List<TrackDto>), 200)]
+        [ProducesResponseType(typeof(List<TeamLapInfoDto>), 200)]
         public async Task<IActionResult> GetAllTeamLapInfos(int colorId)
         {
             var laps = await _trackTimeService.GetTeamLaps(colorId);

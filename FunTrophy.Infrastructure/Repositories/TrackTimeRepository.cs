@@ -14,5 +14,10 @@ namespace FunTrophy.Infrastructure.Repositories
         {
             return GetAll(x => x.Team.ColorId == colorId);
         }
+
+        public Task<List<TrackTime>> GetOfTeam(int teamId)
+        {
+            return GetAll(x => x.TeamId == teamId);
+        }
     }
 }
