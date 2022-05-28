@@ -2,6 +2,7 @@
 using FunTrophy.API.Contracts.Services;
 using FunTrophy.Infrastructure.Contracts.Repositories;
 using FunTrophy.Shared.Model;
+using FunTrophy.API.Contracts.Mappers;
 
 namespace FunTrophy.API.Services
 {

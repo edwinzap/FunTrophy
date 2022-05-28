@@ -1,0 +1,78 @@
+﻿@page "/chrono"
+@using FunTrophy.Web.Helpers
+
+<RedirectToSelectRace />
+<PageTitle>Chrono</PageTitle>
+<div>
+    <ColorSelector Colors="@Colors" CurrentColorIdChanged="(value) => OnCurrentColorChanged(value)" />
+
+    <div class="py-2">
+        <table class="table align-middle table-bordered table-striped border-dark">
+            <thead>
+                <tr>
+                    <th scope="col">N°</th>
+                    <th scope="col">Equipe</th>
+                    <th scope="col">En cours</th>
+                    <th scope="col">Suivant</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Laps is null)
+                {
+                    <tr>
+                        <td colspan=4 class="text-center">
+                            <div class="spinner-border" role="status" />
+                        </td>
+                    </tr>
+                }
+                else if (!Laps.Any())
+                {
+                    <tr class="p-2">
+                        <td colspan=4 class="text-center">Aucune donnée disponible</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var lap in Laps)
+                    {
+                        <tr @key="@lap">
+                            <td>@lap.Team.Number</td>
+                            <td>@lap.Team.Name</td>
+                            <td>
+                                @if (lap.CurrentTrack is not null)
+                                {
+                                    <div class="row align-items-center">
+                                        <div class="col-lg-6">@lap.CurrentTrack.Name</div>
+                                        <div class="col-lg-6 d-grid">
+                                            <button class="btn btn-danger" @onclick="() => OnStopClicked(lap.Team.Id)">
+                                                @if (lap.CurrentTrackStartTime.HasValue)
+                                                {
+                                                    @(DateTime.Now.Subtract(lap.CurrentTrackStartTime.Value).ToMinutesAndSecondsString())
+                                                }
+                                                <span class="ms-2 fas fa-stop"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                }
+                            </td>
+                            <td>
+                                @if (lap.NextTrack is not null)
+                                {
+                                    <div class="row">
+                                        <div class="col-lg-6">@lap.NextTrack.Name</div>
+                                        @if (lap.CurrentTrack is null)
+                                        {
+                                            <div class="col-lg-6 d-grid">
+                                                <button class="btn btn-primary" @onclick="() => OnStopClicked(lap.Team.Id)"><span class="fas fa-play"></span></button>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

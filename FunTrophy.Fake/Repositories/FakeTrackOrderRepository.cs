@@ -9,7 +9,7 @@ namespace FunTrophy.Fake.Repositories
         {
         }
 
-        public Task<List<TrackOrder>> GetAll(int colorId)
+        public Task<List<TrackOrder>> GetOfColor(int colorId)
         {
             return GetAll(x => x.ColorId == colorId);
         }

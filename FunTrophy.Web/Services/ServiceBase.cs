@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 
@@ -14,6 +13,15 @@ namespace FunTrophy.Web.Services
         {
             _httpClient = httpClient;
             _basePath = basePath;
+        }
+
+        protected string GetUrl(string parameterName, object parameterValue)
+        {
+            var parameters = new Dictionary<string, object>
+            {
+                { parameterName, parameterValue }
+            };
+            return GetUrl(parameters);
         }
 
         protected string GetUrl(Dictionary<string, object> queryParameters)
@@ -34,7 +42,7 @@ namespace FunTrophy.Web.Services
             return _basePath;
         }
 
-        protected async Task<T> GetAsync<T>(string url) where T: class
+        protected async Task<T> GetAsync<T>(string url) where T : class
         {
             var response = await _httpClient.GetFromJsonAsync<T>(url);
             if (response == null)
@@ -42,26 +50,26 @@ namespace FunTrophy.Web.Services
             return response;
         }
 
-        protected async Task PostAsync(string url, object body)
+        private async Task<HttpResponseMessage> BasePostAsync(string url, object? body)
         {
             var json = JsonSerializer.Serialize(body);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var content = body is null ? null : new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(url, content);
 
             if (response == null)
                 throw new KeyNotFoundException();
+
+            return response;
         }
 
-
-        protected async Task<T> PostAsync<T>(string url, object body)
+        protected async Task PostAsync(string url, object? body)
         {
-            var json = JsonSerializer.Serialize(body);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync(url, content);
+            await BasePostAsync(url, body);
+        }
 
-            if (response == null)
-                throw new KeyNotFoundException();
-
+        protected async Task<T> PostAsync<T>(string url, object? body)
+        {
+            var response = await BasePostAsync(url, body);
             var responseJson = await response.Content.ReadAsStringAsync();
             var result = JsonSerializer.Deserialize<T>(responseJson);
 

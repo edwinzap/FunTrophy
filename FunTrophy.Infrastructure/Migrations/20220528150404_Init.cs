@@ -5,23 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FunTrophy.Infrastructure.Migrations
 {
-    public partial class InitDatabase : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Colors",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Colors", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Races",
                 columns: table => new
@@ -37,40 +24,38 @@ namespace FunTrophy.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Colors",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RaceId = table.Column<int>(type: "int", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Colors", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Colors_Races_RaceId",
+                        column: x => x.RaceId,
+                        principalTable: "Races",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TimeAdjustmentCategories",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    RaceId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TimeAdjustmentCategories", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Teams",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Number = table.Column<int>(type: "int", nullable: false),
-                    Type = table.Column<int>(type: "int", nullable: false),
-                    ColorId = table.Column<int>(type: "int", nullable: false),
-                    RaceId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Teams", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Teams_Colors_ColorId",
-                        column: x => x.ColorId,
-                        principalTable: "Colors",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Teams_Races_RaceId",
+                        name: "FK_TimeAdjustmentCategories_Races_RaceId",
                         column: x => x.RaceId,
                         principalTable: "Races",
                         principalColumn: "Id");
@@ -96,27 +81,29 @@ namespace FunTrophy.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TimeAdjustments",
+                name: "Teams",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Time = table.Column<TimeSpan>(type: "time", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
-                    TeamId = table.Column<int>(type: "int", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Number = table.Column<int>(type: "int", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    ColorId = table.Column<int>(type: "int", nullable: false),
+                    RaceId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TimeAdjustments", x => x.Id);
+                    table.PrimaryKey("PK_Teams", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TimeAdjustments_Teams_TeamId",
-                        column: x => x.TeamId,
-                        principalTable: "Teams",
+                        name: "FK_Teams_Colors_ColorId",
+                        column: x => x.ColorId,
+                        principalTable: "Colors",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_TimeAdjustments_TimeAdjustmentCategories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "TimeAdjustmentCategories",
+                        name: "FK_Teams_Races_RaceId",
+                        column: x => x.RaceId,
+                        principalTable: "Races",
                         principalColumn: "Id");
                 });
 
@@ -146,13 +133,38 @@ namespace FunTrophy.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TimeAdjustments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Seconds = table.Column<int>(type: "int", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    TeamId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TimeAdjustments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TimeAdjustments_Teams_TeamId",
+                        column: x => x.TeamId,
+                        principalTable: "Teams",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_TimeAdjustments_TimeAdjustmentCategories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "TimeAdjustmentCategories",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TrackTimes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StartTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     TrackId = table.Column<int>(type: "int", nullable: false),
                     TeamId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -172,6 +184,11 @@ namespace FunTrophy.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Colors_RaceId",
+                table: "Colors",
+                column: "RaceId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Teams_ColorId",
                 table: "Teams",
                 column: "ColorId");
@@ -179,6 +196,11 @@ namespace FunTrophy.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Teams_RaceId",
                 table: "Teams",
+                column: "RaceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TimeAdjustmentCategories_RaceId",
+                table: "TimeAdjustmentCategories",
                 column: "RaceId");
 
             migrationBuilder.CreateIndex(

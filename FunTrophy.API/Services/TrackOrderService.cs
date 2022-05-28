@@ -1,4 +1,5 @@
-﻿using FunTrophy.API.Contracts.Services;
+﻿using FunTrophy.API.Contracts.Mappers;
+using FunTrophy.API.Contracts.Services;
 using FunTrophy.API.Mappers;
 using FunTrophy.Infrastructure.Contracts.Repositories;
 using FunTrophy.Infrastructure.Model;
@@ -29,7 +30,7 @@ namespace FunTrophy.API.Services
         public async Task<List<TrackOrderDto>> GetAll(int colorId)
         {
             var color = await _colorRepository.Get(colorId);
-            var dbTrackOrders = await _trackOrderRepository.GetAll(colorId);
+            var dbTrackOrders = await _trackOrderRepository.GetOfColor(colorId);
             var dbTracks = await _trackRepository.GetAll(color.RaceId);
             return _mapper.Map(colorId, dbTrackOrders, dbTracks);
         }

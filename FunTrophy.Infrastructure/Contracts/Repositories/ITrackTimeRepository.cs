@@ -4,5 +4,8 @@ namespace FunTrophy.Infrastructure.Contracts.Repositories
 {
     public interface ITrackTimeRepository : IRepositoryBase<TrackTime>
     {
+        Task<List<TrackTime>> GetOfColor(int colorId);
+
+        Task<List<TrackTime>> GetOfTeam(int teamId);
     }
 }

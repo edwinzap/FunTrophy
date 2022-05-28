@@ -24,8 +24,8 @@ builder.Services.AddDbContext<FunTrophyContext>(options =>
 builder.Services
     .AddServices()
     .AddMappers()
-    .AddFakeRepositories();
-    //.AddRepositories();
+    //.AddFakeRepositories();
+    .AddRepositories();
 
 builder.Services.AddControllers();
 

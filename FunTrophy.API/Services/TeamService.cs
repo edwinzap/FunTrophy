@@ -2,6 +2,7 @@
 using FunTrophy.API.Contracts.Services;
 using FunTrophy.Infrastructure.Contracts.Repositories;
 using FunTrophy.Shared.Model;
+using FunTrophy.API.Contracts.Mappers;
 
 namespace FunTrophy.API.Services
 {
@@ -26,7 +27,7 @@ namespace FunTrophy.API.Services
 
         public async Task<List<TeamDto>> GetAll(int raceId)
         {
-            var dbTeams = await _repository.GetAll(raceId);
+            var dbTeams = await _repository.GetOfColor(raceId);
             return _mapper.Map(dbTeams);
         }
 

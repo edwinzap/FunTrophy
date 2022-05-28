@@ -7,6 +7,7 @@ namespace FunTrophy.Infrastructure.Repositories
     {
         public TimeAdjustmentRepository(FunTrophyContext dbContext) : base(dbContext)
         {
+            Includes = new string[] { "Category" };
         }
 
         public Task<List<TimeAdjustment>> GetAllOfTeam(int teamId)

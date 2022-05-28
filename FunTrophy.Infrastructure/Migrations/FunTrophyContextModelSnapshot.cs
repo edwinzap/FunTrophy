@@ -82,7 +82,7 @@ namespace FunTrophy.Infrastructure.Migrations
                     b.Property<int>("Number")
                         .HasColumnType("int");
 
-                    b.Property<int>("RaceId")
+                    b.Property<int?>("RaceId")
                         .HasColumnType("int");
 
                     b.Property<int>("Type")
@@ -108,11 +108,11 @@ namespace FunTrophy.Infrastructure.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TeamId")
+                    b.Property<int>("Seconds")
                         .HasColumnType("int");
 
-                    b.Property<TimeSpan>("Time")
-                        .HasColumnType("time");
+                    b.Property<int>("TeamId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -201,10 +201,10 @@ namespace FunTrophy.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("EndTime")
+                    b.Property<DateTime?>("EndTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("StartTime")
+                    b.Property<DateTime?>("StartTime")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("TeamId")
@@ -241,15 +241,12 @@ namespace FunTrophy.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("FunTrophy.Infrastructure.Model.Race", "Race")
+                    b.HasOne("FunTrophy.Infrastructure.Model.Race", null)
                         .WithMany("Teams")
                         .HasForeignKey("RaceId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Color");
-
-                    b.Navigation("Race");
                 });
 
             modelBuilder.Entity("FunTrophy.Infrastructure.Model.TimeAdjustment", b =>
@@ -261,7 +258,7 @@ namespace FunTrophy.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("FunTrophy.Infrastructure.Model.Team", "Team")
-                        .WithMany("TimeAdjustements")
+                        .WithMany("TimeAdjustments")
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -347,7 +344,7 @@ namespace FunTrophy.Infrastructure.Migrations
 
             modelBuilder.Entity("FunTrophy.Infrastructure.Model.Team", b =>
                 {
-                    b.Navigation("TimeAdjustements");
+                    b.Navigation("TimeAdjustments");
 
                     b.Navigation("TrackTimes");
                 });

@@ -14,7 +14,7 @@ else if (!Colors.Any())
 }
 else
 {
-    <ColorSwitcher Colors=@Colors OnCurrentColorChanged="@((value)=> OnCurrentColorChanged(value))" />
+    <ColorSwitcher Colors=@Colors OnCurrentColorChanged="(value)=> OnCurrentColorChanged(value)" />
 
     <div>
         <table class="table table-striped">
@@ -113,12 +113,13 @@ else
         </div>
         <div class="p-2">
             <label for="team-color" class="form-label">Color</label>
-            <select id="team-color" class="form-select" @bind="@updateTeam.ColorId">
+            <ColorSelector Colors="@Colors" @bind-CurrentColorId="updateTeam.ColorId"/>
+@*            <select id="team-color" class="form-select" @bind="@updateTeam.ColorId">
                 @foreach (var color in Colors)
                 {
                     <option value="@color.Id" style="background-color:@color.Code">@color.Code</option>
                 }
-            </select>
+            </select>*@
         </div>
     </div>
 </EditDialog>
