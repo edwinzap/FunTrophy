@@ -54,7 +54,7 @@ else
     </div>
 
     <div>
-        <EditForm Model="@addRace" OnValidSubmit="@AddRace" class="d-flex">
+        <EditForm Model="@addRace" OnValidSubmit="@AddRace" class="d-flex flex-column flex-lg-row">
             <div class="p-2">
                 <label for="race-name" class="form-label">Nom</label>
                 <input id="race-name" class="form-control" type="text" @bind-value="@addRace.Name" placeholder="Nom de la course" />
