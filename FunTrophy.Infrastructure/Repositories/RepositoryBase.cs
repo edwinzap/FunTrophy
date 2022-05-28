@@ -10,7 +10,7 @@ namespace FunTrophy.Infrastructure.Repositories
         protected readonly FunTrophyContext _dbContext;
         private readonly DbSet<TEntity> _dbSet;
 
-        public string[] Includes { get; set; }
+        public string[] Includes { get; set; } = Array.Empty<string>();
 
         public RepositoryBase(FunTrophyContext dbContext)
         {

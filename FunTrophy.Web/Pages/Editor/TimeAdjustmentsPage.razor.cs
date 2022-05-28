@@ -117,13 +117,13 @@ namespace FunTrophy.Web.Pages.Editor
                 totalSeconds = -totalSeconds;
 
             addTimeAdjustment.TeamId = CurrentTeamId.Value;
-            addTimeAdjustment.Time = TimeSpan.FromSeconds(totalSeconds);
+            addTimeAdjustment.Seconds = totalSeconds;
             addTimeAdjustment.CategoryId = SelectedCategoryId.Value;
 
             await TimeAdjustmentService.Add(addTimeAdjustment);
             await LoadTimeAdjustments();
 
-            addTimeAdjustment.Time = new TimeSpan(0);
+            addTimeAdjustment.Seconds = 0;
             addMinutes = 0;
             addSeconds = 0;
         }
@@ -131,7 +131,7 @@ namespace FunTrophy.Web.Pages.Editor
         private void ConfirmDeleteTimeAdjustment(TimeAdjustmentDto timeAdjustment)
         {
             DeleteTimeAdjustmentId = timeAdjustment.Id;
-            var message = $"Es-tu sûr de vouloir supprimer '{timeAdjustment.CategoryName}: {timeAdjustment.Time.ToMinutesAndSecondsString()}'?";
+            var message = $"Es-tu sûr de vouloir supprimer '{timeAdjustment.CategoryName}: {TimeSpan.FromSeconds(timeAdjustment.Seconds).ToMinutesAndSecondsString()}'?";
             DeleteDialog.Show(message);
         }
 

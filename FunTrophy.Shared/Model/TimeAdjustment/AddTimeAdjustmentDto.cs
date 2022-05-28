@@ -4,6 +4,6 @@
     {
         public int TeamId { get; set; }
         public int CategoryId { get; set; }
-        public TimeSpan Time { get; set; }
+        public int Seconds { get; set; }
     }
 }

@@ -16,7 +16,7 @@ namespace FunTrophy.API.Mappers
             {
                 TeamId = timeAdjustment.TeamId,
                 CategoryId = timeAdjustment.CategoryId,
-                Time = timeAdjustment.Time,
+                Seconds = timeAdjustment.Seconds,
             };
         }
 
@@ -26,7 +26,7 @@ namespace FunTrophy.API.Mappers
             {
                 Id = timeAdjustment.Id,
                 CategoryName = timeAdjustment.Category.Name,
-                Time = timeAdjustment.Time,
+                Seconds = timeAdjustment.Seconds,
             };
         }
 
