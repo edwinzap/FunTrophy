@@ -4,7 +4,17 @@
     {
         public static string ToMinutesAndSecondsString(this TimeSpan time)
         {
-            return ((time < TimeSpan.Zero) ? "-" : "") + time.ToString(@"mm\:ss");
+            var formattedTime = (time < TimeSpan.Zero) ? "-" : "";
+            if (time.Hours > 0)
+            {
+                formattedTime += time.ToString(@"h\:mm\:ss");
+            }
+            else
+            {
+                formattedTime += time.ToString(@"mm\:ss");
+            }
+
+            return formattedTime;
         }
     }
 }
