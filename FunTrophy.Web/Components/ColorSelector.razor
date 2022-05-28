@@ -22,9 +22,11 @@
 @code {
     private bool isOpen { get; set; }
 
+
     private ColorDto? CurrentColor { get; set; }
 
-    private List<ColorDto>? _colors = new List<ColorDto>();
+    private List<ColorDto>? _colors;
+
     [Parameter]
     public List<ColorDto>? Colors
     {
@@ -39,14 +41,27 @@
         }
     }
 
+    private int? _currentColorId;
+
     [Parameter]
-    public EventCallback<int> OnCurrentColorChanged { get; set; }
+    public int? CurrentColorId {
+        get => _currentColorId;
+        set
+        {
+            CurrentColor = Colors?.FirstOrDefault(x => x.Id == value);
+            _currentColorId = CurrentColor is null ? null : value;
+        }
+    }
+
+    [Parameter]
+    public EventCallback<int> CurrentColorIdChanged { get; set; }
 
     private void SelectColor(ColorDto color)
     {
         CurrentColor = color;
+        CurrentColorId = color.Id;
         isOpen = false;
-        OnCurrentColorChanged.InvokeAsync(color.Id);
+        CurrentColorIdChanged.InvokeAsync(color.Id);
         StateHasChanged();
     }
 

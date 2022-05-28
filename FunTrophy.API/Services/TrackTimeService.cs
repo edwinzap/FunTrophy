@@ -13,6 +13,8 @@ namespace FunTrophy.API.Services
         private readonly ITeamRepository _teamRepository;
         private readonly ITrackTimeMapper _mapper;
 
+        private readonly TimeSpan TRACK_MIN_DURATION = TimeSpan.FromSeconds(60);
+
         public TrackTimeService(
             ITrackOrderRepository trackOrderRepository,
             ITrackTimeRepository trackTimeRepository,
@@ -84,6 +86,7 @@ namespace FunTrophy.API.Services
 
         public async Task SaveTeamLap(int teamId)
         {
+            var currentTime = DateTime.Now;
             var team = await _teamRepository.Get(teamId);
             var trackOrders = (await _trackOrderRepository.GetOfColor(team.ColorId)).OrderBy(x => x.SortOrder);
             var teamTrackTimes = (await _trackTimeRepository.GetOfTeam(teamId)).OrderBy(x => x.StartTime);
@@ -92,12 +95,17 @@ namespace FunTrophy.API.Services
 
             if (currentTrackTime is not null)
             {
-                currentTrackTime.EndTime = DateTime.Now;
+                // avoid errors by double clicking a track that had just started
+                if (currentTrackTime.StartTime.HasValue && currentTrackTime.StartTime.Value.Add(TRACK_MIN_DURATION) > currentTime)
+                {
+                    return;
+                }
+                currentTrackTime.EndTime = currentTime;
             }
 
             if (nextTrackTime is not null)
             {
-                nextTrackTime.StartTime = DateTime.Now;
+                nextTrackTime.StartTime = currentTime;
                 await _trackTimeRepository.Update(nextTrackTime);
             }
         }
