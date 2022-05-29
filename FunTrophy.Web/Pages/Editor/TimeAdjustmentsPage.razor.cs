@@ -29,7 +29,7 @@ namespace FunTrophy.Web.Pages.Editor
 
         private List<TimeAdjustmentDto>? TimeAdjustments { get; set; }
 
-        public List<ColorDto> Colors { get; set; }
+        public List<ColorDto>? Colors { get; set; }
 
         private List<TeamDto>? Teams { get; set; }
 

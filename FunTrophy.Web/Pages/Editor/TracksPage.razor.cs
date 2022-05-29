@@ -15,6 +15,9 @@ namespace FunTrophy.Web.Pages.Editor
         [Inject]
         private ITrackService TrackService { get; set; } = default!;
 
+        [Inject]
+        private IResultService ResultService { get; set; } = default!;
+
         private ConfirmDialog DeleteDialog { get; set; } = default!;
 
         private EditDialog EditDialog { get; set; } = default!;

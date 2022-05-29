@@ -29,5 +29,10 @@ namespace FunTrophy.Fake.Repositories
         {
             return GetAll(x => x.TeamId == teamId);
         }
+
+        public Task<List<TrackTime>> GetOfTrack(int trackId)
+        {
+            return GetAll(x => x.TrackId == trackId);
+        }
     }
 }

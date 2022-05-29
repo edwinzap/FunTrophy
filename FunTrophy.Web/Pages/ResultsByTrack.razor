@@ -1,0 +1,71 @@
+﻿@page "/resultats/parcours"
+@using FunTrophy.Web.Helpers
+
+<RedirectToSelectRace />
+<PageTitle>Résultats par parcours</PageTitle>
+
+<div class="d-flex justify-content-center">
+    <div class="d-flex">
+        <div class="p-2">
+            <button class="btn" @onclick="() => ChangeTrack(-1)"><i class="fas fa-chevron-left"></i></button>
+        </div>
+
+        <div class="p-2">
+            <select class="form-select" value="@SelectedTrackId" @onchange="OnSelectedTrackChanged">
+                @if (Tracks is null)
+                {
+                    <option>Chargement...</option>
+                }
+                else
+                {
+                    @foreach (var track in Tracks)
+                    {
+                        <option value="@track.Id" @key="@track">@track.Name</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="p-2">
+            <button class="btn" @onclick="() => ChangeTrack(1)"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </div>
+</div>
+
+<div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope=col>#</th>
+                <th scope="col">Equipe</th>
+                <th scope="col">Temps</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Results is null)
+            {
+                <tr>
+                    <td colspan=3 class="text-center">
+                        <div class="spinner-border" role="status" />
+                    </td>
+                </tr>
+            }
+            else if (!Results.Any())
+            {
+                <tr class="p-2">
+                    <td colspan=3 class="text-center">Aucun résultat à afficher</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var result in Results)
+                {
+                    <tr @key="@result">
+                        <td>@(Results.IndexOf(result) + 1)</td>
+                        <td>@result.Team.Name</td>
+                        <td>@(result.LapDuration.HasValue ? result.LapDuration.Value.ToMinutesAndSecondsString(): "En cours...")</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

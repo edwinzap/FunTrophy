@@ -7,7 +7,7 @@ namespace FunTrophy.Infrastructure.Repositories
     {
         public TrackTimeRepository(FunTrophyContext dbContext) : base(dbContext)
         {
-            Includes = new string[] { "Track" };
+            Includes = new string[] { "Track", "Team", "Team.Color" };
         }
 
         public Task<List<TrackTime>> GetOfColor(int colorId)
@@ -18,6 +18,11 @@ namespace FunTrophy.Infrastructure.Repositories
         public Task<List<TrackTime>> GetOfTeam(int teamId)
         {
             return GetAll(x => x.TeamId == teamId);
+        }
+
+        public Task<List<TrackTime>> GetOfTrack(int trackId)
+        {
+            return GetAll(x => x.TrackId == trackId);
         }
     }
 }
