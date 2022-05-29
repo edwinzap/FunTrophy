@@ -74,7 +74,7 @@ namespace FunTrophy.Web.Pages.Editor
                 return;
 
             Teams = null;
-            Teams = await TeamService.GetTeams(CurrentColorId.Value);
+            Teams = await TeamService.GetTeamsByColor(CurrentColorId.Value);
             if (Teams.Any())
             {
                 CurrentTeamId = Teams.First().Id;

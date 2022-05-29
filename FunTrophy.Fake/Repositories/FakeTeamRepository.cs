@@ -21,6 +21,11 @@ namespace FunTrophy.Fake.Repositories
             return GetAll(x => x.ColorId == colorId);
         }
 
+        public Task<List<Team>> GetOfRace(int raceId)
+        {
+            return GetAll(x => x.Color.RaceId == raceId);
+        }
+
         public override Task Update(Team entity)
         {
             entity.Color = _dbContext.Colors.First(x => x.Id == entity.ColorId);

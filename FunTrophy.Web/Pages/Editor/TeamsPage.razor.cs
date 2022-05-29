@@ -61,7 +61,7 @@ namespace FunTrophy.Web.Pages.Editor
             if (CurrentColorId.HasValue)
             {
                 Teams = null;
-                Teams = (await TeamService.GetTeams(CurrentColorId.Value)).OrderBy(x => x.Number).ToList();
+                Teams = (await TeamService.GetTeamsByColor(CurrentColorId.Value)).OrderBy(x => x.Number).ToList();
                 addTeam.Number = Teams.Select(x => x.Number).OrderBy(x => x).LastOrDefault(0) + 1;
             }
         }

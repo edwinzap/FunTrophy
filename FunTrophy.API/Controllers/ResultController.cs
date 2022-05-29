@@ -22,7 +22,7 @@ namespace FunTrophy.API.Controllers
         /// </summary>
         /// <param name="trackId">Track id</param>
         /// <returns>The results</returns>
-        [HttpGet("Track/{trackId}")]
+        [HttpGet("ByTrack/{trackId}")]
         [ProducesResponseType(typeof(List<TrackResultDto>), 200)]
         public async Task<IActionResult> GetTrackResults(int trackId)
         {
@@ -35,7 +35,7 @@ namespace FunTrophy.API.Controllers
         /// </summary>
         /// <param name="teamId">Team id</param>
         /// <returns>The results</returns>
-        [HttpGet("Team/{teamId}")]
+        [HttpGet("ByTeam/{teamId}")]
         [ProducesResponseType(typeof(List<TeamResultDto>), 200)]
         public async Task<IActionResult> GetTeamResults(int teamId)
         {

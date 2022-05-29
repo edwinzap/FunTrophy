@@ -11,13 +11,13 @@ namespace FunTrophy.Web.Services
 
         public Task<List<TeamResultDto>> GetTeamResults(int teamId)
         {
-            var url = GetUrl() + $"/Team/{teamId}";
+            var url = GetUrl() + $"/ByTeam/{teamId}";
             return GetAsync<List<TeamResultDto>>(url);
         }
 
         public Task<List<TrackResultDto>> GetTrackResults(int trackId)
         {
-            var url = GetUrl() + $"/Track/{trackId}";
+            var url = GetUrl() + $"/ByTrack/{trackId}";
             return GetAsync<List<TrackResultDto>>(url);
         }
     }

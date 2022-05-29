@@ -25,9 +25,15 @@ namespace FunTrophy.API.Services
             return _repository.Add(dbTeam);
         }
 
-        public async Task<List<TeamDto>> GetAll(int raceId)
+        public async Task<List<TeamDto>> GetByColor(int colorId)
         {
-            var dbTeams = await _repository.GetOfColor(raceId);
+            var dbTeams = await _repository.GetOfColor(colorId);
+            return _mapper.Map(dbTeams);
+        }
+
+        public async Task<List<TeamDto>> GetByRace(int raceId)
+        {
+            var dbTeams = await _repository.GetOfRace(raceId);
             return _mapper.Map(dbTeams);
         }
 
