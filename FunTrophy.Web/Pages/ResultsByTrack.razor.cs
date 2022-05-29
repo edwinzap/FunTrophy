@@ -47,8 +47,9 @@ namespace FunTrophy.Web.Pages
         {
             if (SelectedTrackId.HasValue)
             {
+                Results = null;
                 Results = (await ResultService.GetTrackResults(SelectedTrackId.Value))
-                    .OrderBy(x => x.LapDuration.HasValue)
+                    .OrderByDescending(x => x.LapDuration.HasValue)
                     .ThenBy(x => x.LapDuration)
                     .ToList();
             }
@@ -61,7 +62,7 @@ namespace FunTrophy.Web.Pages
             await LoadResults();
         }
 
-        private void ChangeTrack(int value)
+        private async void ChangeTrack(int value)
         {
             if (Tracks?.Any() != true || !SelectedTrackId.HasValue)
                 return;
@@ -74,6 +75,8 @@ namespace FunTrophy.Web.Pages
                 newIndex = Tracks.Count - 1;
 
             SelectedTrackId = Tracks[newIndex].Id;
+            await LoadResults();
+            StateHasChanged();
         }
     }
 }

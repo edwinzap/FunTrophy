@@ -1,0 +1,57 @@
+﻿@inject AppState AppState
+
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">Fun Trophy</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <nav class="navbar-brand navbar-expand-md">
+        <div class="nav-item">
+            <NavLink class="nav-link" href="editeur/courses">Editeur</NavLink>
+        </div>
+        <div class="nav-item">
+            <NavLink class="nav-link" href="chrono">Chrono</NavLink>
+        </div>
+        <div class="nav-item">
+            <NavLink class="nav-link" href="resultats/parcours">Résultats par parcours</NavLink>
+        </div>
+        <div class="nav-item">
+            <NavLink class="nav-link" href="resultats/equipe">Résultat par équipe</NavLink>
+        </div>
+        @*        <div class="nav-item dropdown">
+            <NavLink class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Résultats</NavLink>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+            </div>*@
+    </nav>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    protected override void OnInitialized()
+    {
+        AppState.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        AppState.OnChange -= StateHasChanged;
+    }
+}
