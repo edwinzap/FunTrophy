@@ -1,4 +1,5 @@
 ﻿@page "/resultats/parcours"
+@using FunTrophy.Shared.Model
 @using FunTrophy.Web.Helpers
 
 <RedirectToSelectRace />
@@ -63,7 +64,9 @@
                         <td>@(Results.IndexOf(result) + 1)</td>
                         <td>
                             <div class="d-flex gap-2">
-                                <div class="team-color" style="background-color: @result.Team.Color.Code"/>
+                                <div class="team-color" style="border-color:@result.Team.Color.Code">
+                                    <span class="fas fa-@(result.Team.Type == TeamType.Family? "paw" : "shield-halved")"></span>
+                                </div>
                                 <div>@result.Team.Name</div>
                             </div>
                         </td>

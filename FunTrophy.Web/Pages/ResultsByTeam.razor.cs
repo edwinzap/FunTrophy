@@ -7,11 +7,15 @@ namespace FunTrophy.Web.Pages
     public partial class ResultsByTeam
     {
         #region Properties
+
         [Inject]
         public AppState AppState { get; set; } = default!;
-        
+
         [Inject]
         public ITeamService TeamService { get; set; } = default!;
+
+        [Inject]
+        public IColorService ColorService { get; set; } = default!;
 
         [Inject]
         public IResultService ResultService { get; set; } = default!;
@@ -19,20 +23,21 @@ namespace FunTrophy.Web.Pages
         private List<TeamDto>? Teams { get; set; }
 
         private List<TeamResultDto>? Results { get; set; }
-
+        private List<ColorDto>? Colors { get; set; }
 
         private int? SelectedTeamId { get; set; }
 
-        #endregion
+        #endregion Properties
 
         protected override async Task OnInitializedAsync()
         {
             await LoadTeams();
+            await LoadColors();
         }
 
         private async Task LoadTeams()
         {
-            if (AppState.Race != null)
+            if (AppState.Race is not null)
             {
                 Teams = (await TeamService.GetTeamsByRace(AppState.Race.Id))
                     .OrderBy(x => x.Name)
@@ -42,6 +47,14 @@ namespace FunTrophy.Web.Pages
                     SelectedTeamId = Teams.First().Id;
                     await LoadResults();
                 }
+            }
+        }
+
+        public async Task LoadColors()
+        {
+            if (AppState.Race is not null)
+            {
+                Colors = await ColorService.GetColors(AppState.Race.Id);
             }
         }
 
