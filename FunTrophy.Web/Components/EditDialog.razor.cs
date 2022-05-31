@@ -4,17 +4,26 @@ namespace FunTrophy.Web.Components
 {
     public partial class EditDialog
     {
-        protected bool ShowConfirmation { get; set; }
+        protected bool ShowDialog { get; set; }
 
         [Parameter]
-        public string ConfirmationTitle { get; set; } = "Editer l'élément";
+        public bool ShowCancelButton { get; set; } = true;
 
         [Parameter]
-        public RenderFragment ChildContent { get; set; }
+        public string OkButtonText { get; set; } = "OK";
+
+        [Parameter]
+        public string CancelButtonText { get; set; } = "Annuler";
+
+        [Parameter]
+        public string Title { get; set; } = "Editer l'élément";
+
+        [Parameter]
+        public RenderFragment? ChildContent { get; set; }
 
         public void Show()
         {
-            ShowConfirmation = true;
+            ShowDialog = true;
             StateHasChanged();
         }
 
@@ -23,7 +32,7 @@ namespace FunTrophy.Web.Components
 
         protected async Task OnConfirmationChange(bool value)
         {
-            ShowConfirmation = false;
+            ShowDialog = false;
             await ConfirmationChanged.InvokeAsync(value);
         }
     }

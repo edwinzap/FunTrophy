@@ -4,23 +4,23 @@ namespace FunTrophy.Web.Components
 {
     public partial class ConfirmDialog
     {
-        protected bool ShowConfirmation { get; set; }
+        protected bool ShowDialog { get; set; }
 
         [Parameter]
-        public string ConfirmationTitle { get; set; } = "Confirmer la suppression";
+        public string Title { get; set; } = "Confirmer la suppression";
 
         [Parameter]
-        public string ConfirmationMessage { get; set; } = "Es-tu sûr de vouloir supprimer l'élément ?";
+        public string Message { get; set; } = "Es-tu sûr de vouloir supprimer l'élément ?";
 
         public void Show()
         {
-            ShowConfirmation = true;
+            ShowDialog = true;
             StateHasChanged();
         }
 
         public void Show(string message)
         {
-            ConfirmationMessage = message;
+            Message = message;
             Show();
         }
 
@@ -29,7 +29,7 @@ namespace FunTrophy.Web.Components
 
         protected async Task OnConfirmationChange(bool value)
         {
-            ShowConfirmation = false;
+            ShowDialog = false;
             await ConfirmationChanged.InvokeAsync(value);
         }
     }

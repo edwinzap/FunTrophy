@@ -72,12 +72,12 @@ else
 }
 
 <ConfirmDialog @ref="DeleteDialog"
-               ConfirmationTitle="Supprimer la course"
+               Title="Supprimer la course"
                ConfirmationChanged="(confirm) => DeleteRace(confirm)">
 </ConfirmDialog>
 
 <EditDialog @ref="EditDialog"
-            ConfirmationTitle="Editer la course"
+            Title="Editer la course"
             ConfirmationChanged="(confirm) => UpdateRace(confirm)">
     <div class="d-flex flex-column">
         <div class="p-2">

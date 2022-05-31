@@ -5,8 +5,8 @@
 <RedirectToSelectRace />
 <PageTitle>Résultats par parcours</PageTitle>
 
-<div class="d-flex justify-content-center">
-    <div class="d-flex">
+<div class="d-flex flex-row">
+    <div class="d-flex m-auto">
         <div class="p-2">
             <button class="btn" @onclick="() => ChangeTrack(-1)"><i class="fas fa-chevron-left"></i></button>
         </div>
@@ -29,6 +29,9 @@
         <div class="p-2">
             <button class="btn" @onclick="() => ChangeTrack(1)"><i class="fas fa-chevron-right"></i></button>
         </div>
+    </div>
+    <div class="float-end">
+        <button class="btn btn-lg fas fa-sliders" @onclick="ShowSettingsDialog"></button>
     </div>
 </div>
 
@@ -77,3 +80,18 @@
         </tbody>
     </table>
 </div>
+
+<EditDialog @ref="SettingsDialog"
+            Title="Paramètres"
+            OkButtonText="Fermer"
+            ShowCancelButton="false">
+    <div class="d-flex flex-column">
+        @foreach (var value in TeamTypeFilter)
+        {
+            <div class="form-check">
+                <label class="form-check-label" for="team-type-@value">@value.Value</label>
+                <input class="form-check-input" id="team-type-@value" type="checkbox" value="@value.IsChecked" checked="@value.IsChecked" @onchange="(isChecked) => OnTeamTypeFilterChanged(isChecked, value)">
+            </div>
+        }
+    </div>
+</EditDialog>

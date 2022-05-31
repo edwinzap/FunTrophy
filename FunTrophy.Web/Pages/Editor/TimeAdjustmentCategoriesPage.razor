@@ -58,12 +58,12 @@
 </div>
 
 <ConfirmDialog @ref="DeleteDialog"
-               ConfirmationTitle="Supprimer la catégorie"
+               Title="Supprimer la catégorie"
                ConfirmationChanged="(confirm) => RemoveTrack(confirm)">
 </ConfirmDialog>
 
 <EditDialog @ref="EditDialog"
-            ConfirmationTitle="Editer la catégorie"
+            Title="Editer la catégorie"
             ConfirmationChanged="(confirm) => UpdateTrack(confirm)">
     <div class="d-flex">
         <div class="p-2 flex-fill">
