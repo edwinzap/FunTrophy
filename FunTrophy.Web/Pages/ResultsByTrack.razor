@@ -86,12 +86,20 @@
             OkButtonText="Fermer"
             ShowCancelButton="false">
     <div class="d-flex flex-column">
-        @foreach (var value in TeamTypeFilter)
-        {
-            <div class="form-check">
-                <label class="form-check-label" for="team-type-@value">@value.Value</label>
-                <input class="form-check-input" id="team-type-@value" type="checkbox" value="@value.IsChecked" checked="@value.IsChecked" @onchange="(isChecked) => OnTeamTypeFilterChanged(isChecked, value)">
+        <div class="p-2">
+            @foreach (var value in TeamTypeFilter)
+            {
+                <div class="form-check">
+                    <label class="form-check-label" for="team-type-@value">@value.Value</label>
+                    <input class="form-check-input" id="team-type-@value" type="checkbox" value="@value.IsChecked" checked="@value.IsChecked" @onchange="(e) => OnTeamTypeFilterChanged(e, value)">
+                </div>
+            }
+        </div>
+        <div class="p-2">
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="autoRotate" @bind-value="@ShouldAutoRotate" checked="@ShouldAutoRotate">
+                <label class="form-check-label" for="autoRotate">Rotation automatique</label>
             </div>
-        }
+        </div>
     </div>
 </EditDialog>

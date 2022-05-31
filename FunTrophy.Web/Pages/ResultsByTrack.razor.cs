@@ -2,15 +2,17 @@
 using FunTrophy.Web.Components;
 using FunTrophy.Web.Contracts.Services;
 using Microsoft.AspNetCore.Components;
+using System.Timers;
 
 namespace FunTrophy.Web.Pages
 {
     public partial class ResultsByTrack
     {
         #region Properties
+
         [Inject]
         public AppState AppState { get; set; } = default!;
-        
+
         [Inject]
         public ITrackService TrackService { get; set; } = default!;
 
@@ -28,15 +30,38 @@ namespace FunTrophy.Web.Pages
 
         private List<CheckBoxItem<TeamType>> TeamTypeFilter { get; set; } = new();
 
-        #endregion
+        private bool _shouldAutoRotate = false;
+
+        public bool ShouldAutoRotate
+        {
+            get => _shouldAutoRotate;
+            set
+            {
+                _shouldAutoRotate = value;
+                AutoRotate(value);
+            }
+        }
+
+        private System.Timers.Timer _timer = new System.Timers.Timer();
+
+        private uint RotationInterval { get; set; } = 10;
+
+        #endregion Properties
 
         protected override async Task OnInitializedAsync()
         {
             TeamTypeFilter = Enum.GetValues<TeamType>()
                 .Select(value => new CheckBoxItem<TeamType>(true, value))
                 .ToList();
+            _timer.Elapsed += new System.Timers.ElapsedEventHandler(OnTimerTick);
 
+            AutoRotate(ShouldAutoRotate);
             await LoadTracks();
+        }
+
+        private void OnTimerTick(object? sender, ElapsedEventArgs e)
+        {
+            ChangeTrack(1);
         }
 
         private async Task LoadTracks()
@@ -61,7 +86,7 @@ namespace FunTrophy.Web.Pages
                     .OrderByDescending(x => x.LapDuration.HasValue)
                     .ThenBy(x => x.LapDuration)
                     .ToList();
-                
+
                 FilterResults();
             }
         }
@@ -105,6 +130,16 @@ namespace FunTrophy.Web.Pages
         {
             item.IsChecked = bool.Parse(args.Value!.ToString()!);
             FilterResults();
+        }
+
+        private void AutoRotate(bool shouldRotate)
+        {
+            _timer.Stop();
+            if (shouldRotate)
+            {
+                _timer.Interval = RotationInterval * 1000;
+                _timer.Start();
+            }
         }
     }
 }
