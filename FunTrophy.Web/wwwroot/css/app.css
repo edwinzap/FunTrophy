@@ -93,3 +93,9 @@ textarea {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+
+.table td.fit,
+.table th.fit {
+    white-space: nowrap;
+    width: 1%;
+}
