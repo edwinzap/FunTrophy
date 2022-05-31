@@ -38,13 +38,23 @@ namespace FunTrophy.Web.Pages
             set
             {
                 _shouldAutoRotate = value;
-                AutoRotate(value);
+                RefreshAutoRotate();
             }
         }
 
         private System.Timers.Timer _timer = new System.Timers.Timer();
 
-        private uint RotationInterval { get; set; } = 10;
+        private int _rotationInterval = 10;
+
+        public int RotationInterval
+        {
+            get => _rotationInterval;
+            set
+            {
+                _rotationInterval = value;
+                RefreshAutoRotate();
+            }
+        }
 
         #endregion Properties
 
@@ -53,9 +63,9 @@ namespace FunTrophy.Web.Pages
             TeamTypeFilter = Enum.GetValues<TeamType>()
                 .Select(value => new CheckBoxItem<TeamType>(true, value))
                 .ToList();
-            _timer.Elapsed += new System.Timers.ElapsedEventHandler(OnTimerTick);
+            _timer.Elapsed += new ElapsedEventHandler(OnTimerTick);
 
-            AutoRotate(ShouldAutoRotate);
+            RefreshAutoRotate();
             await LoadTracks();
         }
 
@@ -132,10 +142,10 @@ namespace FunTrophy.Web.Pages
             FilterResults();
         }
 
-        private void AutoRotate(bool shouldRotate)
+        private void RefreshAutoRotate()
         {
             _timer.Stop();
-            if (shouldRotate)
+            if (ShouldAutoRotate)
             {
                 _timer.Interval = RotationInterval * 1000;
                 _timer.Start();
