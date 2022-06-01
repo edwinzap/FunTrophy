@@ -15,46 +15,49 @@ namespace FunTrophy.Web.Pages
         public ITeamService TeamService { get; set; } = default!;
 
         [Inject]
-        public IColorService ColorService { get; set; } = default!;
-
-        [Inject]
         public IResultService ResultService { get; set; } = default!;
 
+        private List<TeamDto>? _teams { get; set; }
         private List<TeamDto>? Teams { get; set; }
 
         private List<TeamResultDto>? Results { get; set; }
-        private List<ColorDto>? Colors { get; set; }
 
         private int? SelectedTeamId { get; set; }
+
+        private TeamDto? SelectedTeam => _teams?.FirstOrDefault(x => x.Id == SelectedTeamId);
+
+        private string? _searchText;
+        private string? SearchText
+        {
+            get => _searchText;
+            set
+            {
+                _searchText = value;
+                FilterTeams();
+            }
+        }
 
         #endregion Properties
 
         protected override async Task OnInitializedAsync()
         {
             await LoadTeams();
-            await LoadColors();
         }
 
         private async Task LoadTeams()
         {
             if (AppState.Race is not null)
             {
-                Teams = (await TeamService.GetTeamsByRace(AppState.Race.Id))
+                _teams = (await TeamService.GetTeamsByRace(AppState.Race.Id))
                     .OrderBy(x => x.Name)
                     .ToList();
-                if (Teams.Any())
+                FilterTeams();
+
+                if (_teams.Any())
                 {
-                    SelectedTeamId = Teams.First().Id;
+                    SelectedTeamId = _teams.First().Id;
                     await LoadResults();
                 }
-            }
-        }
-
-        public async Task LoadColors()
-        {
-            if (AppState.Race is not null)
-            {
-                Colors = await ColorService.GetColors(AppState.Race.Id);
             }
         }
 
@@ -72,9 +75,27 @@ namespace FunTrophy.Web.Pages
 
         private async Task OnSelectedTeamChanged(ChangeEventArgs args)
         {
-            var trackId = int.Parse(args.Value!.ToString()!);
-            SelectedTeamId = trackId;
+            var teamId = int.Parse(args.Value!.ToString()!);
+            SelectedTeamId = teamId;
             await LoadResults();
+        }
+
+        private async Task OnSelectTeam(int teamId)
+        {
+            SelectedTeamId = teamId;
+            await LoadResults();
+        }
+
+        private void FilterTeams()
+        {
+            if (string.IsNullOrEmpty(SearchText))
+            {
+                Teams = _teams;
+            }
+            else
+            {
+                Teams = _teams?.FindAll(x => x.Name.ToLower().Contains(SearchText.ToLower()));
+            }
         }
     }
 }
