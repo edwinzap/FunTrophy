@@ -68,7 +68,7 @@
 
                 <div class="flex-fill">@result.Team.Name</div>
 
-                <div class="pe-2">@(result.LapDuration.HasValue ? result.LapDuration.Value.ToMinutesAndSecondsString(): "En cours...")</div>
+                <div class="pe-2">@(result.LapDuration.HasValue ? result.LapDuration.Value.ToTimeString(): "En cours...")</div>
             </div>
         }
 

@@ -95,7 +95,7 @@
                         <tr @key="@result">
                             <td>@(Results.IndexOf(result) + 1)</td>
                             <td>@result.Track.Name</td>
-                            <td>@(result.LapDuration.HasValue ? result.LapDuration.Value.ToMinutesAndSecondsString(): "En cours...")</td>
+                            <td>@(result.LapDuration.HasValue ? result.LapDuration.Value.ToTimeString(): "En cours...")</td>
                         </tr>
                     }
                 }

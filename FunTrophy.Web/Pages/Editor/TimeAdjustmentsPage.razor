@@ -117,7 +117,7 @@ else
                         {
                             <tr @key="@timeAdjustment.Id">
                                 <td>@timeAdjustment.CategoryName</td>
-                                <td>@(TimeSpan.FromSeconds(timeAdjustment.Seconds).ToMinutesAndSecondsString())</td>
+                                <td>@(TimeSpan.FromSeconds(timeAdjustment.Seconds).ToTimeString())</td>
                                 <td>
                                     <a class="btn btn-danger btn-sm" @onclick="() => ConfirmDeleteTimeAdjustment(timeAdjustment)"><span class="oi oi-trash"></span></a>
                                 </td>

@@ -2,12 +2,15 @@
 {
     public static class Extensions
     {
-        public static string ToMinutesAndSecondsString(this TimeSpan time)
+        public static string ToTimeString(this TimeSpan time)
         {
             var formattedTime = (time < TimeSpan.Zero) ? "-" : "";
-            if (time.Hours > 0)
+            if (time.Hours != 0)
             {
-                formattedTime += time.ToString(@"h\:mm\:ss");
+                formattedTime += string.Format("{0}:{1}:{2}", 
+                    Math.Abs((int)time.TotalHours), 
+                    time.Minutes.ToString("00"),
+                    time.Seconds.ToString("00"));
             }
             else
             {

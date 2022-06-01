@@ -131,7 +131,7 @@ namespace FunTrophy.Web.Pages.Editor
         private void ConfirmDeleteTimeAdjustment(TimeAdjustmentDto timeAdjustment)
         {
             DeleteTimeAdjustmentId = timeAdjustment.Id;
-            var message = $"Es-tu sûr de vouloir supprimer '{timeAdjustment.CategoryName}: {TimeSpan.FromSeconds(timeAdjustment.Seconds).ToMinutesAndSecondsString()}'?";
+            var message = $"Es-tu sûr de vouloir supprimer '{timeAdjustment.CategoryName}: {TimeSpan.FromSeconds(timeAdjustment.Seconds).ToTimeString()}'?";
             DeleteDialog.Show(message);
         }
 
