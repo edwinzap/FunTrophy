@@ -43,7 +43,39 @@
     </div>
 </div>
 
-<div>
+<div class="mt-3 d-flex flex-column flex-md-wrap flex-nowrap gap-2" style="height:90vh;">
+    @if (Results is null)
+    {
+        <div class="d-flex p-5 justify-content-center">
+            <div class="spinner-border" role="status" />
+        </div>
+    }
+    else if (!Results.Any())
+    {
+        <span class="m-auto p-2">Aucun résultat à afficher</span>
+    }
+    else
+    {
+        @foreach (var result in Results)
+        {
+            var index = Results.IndexOf(result) + 1;
+            <div class="p-2 d-flex gap-2 align-items-center border result-item">
+                <div class="px-1" style="width:1.8em">@index<sup>@(index == 1 ? "er": "e")</sup></div>
+                
+                <div class="team-color" style="border-color:@result.Team.Color.Code">
+                    <span class="fas fa-@(result.Team.Type == TeamType.Family? "paw" : "shield-halved")"></span>
+                </div>
+
+                <div class="flex-fill">@result.Team.Name</div>
+
+                <div class="pe-2">@(result.LapDuration.HasValue ? result.LapDuration.Value.ToMinutesAndSecondsString(): "En cours...")</div>
+            </div>
+        }
+
+    }
+</div>
+
+@*<div>
     <table class="table table-striped align-middle">
         <thead>
             <tr>
@@ -89,7 +121,7 @@
         </tbody>
     </table>
 </div>
-
+*@
 <EditDialog @ref="SettingsDialog"
             Title="Paramètres"
             OkButtonText="Fermer"
