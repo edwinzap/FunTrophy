@@ -5,9 +5,26 @@
 
 @if (AppState.Race is not null)
 {
-    <h2>@AppState.Race.Name</h2>
-    <p>@AppState.Race.Date.ToLongDateString()</p>
-    <button class="btn btn-primary" @onclick="ClearSelectedRace">Changer de course...</button>
+    <div class="d-flex flex-column">
+        <div class="p-2">
+            <h2>@AppState.Race.Name</h2>
+            <p>@AppState.Race.Date.ToLongDateString()</p>
+        </div>
+
+        <div class="p-2">
+            <button class="btn btn-primary" @onclick="ClearSelectedRace">Changer de course...</button>
+        </div>
+        <div class="p-2">
+            @if (@AppState.Race.IsEnded)
+            {
+                <button class="btn btn-success" @onclick="() => EndRace(false)">Ouvrir la course</button>
+            }
+            else
+            {
+                <button class="btn btn-warning" @onclick="() => EndRace(true)">Terminer la course</button>
+            }
+        </div>
+    </div>
 }
 else
 {

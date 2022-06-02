@@ -86,7 +86,7 @@ namespace FunTrophy.Web.Services
                 throw new KeyNotFoundException();
         }
 
-        protected async Task UpdateAsync(string url, object body)
+        protected async Task UpdateAsync(string url, object? body)
         {
             var response = await _httpClient.PutAsJsonAsync(url, body);
 

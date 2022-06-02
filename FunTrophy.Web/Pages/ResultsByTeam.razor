@@ -35,7 +35,6 @@
             </span>
         </div>
         <div class="pe-1 mt-2 team-list">
-
             <div class="list-group">
                 @if (Teams is null)
                 {
@@ -47,7 +46,7 @@
                 {
                     @foreach (var team in Teams)
                     {
-                        <button class="list-group-item list-group-item-action" @onclick="() => OnSelectTeam(team.Id)">@team.Name</button>
+                        <button class="list-group-item list-group-item-action @(team.Id == SelectedTeamId ? "active": "")" @onclick="() => OnSelectTeam(team.Id)">@team.Name</button>
                     }
                 }
             </div>
@@ -61,45 +60,84 @@
                     <span class="fas fa-@(SelectedTeam?.Type == TeamType.Family? "paw" : "shield-halved")"></span>
                 </div>
 
-                <h3 class="align-bottom my-0">@SelectedTeam?.Name</h3>
+                <h2 class="align-bottom my-0">@SelectedTeam?.Name</h2>
             </div>
         }
-
-        <table class="table table-striped align-middle">
-            <thead>
-                <tr>
-                    <th scope=col>#</th>
-                    <th scope="col">Parcours</th>
-                    <th scope="col">Temps</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Results is null)
-                {
+        <div>
+            <h3>Résultats</h3>
+            <table class="table table-striped align-middle">
+                <thead>
                     <tr>
-                        <td colspan=3 class="text-center">
-                            <div class="spinner-border" role="status" />
-                        </td>
+                        <th scope=col>#</th>
+                        <th scope="col">Parcours</th>
+                        <th scope="col">Temps</th>
                     </tr>
-                }
-                else if (!Results.Any())
-                {
-                    <tr class="p-2">
-                        <td colspan=3 class="text-center">Aucun résultat à afficher</td>
-                    </tr>
-                }
-                else
-                {
-                    @foreach (var result in Results)
+                </thead>
+                <tbody>
+                    @if (Results is null)
                     {
-                        <tr @key="@result">
-                            <td>@(Results.IndexOf(result) + 1)</td>
-                            <td>@result.Track.Name</td>
-                            <td>@(result.LapDuration.HasValue ? result.LapDuration.Value.ToTimeString(): "En cours...")</td>
+                        <tr>
+                            <td colspan=3 class="text-center">
+                                <div class="spinner-border" role="status" />
+                            </td>
                         </tr>
                     }
-                }
-            </tbody>
-        </table>
+                    else if (!Results.Any())
+                    {
+                        <tr class="p-2">
+                            <td colspan=3 class="text-center">Aucun résultat à afficher</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var result in Results)
+                        {
+                            <tr @key="@result">
+                                <td>@(Results.IndexOf(result) + 1)</td>
+                                <td>@result.Track.Name</td>
+                                <td>@(result.LapDuration.HasValue ? result.LapDuration.Value.ToTimeString(): "En cours...")</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-5">
+            <h3>Bonus/malus</h3>
+            <table class="table table-striped align-middle">
+                <thead>
+                    <tr>
+                        <th scope="col">Catégorie</th>
+                        <th scope="col">Temps</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (TimeAdjustments is null)
+                    {
+                        <tr>
+                            <td colspan=2 class="text-center">
+                                <div class="spinner-border" role="status" />
+                            </td>
+                        </tr>
+                    }
+                    else if (!TimeAdjustments.Any())
+                    {
+                        <tr class="p-2">
+                            <td colspan=3 class="text-center">Aucun bonus/malus à afficher</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var adjustment in TimeAdjustments)
+                        {
+                            <tr @key="@adjustment">
+                                <td>@adjustment.CategoryName</td>
+                                <td class="@(adjustment.Seconds >= 0 ? "text-success": "text-danger")">@(TimeSpan.FromSeconds(adjustment.Seconds).ToTimeString())</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

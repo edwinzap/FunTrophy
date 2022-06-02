@@ -15,6 +15,18 @@ namespace FunTrophy.Web.Services
             await PostAsync(url, race);
         }
 
+        public Task End(int raceId, bool isEnded)
+        {
+            var url = GetUrl() + $"/{raceId}/end/{isEnded}";
+            return UpdateAsync(url, null);
+        }
+
+        public Task<RaceDto> GetRace(int raceId)
+        {
+            var url = GetUrl() + "/" + raceId;
+            return GetAsync<RaceDto>(url);
+        }
+
         public async Task<List<RaceDto>> GetRaces()
         {
             var url = GetUrl();

@@ -5,7 +5,7 @@
 <RedirectToSelectRace />
 <PageTitle>Résultats par parcours</PageTitle>
 
-<div class="d-flex flex-row">
+<div class="d-flex flex-row sticky-top bg-white">
     <div class="d-flex m-auto">
         <div class="p-2">
             <button class="btn" @onclick="() => ChangeTrack(-1)"><i class="fas fa-chevron-left"></i></button>
@@ -43,7 +43,7 @@
     </div>
 </div>
 
-<div class="mt-3 d-flex flex-column flex-md-wrap flex-nowrap gap-2" style="height:90vh;">
+<div class="my-3 d-flex flex-column flex-md-wrap flex-nowrap gap-2" id="result-list">
     @if (Results is null)
     {
         <div class="d-flex p-5 justify-content-center">

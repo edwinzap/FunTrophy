@@ -12,7 +12,8 @@ namespace FunTrophy.API.Mappers
             {
                 Id = race.Id,
                 Name = race.Name,
-                Date = race.Date
+                Date = race.Date,
+                IsEnded = race.IsEnded,
             };
         }
 

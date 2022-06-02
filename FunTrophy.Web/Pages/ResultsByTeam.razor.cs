@@ -16,17 +16,23 @@ namespace FunTrophy.Web.Pages
 
         [Inject]
         public IResultService ResultService { get; set; } = default!;
+        
+        [Inject]
+        public ITimeAdjustmentService TimeAdjustmentService { get; set; } = default!;
 
         private List<TeamDto>? _teams { get; set; }
         private List<TeamDto>? Teams { get; set; }
 
         private List<TeamResultDto>? Results { get; set; }
 
+        private List<TimeAdjustmentDto>? TimeAdjustments { get; set; }
+
         private int? SelectedTeamId { get; set; }
 
         private TeamDto? SelectedTeam => _teams?.FirstOrDefault(x => x.Id == SelectedTeamId);
 
         private string? _searchText;
+
         private string? SearchText
         {
             get => _searchText;
@@ -56,7 +62,7 @@ namespace FunTrophy.Web.Pages
                 if (_teams.Any())
                 {
                     SelectedTeamId = _teams.First().Id;
-                    await LoadResults();
+                    await RefreshTeamResults();
                 }
             }
         }
@@ -73,17 +79,36 @@ namespace FunTrophy.Web.Pages
             }
         }
 
+        private async Task LoadTimeAdjustments()
+        {
+            if (SelectedTeamId.HasValue)
+            {
+                TimeAdjustments = null;
+                TimeAdjustments = (await TimeAdjustmentService.GetTimeAdjustments(SelectedTeamId.Value))
+                    .OrderBy(x => x.CategoryName)
+                    .ToList();
+            }
+        }
+
+        private async Task RefreshTeamResults()
+        {
+            if (SelectedTeamId.HasValue)
+            {
+                await Task.WhenAll(LoadResults(), LoadTimeAdjustments());
+            }
+        }
+
         private async Task OnSelectedTeamChanged(ChangeEventArgs args)
         {
             var teamId = int.Parse(args.Value!.ToString()!);
             SelectedTeamId = teamId;
-            await LoadResults();
+            await RefreshTeamResults();
         }
 
         private async Task OnSelectTeam(int teamId)
         {
             SelectedTeamId = teamId;
-            await LoadResults();
+            await RefreshTeamResults();
         }
 
         private void FilterTeams()
