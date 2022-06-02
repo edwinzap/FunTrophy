@@ -9,5 +9,7 @@ namespace FunTrophy.Infrastructure.Contracts.Repositories
         Task<List<TrackTime>> GetOfTeam(int teamId);
 
         Task<List<TrackTime>> GetOfTrack(int trackId);
+
+        Task<List<TrackTime>> GetOfRace(int raceId);
     }
 }

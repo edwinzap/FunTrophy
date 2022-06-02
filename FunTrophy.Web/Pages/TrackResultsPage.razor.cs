@@ -6,7 +6,7 @@ using System.Timers;
 
 namespace FunTrophy.Web.Pages
 {
-    public partial class ResultsByTrack
+    public partial class TrackResultsPage
     {
         #region Properties
 

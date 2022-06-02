@@ -26,7 +26,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FunTrophy.Web", "FunTrophy.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FunTrophy.Fake", "FunTrophy.Fake\FunTrophy.Fake.csproj", "{CE96FB07-B718-4221-8CAE-186B2ECFB664}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunTrophy.Web.UnitTests", "FunTrophy.Web.UnitTests\FunTrophy.Web.UnitTests.csproj", "{9B89977B-01DA-4859-8676-8F0CFE31081C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FunTrophy.Web.UnitTests", "FunTrophy.Web.UnitTests\FunTrophy.Web.UnitTests.csproj", "{9B89977B-01DA-4859-8676-8F0CFE31081C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

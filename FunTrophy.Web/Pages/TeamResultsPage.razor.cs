@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace FunTrophy.Web.Pages
 {
-    public partial class ResultsByTeam
+    public partial class TeamResultsPage
     {
         #region Properties
 

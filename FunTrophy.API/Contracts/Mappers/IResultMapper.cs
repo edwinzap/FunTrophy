@@ -12,5 +12,7 @@ namespace FunTrophy.API.Contracts.Mappers
         TeamResultDto MapOfTeam(TrackTime trackTime);
 
         List<TeamResultDto> MapOfTeam(List<TrackTime> trackTimes);
+
+        FinalResultDto MapFinal(Team team, List<TrackTime> trackTimes, List<TimeAdjustment> timeAdjustments);
     }
 }

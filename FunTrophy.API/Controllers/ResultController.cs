@@ -6,7 +6,7 @@ namespace FunTrophy.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ResultController: ControllerBase
+    public class ResultController : ControllerBase
     {
         private readonly ILogger<ResultController> _logger;
         private readonly IResultService _resultService;
@@ -40,6 +40,19 @@ namespace FunTrophy.API.Controllers
         public async Task<IActionResult> GetTeamResults(int teamId)
         {
             var results = await _resultService.GetTeamResults(teamId);
+            return Ok(results);
+        }
+
+        /// <summary>
+        /// Get the final results of the race
+        /// </summary>
+        /// <param name="raceId">Race id</param>
+        /// <returns>The results</returns>
+        [HttpGet("Final/{raceId}")]
+        [ProducesResponseType(typeof(List<FinalResultDto>), 200)]
+        public async Task<IActionResult> GetFinalResults(int raceId)
+        {
+            var results = await _resultService.GetFinalResults(raceId);
             return Ok(results);
         }
     }

@@ -7,5 +7,7 @@ namespace FunTrophy.API.Contracts.Services
         Task<List<TrackResultDto>> GetTrackResults(int trackId);
 
         Task<List<TeamResultDto>> GetTeamResults(int teamId);
+        
+        Task<List<FinalResultDto>> GetFinalResults(int raceId);
     }
 }

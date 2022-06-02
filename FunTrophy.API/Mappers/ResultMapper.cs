@@ -15,6 +15,24 @@ namespace FunTrophy.API.Mappers
             _trackMapper = trackMapper;
         }
 
+        public FinalResultDto MapFinal(Team team, List<TrackTime> trackTimes, List<TimeAdjustment> timeAdjustments)
+        {
+            var sortedTrackTimes = trackTimes.OrderBy(x => x.StartTime);
+            var firstTrackTime = sortedTrackTimes.First();
+            var lastTrackTime = sortedTrackTimes.Last();
+
+            if (!firstTrackTime.StartTime.HasValue || !lastTrackTime.EndTime.HasValue)
+                throw new InvalidDataException();
+
+            var result = new FinalResultDto
+            {
+                Team = _teamMapper.Map(team),
+                TracksTotalDuration = lastTrackTime.EndTime.Value.Subtract(firstTrackTime.StartTime.Value),
+                TimeAdjustmentsTotalDuration = TimeSpan.FromSeconds(timeAdjustments.Sum(x => x.Seconds)),
+            };
+            return result;
+        }
+
         public TeamResultDto MapOfTeam(TrackTime trackTime)
         {
             return new TeamResultDto

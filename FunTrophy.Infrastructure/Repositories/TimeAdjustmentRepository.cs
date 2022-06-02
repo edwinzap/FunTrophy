@@ -10,7 +10,12 @@ namespace FunTrophy.Infrastructure.Repositories
             Includes = new string[] { "Category" };
         }
 
-        public Task<List<TimeAdjustment>> GetAllOfTeam(int teamId)
+        public Task<List<TimeAdjustment>> GetOfRace(int raceId)
+        {
+            return GetAll(x => x.Team.Color.RaceId == raceId);
+        }
+
+        public Task<List<TimeAdjustment>> GetOfTeam(int teamId)
         {
             return GetAll(x => x.TeamId == teamId);
         }

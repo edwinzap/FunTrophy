@@ -25,7 +25,7 @@ namespace FunTrophy.API.Services
 
         public async Task<List<TimeAdjustmentDto>> GetAllOfTeam(int teamId)
         {
-            var dbTimeAdjustments = await _repository.GetAllOfTeam(teamId);
+            var dbTimeAdjustments = await _repository.GetOfTeam(teamId);
             return _mapper.Map(dbTimeAdjustments);
         }
 
