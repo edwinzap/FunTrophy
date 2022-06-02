@@ -61,7 +61,7 @@ namespace FunTrophy.Web.Pages
         protected override async Task OnInitializedAsync()
         {
             TeamTypeFilter = Enum.GetValues<TeamType>()
-                .Select(value => new CheckBoxItem<TeamType>(true, value))
+                .Select(value => new CheckBoxItem<TeamType>(true, value, value.ToString()))
                 .ToList();
             _timer.Elapsed += new ElapsedEventHandler(OnTimerTick);
 
@@ -136,9 +136,8 @@ namespace FunTrophy.Web.Pages
             SettingsDialog.Show();
         }
 
-        private void OnTeamTypeFilterChanged(ChangeEventArgs args, CheckBoxItem<TeamType> item)
+        private void OnTeamTypeFilterChanged()
         {
-            item.IsChecked = bool.Parse(args.Value!.ToString()!);
             FilterResults();
         }
 

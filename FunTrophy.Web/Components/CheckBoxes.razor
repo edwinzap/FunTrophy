@@ -1,0 +1,29 @@
+﻿@typeparam TValue
+
+<div class="p-2">
+    @foreach (var item in Items)
+    {
+        <div class="form-check">
+            <label class="form-check-label" for="item-@item.Label">@item.Value</label>
+            <input class="form-check-input" id="item-@item.Label" type="checkbox"
+               value="@item.IsChecked"
+               checked="@item.IsChecked"
+               @onchange="(e) => OnItemChanged(e, item)">
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public List<CheckBoxItem<TValue>>? Items { get; set; }
+
+    [Parameter]
+    public EventCallback<CheckBoxItem<TValue>> ItemChanged { get; set; }
+
+    private async Task OnItemChanged(ChangeEventArgs args, CheckBoxItem<TValue> item)
+    {
+        item.IsChecked = bool.Parse(args.Value!.ToString()!);
+        await ItemChanged.InvokeAsync(item);
+    }
+
+}
