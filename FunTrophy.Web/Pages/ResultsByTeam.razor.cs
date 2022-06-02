@@ -119,7 +119,7 @@ namespace FunTrophy.Web.Pages
             }
             else
             {
-                Teams = _teams?.FindAll(x => x.Name.ToLower().Contains(SearchText.ToLower()));
+                Teams = _teams?.FindAll(x => x.Name.ToLower().Contains(SearchText.ToLower()) || x.Number.ToString().StartsWith(SearchText));
             }
         }
     }

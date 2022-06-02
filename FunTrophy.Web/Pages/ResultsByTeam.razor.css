@@ -5,9 +5,14 @@
     border-width: 5px;
 }
 
+.team-color.team-color-sm {
+    padding: 0 0.3em;
+    border-width:3px;
+}
+
 .team-list {
     overflow-y:auto;
-    height: 85vh;
+    height: 86vh;
 }
 
     .team-list::-webkit-scrollbar-thumb {
