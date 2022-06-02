@@ -60,10 +60,10 @@
         {
             var index = Results.IndexOf(result) + 1;
             <div class="p-2 d-flex gap-2 align-items-center border result-item">
-                <div class="px-1" style="width:1.8em">@index<sup>@(index == 1 ? "er": "e")</sup></div>
+                <div class="px-1 team-number">@index<sup>@(HtmlHelper.GetRankSup(index))</sup></div>
                 
                 <div class="team-color" style="border-color:@result.Team.Color.Code">
-                    <span class="fas fa-@(result.Team.Type == TeamType.Family? "paw" : "shield-halved")"></span>
+                    <span class="@(HtmlHelper.GetFaIcon(result.Team.Type))"></span>
                 </div>
 
                 <div class="flex-fill">@result.Team.Name</div>
@@ -71,57 +71,9 @@
                 <div class="pe-2">@(result.LapDuration.HasValue ? result.LapDuration.Value.ToTimeString(): "En cours...")</div>
             </div>
         }
-
     }
 </div>
 
-@*<div>
-    <table class="table table-striped align-middle">
-        <thead>
-            <tr>
-                <th scope=col class="fit">#</th>
-                <th scope="col">Equipe</th>
-                <th scope="col" class="fit">Temps</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Results is null)
-            {
-                <tr>
-                    <td colspan=3 class="text-center">
-                        <div class="spinner-border" role="status" />
-                    </td>
-                </tr>
-            }
-            else if (!Results.Any())
-            {
-                <tr class="p-2">
-                    <td colspan=3 class="text-center">Aucun résultat à afficher</td>
-                </tr>
-            }
-            else
-            {
-                @foreach (var result in Results)
-                {
-                    var index = Results.IndexOf(result) + 1;
-                    <tr @key="@result">
-                        <th class="pe-3">@index<sup>@(index == 1 ? "er": "e")</sup></th>
-                        <td>
-                            <div class="d-flex gap-2 align-items-center">
-                                <div class="team-color" style="border-color:@result.Team.Color.Code">
-                                    <span class="fas fa-@(result.Team.Type == TeamType.Family? "paw" : "shield-halved")"></span>
-                                </div>
-                                <div>@result.Team.Name</div>
-                            </div>
-                        </td>
-                        <td class="fit px-3">@(result.LapDuration.HasValue ? result.LapDuration.Value.ToMinutesAndSecondsString(): "En cours...")</td>
-                    </tr>
-                }
-            }
-        </tbody>
-    </table>
-</div>
-*@
 <EditDialog @ref="SettingsDialog"
             Title="Paramètres"
             OkButtonText="Fermer"

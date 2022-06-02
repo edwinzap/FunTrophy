@@ -31,7 +31,7 @@ namespace FunTrophy.API.Services
             var filteredTimes = times.Where(x => x.StartTime.HasValue && x.EndTime.HasValue).ToList();
 
             var adjustments = await _timeAdjustmentRepository.GetOfRace(raceId);
-            var teams = filteredTimes.Select(x => x.Team).ToList();
+            var teams = filteredTimes.Select(x => x.Team).Distinct().ToList();
 
             var results = new List<FinalResultDto>();
             foreach (var team in teams)
@@ -44,6 +44,7 @@ namespace FunTrophy.API.Services
                 var teamResult = _mapper.MapFinal(team, teamTimes, teamAdjustments);
                 results.Add(teamResult);
             }
+            results = results.OrderBy(x => x.TotalDuration).ToList();
             return results;
         }
 

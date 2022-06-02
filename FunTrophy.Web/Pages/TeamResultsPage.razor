@@ -50,7 +50,7 @@
                         <button class="list-group-item list-group-item-action @(team.Id == SelectedTeamId ? "active": "")" @onclick="() => OnSelectTeam(team.Id)">
                             <div class="d-flex gap-2 align-items-center">
                                 <div class="team-color team-color-sm" style="border-color:@team.Color.Code">
-                                    <span class="fas fa-sm fa-@(team.Type == TeamType.Family? "paw" : "shield-halved")"></span>
+                                    <span class="fa-sm @(HtmlHelper.GetFaIcon(team.Type))"></span>
                                 </div>@team.Name
                             </div>
                         </button>
@@ -69,7 +69,7 @@
         {
             <div class="p-2 d-flex gap-2 align-items-center justify-content-center">
                 <div class="team-color" style="border-color:@SelectedTeam.Color.Code">
-                    <span class="fas fa-@(SelectedTeam?.Type == TeamType.Family? "paw" : "shield-halved")"></span>
+                    <span class="@(HtmlHelper.GetFaIcon(SelectedTeam.Type))"></span>
                 </div>
 
                 <h2 class="align-bottom my-0">@SelectedTeam?.Name</h2>

@@ -1,19 +1,25 @@
 ﻿@typeparam TValue
 
-<div class="p-2">
-    @foreach (var item in Items)
-    {
-        <div class="form-check">
-            <label class="form-check-label" for="item-@item.Label">@item.Value</label>
-            <input class="form-check-input" id="item-@item.Label" type="checkbox"
+@if (Items is not null)
+{
+    <div class="p-2">
+        @foreach (var item in Items)
+        {
+            <div class="form-check @(IsInline ? "form-check-inline" : "")">
+                <label class="form-check-label" for="item-@item.Label">@item.Value</label>
+                <input class="form-check-input" id="item-@item.Label" type="checkbox"
                value="@item.IsChecked"
                checked="@item.IsChecked"
                @onchange="(e) => OnItemChanged(e, item)">
-        </div>
-    }
-</div>
+            </div>
+        }
+    </div>
+}
 
 @code {
+    [Parameter]
+    public bool IsInline { get; set; } = false;
+
     [Parameter]
     public List<CheckBoxItem<TValue>>? Items { get; set; }
 
