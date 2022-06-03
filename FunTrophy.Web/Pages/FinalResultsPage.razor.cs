@@ -1,6 +1,7 @@
 ﻿using FunTrophy.Shared.Model;
 using FunTrophy.Web.Contracts.Services;
 using Microsoft.AspNetCore.Components;
+using static FunTrophy.Web.Models.Filters;
 
 namespace FunTrophy.Web.Pages
 {
@@ -17,14 +18,12 @@ namespace FunTrophy.Web.Pages
         private List<FinalResultDto>? _results;
         private List<FinalResultDto>? Results { get; set; }
 
-        private List<CheckBoxItem<TeamType>> TeamTypeFilter { get; set; } = new();
+        private TeamTypeFilter TeamTypeFilter { get; set; }
+
         #endregion Properties
 
         protected override async Task OnInitializedAsync()
         {
-            TeamTypeFilter = Enum.GetValues<TeamType>()
-                .Select(value => new CheckBoxItem<TeamType>(true, value, value.ToString()))
-                .ToList();
             await LoadResults();
         }
 
@@ -37,10 +36,31 @@ namespace FunTrophy.Web.Pages
             }
         }
 
+        private void OnTeamTypeFilterChanged(TeamTypeFilter filter)
+        {
+            TeamTypeFilter = filter;
+            FilterResults();
+        }
+
         private void FilterResults()
         {
-            var filter = TeamTypeFilter.Where(x => x.IsChecked).Select(x => x.Value);
-            Results = _results?.Where(x => filter.Contains(x.Team.Type)).ToList();
+            switch (TeamTypeFilter)
+            {
+                case TeamTypeFilter.All:
+                    Results = _results;
+                    break;
+
+                case TeamTypeFilter.Family:
+                    Results = _results?.Where(x => x.Team.Type == TeamType.Family).ToList();
+                    break;
+
+                case TeamTypeFilter.Warrior:
+                    Results = _results?.Where(x => x.Team.Type == TeamType.Warrior).ToList();
+                    break;
+
+                default:
+                    break;
+            }
         }
     }
 }

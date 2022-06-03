@@ -1,9 +1,8 @@
 ﻿@page "/resultats/fin"
 <div class="text-center">
-    <CheckBoxes Items="TeamTypeFilter"
-                ItemChanged="FilterResults"
-                TValue="TeamType"
-                IsInline="true" />
+    <TeamTypeFilterRadios IsInline=true
+                          SelectedFilter=TeamTypeFilter
+                          OnFilterChanged=OnTeamTypeFilterChanged />
 </div>
 <div>
     <table class="table table-striped align-middle">

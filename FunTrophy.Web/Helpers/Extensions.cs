@@ -5,7 +5,7 @@
         public static string ToTimeString(this TimeSpan time)
         {
             var formattedTime = (time < TimeSpan.Zero) ? "-" : "";
-            if (time.Hours != 0)
+            if ((int)time.TotalHours != 0)
             {
                 formattedTime += string.Format("{0}:{1}:{2}", 
                     Math.Abs((int)time.TotalHours), 

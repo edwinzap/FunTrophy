@@ -1,0 +1,37 @@
+﻿@using static FunTrophy.Web.Models.Filters
+
+<div class="form-check @(IsInline ? "form-check-inline": "")">
+    <input type="radio" name="teamtype-filter" class="form-check-input" id="radio-all"
+           value="@Filters.TeamTypeFilter.All" @onchange="OnTeamTypeFilterChanged" checked="@(SelectedFilter == @Filters.TeamTypeFilter.All)" />
+    <label class="form-check-label px-2" for="radio-all">Tout</label>
+</div>
+<div class="form-check @(IsInline ? "form-check-inline": "")">
+    <input type="radio" name="teamtype-filter" class="form-check-input" id="radio-family"
+           value="@Filters.TeamTypeFilter.Family" @onchange="OnTeamTypeFilterChanged" checked="@(SelectedFilter == @Filters.TeamTypeFilter.Family)" />
+    <label class="form-check-label px-2" for="radio-family"><span class="pe-1 @HtmlHelper.GetFaIcon(TeamType.Family)"></span>Family</label>
+</div>
+<div class="form-check @(IsInline ? "form-check-inline": "")">
+    <input type="radio" name="teamtype-filter" class="form-check-input" id="radio-warrior"
+           value="@Filters.TeamTypeFilter.Warrior" @onchange="OnTeamTypeFilterChanged" checked="@(SelectedFilter == @Filters.TeamTypeFilter.Warrior)" />
+    <label class="form-check-label px-2" for="radio-warrior"><span class="pe-1 @HtmlHelper.GetFaIcon(TeamType.Warrior)"></span>Warrior</label>
+</div>
+
+@code {
+    [Parameter]
+    public bool IsInline { get; set; } = false;
+
+    [Parameter]
+    public TeamTypeFilter SelectedFilter { get; set; }
+
+    [Parameter]
+    public EventCallback<TeamTypeFilter> OnFilterChanged { get; set; }
+
+    private void OnTeamTypeFilterChanged(ChangeEventArgs args)
+    {
+        if (Enum.TryParse(args?.Value?.ToString(), out TeamTypeFilter value))
+        {
+            SelectedFilter = value;
+            OnFilterChanged.InvokeAsync(value);
+        }
+    }
+}

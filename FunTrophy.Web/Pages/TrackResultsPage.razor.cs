@@ -1,8 +1,10 @@
 ﻿using FunTrophy.Shared.Model;
 using FunTrophy.Web.Components;
 using FunTrophy.Web.Contracts.Services;
+using FunTrophy.Web.Models;
 using Microsoft.AspNetCore.Components;
 using System.Timers;
+using static FunTrophy.Web.Models.Filters;
 
 namespace FunTrophy.Web.Pages
 {
@@ -28,7 +30,7 @@ namespace FunTrophy.Web.Pages
 
         private EditDialog SettingsDialog { get; set; } = default!;
 
-        private List<CheckBoxItem<TeamType>> TeamTypeFilter { get; set; } = new();
+        private TeamTypeFilter TeamTypeFilter { get; set; } = TeamTypeFilter.All;
 
         private bool _shouldAutoRotate = false;
 
@@ -60,9 +62,6 @@ namespace FunTrophy.Web.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            TeamTypeFilter = Enum.GetValues<TeamType>()
-                .Select(value => new CheckBoxItem<TeamType>(true, value, value.ToString()))
-                .ToList();
             _timer.Elapsed += new ElapsedEventHandler(OnTimerTick);
 
             RefreshAutoRotate();
@@ -103,8 +102,23 @@ namespace FunTrophy.Web.Pages
 
         private void FilterResults()
         {
-            var filter = TeamTypeFilter.Where(x => x.IsChecked).Select(x => x.Value);
-            Results = _results?.Where(x => filter.Contains(x.Team.Type)).ToList();
+            switch (TeamTypeFilter)
+            {
+                case TeamTypeFilter.All:
+                    Results = _results;
+                    break;
+
+                case TeamTypeFilter.Family:
+                    Results = _results?.Where(x => x.Team.Type == TeamType.Family).ToList();
+                    break;
+
+                case TeamTypeFilter.Warrior:
+                    Results = _results?.Where(x => x.Team.Type == TeamType.Warrior).ToList();
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         private async Task OnSelectedTrackChanged(ChangeEventArgs args)
@@ -136,8 +150,9 @@ namespace FunTrophy.Web.Pages
             SettingsDialog.Show();
         }
 
-        private void OnTeamTypeFilterChanged()
+        private void OnTeamTypeFilterChanged(TeamTypeFilter filter)
         {
+            TeamTypeFilter = filter;
             FilterResults();
         }
 

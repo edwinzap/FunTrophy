@@ -1,4 +1,4 @@
-﻿namespace FunTrophy.Web
+﻿namespace FunTrophy.Web.Models
 {
     public class CheckBoxItem<T>
     {

@@ -61,7 +61,7 @@
             var index = Results.IndexOf(result) + 1;
             <div class="p-2 d-flex gap-2 align-items-center border result-item">
                 <div class="px-1 team-number">@index<sup>@(HtmlHelper.GetRankSup(index))</sup></div>
-                
+
                 <div class="team-color" style="border-color:@result.Team.Color.Code">
                     <span class="@(HtmlHelper.GetFaIcon(result.Team.Type))"></span>
                 </div>
@@ -79,7 +79,12 @@
             OkButtonText="Fermer"
             ShowCancelButton="false">
     <div class="d-flex flex-column">
-        <CheckBoxes Items="TeamTypeFilter" TValue="TeamType" ItemChanged="OnTeamTypeFilterChanged"/>
+        <div class="p-2">
+            <TeamTypeFilterRadios IsInline=true
+                                  SelectedFilter=TeamTypeFilter
+                                  OnFilterChanged=OnTeamTypeFilterChanged />
+
+        </div>
         <div class="p-2">
             <div class="form-check form-switch">
                 <input class="form-check-input" type="checkbox" id="autoRotate" @bind-value="@ShouldAutoRotate" checked="@ShouldAutoRotate">
