@@ -13,5 +13,7 @@ namespace FunTrophy.API.Contracts.Services
         Task Remove(int raceId);
 
         Task Update(int raceId, AddOrUpdateRaceDto race);
+
+        Task End(int raceId, bool isEnded);
     }
 }

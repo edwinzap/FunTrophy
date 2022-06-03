@@ -1,5 +1,6 @@
 ﻿using FunTrophy.Shared.Model;
 using FunTrophy.Web.Contracts.Services;
+using FunTrophy.Web.Models;
 using Microsoft.AspNetCore.Components;
 
 namespace FunTrophy.Web.Pages.Editor

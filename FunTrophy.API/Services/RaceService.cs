@@ -47,5 +47,14 @@ namespace FunTrophy.API.Services
             dbRace.Date = race.Date;
             await _repository.Update(dbRace);
         }
+
+        public async Task End(int raceId, bool isEnded)
+        {
+            var dbRace = await _repository.Get(raceId);
+            if (dbRace.IsEnded == isEnded) return;
+         
+            dbRace.IsEnded = isEnded;
+            await _repository.Update(dbRace);
+        }
     }
 }

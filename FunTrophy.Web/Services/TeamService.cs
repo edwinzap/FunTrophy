@@ -14,14 +14,16 @@ namespace FunTrophy.Web.Services
             var url = GetUrl();
             await PostAsync(url, team);
         }
-
-        public async Task<List<TeamDto>> GetTeams(int colorId)
+        public async Task<List<TeamDto>> GetTeamsByRace(int raceId)
         {
-            var parameters = new Dictionary<string, object>()
-            {
-                { "colorId", colorId }
-            };
-            var url = GetUrl(parameters);
+            var url = GetUrl() + $"/ByRace/{raceId}";
+            return await GetAsync<List<TeamDto>>(url);
+        }
+
+
+        public async Task<List<TeamDto>> GetTeamsByColor(int colorId)
+        {
+            var url = GetUrl() + $"/ByColor/{colorId}";
             return await GetAsync<List<TeamDto>>(url);
         }
 

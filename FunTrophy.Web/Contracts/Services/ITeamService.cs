@@ -6,7 +6,9 @@ namespace FunTrophy.Web.Contracts.Services
     {
         Task Add(AddTeamDto team);
 
-        Task<List<TeamDto>> GetTeams(int raceId);
+        Task<List<TeamDto>> GetTeamsByRace(int raceId);
+
+        Task<List<TeamDto>> GetTeamsByColor(int colorId);
 
         Task Remove(int teamId);
 

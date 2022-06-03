@@ -1,0 +1,159 @@
+﻿@page "/resultats/equipe"
+@using FunTrophy.Shared.Model
+@using FunTrophy.Web.Helpers
+
+<RedirectToSelectRace />
+<PageTitle>Résultats par équipe</PageTitle>
+
+<div class="d-flex justify-content-center d-sm-block d-md-none">
+    <div class="p-2 flex-fill">
+        <select class="form-select" value="@SelectedTeamId" @onchange="OnSelectedTeamChanged">
+            @if (Teams is null)
+            {
+                <option>Chargement...</option>
+            }
+            else
+            {
+                @foreach (var team in Teams)
+                {
+                    <option value="@team.Id" @key="@team">@team.Name</option>
+                }
+            }
+        </select>
+    </div>
+</div>
+
+<div class="d-flex">
+    @*Search box and team list*@
+    <div class="d-flex flex-column d-none d-md-block">
+        <div class="input-group">
+            <input class="form-control" type="search"
+                   @bind="SearchText"
+                   @bind:event="oninput"
+                   placeholder="Rechercher une équipe...">
+            <span class="input-group-text">
+                <i class="fas fa-search"></i>
+            </span>
+        </div>
+        <div class="pe-1 mt-2 team-list">
+            <div class="list-group">
+                @if (Teams is null)
+                {
+                    <div class="p-2">
+                        <div class="spinner-border" role="status" />
+                    </div>
+                }
+                else
+                {
+                    @foreach (var team in Teams)
+                    {
+                        <button class="list-group-item list-group-item-action @(team.Id == SelectedTeamId ? "active": "")" @onclick="() => OnSelectTeam(team.Id)">
+                            <div class="d-flex gap-2 align-items-center">
+                                <div class="team-color team-color-sm" style="border-color:@team.Color.Code">
+                                    <span class="fa-sm @(HtmlHelper.GetFaIcon(team.Type))"></span>
+                                </div>@team.Name
+                            </div>
+                        </button>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="p-4 d-flex d-none d-lg-flex">
+        <div class="vr"></div>
+    </div>
+
+    <div class="p-2 flex-fill">
+        @if (SelectedTeam is not null)
+        {
+            <div class="p-2 d-flex gap-2 align-items-center justify-content-center">
+                <div class="team-color" style="border-color:@SelectedTeam.Color.Code">
+                    <span class="@(HtmlHelper.GetFaIcon(SelectedTeam.Type))"></span>
+                </div>
+
+                <h2 class="align-bottom my-0">@SelectedTeam?.Name</h2>
+            </div>
+        }
+
+        @*Results*@
+        <div>
+            <h3>Résultats</h3>
+            <table class="table table-striped align-middle">
+                <thead>
+                    <tr>
+                        <th scope=col>#</th>
+                        <th scope="col">Parcours</th>
+                        <th scope="col">Temps</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Results is null)
+                    {
+                        <tr>
+                            <td colspan=3 class="text-center">
+                                <div class="spinner-border" role="status" />
+                            </td>
+                        </tr>
+                    }
+                    else if (!Results.Any())
+                    {
+                        <tr class="p-2">
+                            <td colspan=3 class="text-center">Aucun résultat à afficher</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var result in Results)
+                        {
+                            <tr @key="@result">
+                                <td>@(Results.IndexOf(result) + 1)</td>
+                                <td>@result.Track.Name</td>
+                                <td>@(result.LapDuration.HasValue ? result.LapDuration.Value.ToTimeString(): "En cours...")</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @*Time adjustments*@
+        <div class="mt-5">
+            <h3>Bonus/malus</h3>
+            <table class="table table-striped align-middle">
+                <thead>
+                    <tr>
+                        <th scope="col">Catégorie</th>
+                        <th scope="col">Temps</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (TimeAdjustments is null)
+                    {
+                        <tr>
+                            <td colspan=2 class="text-center">
+                                <div class="spinner-border" role="status" />
+                            </td>
+                        </tr>
+                    }
+                    else if (!TimeAdjustments.Any())
+                    {
+                        <tr class="p-2">
+                            <td colspan=3 class="text-center">Aucun bonus/malus à afficher</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var adjustment in TimeAdjustments)
+                        {
+                            <tr @key="@adjustment">
+                                <td>@adjustment.CategoryName</td>
+                                <td class="@(adjustment.Seconds >= 0 ? "text-success": "text-danger")">@(TimeSpan.FromSeconds(adjustment.Seconds).ToTimeString())</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

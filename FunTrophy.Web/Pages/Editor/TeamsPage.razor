@@ -1,4 +1,5 @@
-﻿@page "/editeur/equipes"
+﻿@layout EditorLayout
+@page "/editeur/equipes"
 @using FunTrophy.Shared.Model
 
 <RedirectToSelectRace />
@@ -86,12 +87,12 @@ else
     </div>
 }
 <ConfirmDialog @ref="DeleteDialog"
-               ConfirmationTitle="Supprimer l'équipe"
+               Title="Supprimer l'équipe"
                ConfirmationChanged="(confirm) => DeleteTeam(confirm)">
 </ConfirmDialog>
 
 <EditDialog @ref="EditDialog"
-            ConfirmationTitle="Editer l'équipe"
+            Title="Editer l'équipe"
             ConfirmationChanged="(confirm) => UpdateTeam(confirm)">
     <div class="d-flex flex-column">
         <div class="p-2">
@@ -114,12 +115,6 @@ else
         <div class="p-2">
             <label for="team-color" class="form-label">Color</label>
             <ColorSelector Colors="@Colors" @bind-CurrentColorId="updateTeam.ColorId"/>
-@*            <select id="team-color" class="form-select" @bind="@updateTeam.ColorId">
-                @foreach (var color in Colors)
-                {
-                    <option value="@color.Id" style="background-color:@color.Code">@color.Code</option>
-                }
-            </select>*@
         </div>
     </div>
 </EditDialog>

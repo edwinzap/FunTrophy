@@ -55,25 +55,17 @@ namespace FunTrophy.Web.Pages.Editor
             AppState.Race = null;
         }
 
-        private void ConfirmDeleteRace(RaceDto race)
-        {
-            DeleteRaceId = race.Id;
-            var message = $"Es-tu sûr de vouloir supprimer '{race.Name}'?";
-            DeleteDialog.Show(message);
-        }
-
         private async Task AddRace()
         {
             await RaceService.Add(addRace);
             await LoadRaces();
         }
 
-        private void ConfirmEditRace(RaceDto race)
+        private void ConfirmDeleteRace(RaceDto race)
         {
-            updateRace.Name = race.Name;
-            updateRace.Date = race.Date;
-            updateRaceId = race.Id;
-            EditDialog.Show();
+            DeleteRaceId = race.Id;
+            var message = $"Es-tu sûr de vouloir supprimer '{race.Name}'?";
+            DeleteDialog.Show(message);
         }
 
         private async Task DeleteRace(bool confirm)
@@ -85,12 +77,30 @@ namespace FunTrophy.Web.Pages.Editor
             }
         }
 
+        private void ConfirmEditRace(RaceDto race)
+        {
+            updateRace.Name = race.Name;
+            updateRace.Date = race.Date;
+            updateRaceId = race.Id;
+            EditDialog.Show();
+        }
+
         private async Task UpdateRace(bool confirm)
         {
             if (confirm && updateRaceId.HasValue)
             {
                 await RaceService.Update(updateRaceId.Value, updateRace);
                 await LoadRaces();
+            }
+        }
+
+        private async void EndRace(bool isEnded)
+        {
+            if (AppState.Race is not null)
+            {
+                await RaceService.End(AppState.Race.Id, isEnded);
+                AppState.Race = await RaceService.GetRace(AppState.Race.Id);
+                StateHasChanged();
             }
         }
     }

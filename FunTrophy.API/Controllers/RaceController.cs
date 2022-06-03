@@ -70,6 +70,15 @@ namespace FunTrophy.API.Controllers
             return Ok();
         }
 
+        [HttpPut("{raceId}/end/{isEnded}")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> EndRace(int raceId, bool isEnded)
+        {
+            await _raceService.End(raceId, isEnded);
+            return Ok();
+        }
+
+
         /// <summary>
         /// Get a list of all races
         /// </summary>

@@ -101,6 +101,7 @@ namespace FunTrophy.API.Services
                     return;
                 }
                 currentTrackTime.EndTime = currentTime;
+                await _trackTimeRepository.Update(currentTrackTime);
             }
 
             if (nextTrackTime is not null)

@@ -46,7 +46,7 @@ namespace FunTrophy.API.Controllers
         /// <summary>
         /// Update the team with the given Id
         /// </summary>
-        /// <param name="teamId">Team Id</param>
+        /// <param name="teamId">Team id</param>
         /// <param name="team">Team object</param>
         /// <returns></returns>
         [HttpPut("{teamId}")]
@@ -62,11 +62,24 @@ namespace FunTrophy.API.Controllers
         /// </summary>
         /// <param name="colorId">Color Id</param>
         /// <returns>List of teams</returns>
-        [HttpGet("")]
+        [HttpGet("ByColor/{colorId}")]
         [ProducesResponseType(typeof(List<TeamDto>), 200)]
-        public async Task<IActionResult> GetTeams(int colorId)
+        public async Task<IActionResult> GetTeamsByColor(int colorId)
         {
-            var teams = await _teamService.GetAll(colorId);
+            var teams = await _teamService.GetByColor(colorId);
+            return Ok(teams);
+        }
+
+        /// <summary>
+        /// Get all the teams of the race
+        /// </summary>
+        /// <param name="raceId">Race id</param>
+        /// <returns>List of teams</returns>
+        [HttpGet("ByRace/{raceId}")]
+        [ProducesResponseType(typeof(List<TeamDto>), 200)]
+        public async Task<IActionResult> GetTeamsByRace(int raceId)
+        {
+            var teams = await _teamService.GetByRace(raceId);
             return Ok(teams);
         }
     }

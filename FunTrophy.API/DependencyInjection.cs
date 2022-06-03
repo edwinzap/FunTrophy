@@ -21,6 +21,7 @@ namespace FunTrophy.API
             services.AddTransient<ITimeAdjustmentService, TimeAdjustmentService>();
             services.AddTransient<ITimeAdjustmentCategoryService, TimeAdjustmentCategoryService>();
             services.AddTransient<ITrackTimeService, TrackTimeService>();
+            services.AddTransient<IResultService, ResultService>();
             return services;
         }
 
@@ -35,6 +36,7 @@ namespace FunTrophy.API
             services.AddTransient<ITimeAdjustmentMapper, TimeAdjustmentMapper>();
             services.AddTransient<ITimeAdjustmentCategoryMapper, TimeAdjustmentCategoryMapper>();
             services.AddTransient<ITrackTimeMapper, TrackTimeMapper>();
+            services.AddTransient<IResultMapper, ResultMapper>();
             return services;
         }
 

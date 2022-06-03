@@ -1,4 +1,5 @@
-﻿@page "/editeur/parcours"
+﻿@layout EditorLayout
+@page "/editeur/parcours"
 
 <RedirectToSelectRace />
 <PageTitle>Parcours</PageTitle>
@@ -57,12 +58,12 @@
 </div>
 
 <ConfirmDialog @ref="DeleteDialog"
-               ConfirmationTitle="Supprimer le parcours"
+               Title="Supprimer le parcours"
                ConfirmationChanged="(confirm) => RemoveTrack(confirm)">
 </ConfirmDialog>
 
 <EditDialog @ref="EditDialog"
-            ConfirmationTitle="Editer le parcours"
+            Title="Editer le parcours"
             ConfirmationChanged="(confirm) => UpdateTrack(confirm)">
     <div class="d-flex">
         <div class="p-2 flex-fill">

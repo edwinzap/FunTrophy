@@ -29,7 +29,7 @@ namespace FunTrophy.Web.Pages.Editor
 
         private List<TimeAdjustmentDto>? TimeAdjustments { get; set; }
 
-        public List<ColorDto> Colors { get; set; }
+        public List<ColorDto>? Colors { get; set; }
 
         private List<TeamDto>? Teams { get; set; }
 
@@ -74,7 +74,7 @@ namespace FunTrophy.Web.Pages.Editor
                 return;
 
             Teams = null;
-            Teams = await TeamService.GetTeams(CurrentColorId.Value);
+            Teams = await TeamService.GetTeamsByColor(CurrentColorId.Value);
             if (Teams.Any())
             {
                 CurrentTeamId = Teams.First().Id;
@@ -131,7 +131,7 @@ namespace FunTrophy.Web.Pages.Editor
         private void ConfirmDeleteTimeAdjustment(TimeAdjustmentDto timeAdjustment)
         {
             DeleteTimeAdjustmentId = timeAdjustment.Id;
-            var message = $"Es-tu sûr de vouloir supprimer '{timeAdjustment.CategoryName}: {TimeSpan.FromSeconds(timeAdjustment.Seconds).ToMinutesAndSecondsString()}'?";
+            var message = $"Es-tu sûr de vouloir supprimer '{timeAdjustment.CategoryName}: {TimeSpan.FromSeconds(timeAdjustment.Seconds).ToTimeString()}'?";
             DeleteDialog.Show(message);
         }
 

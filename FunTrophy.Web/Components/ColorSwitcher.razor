@@ -1,11 +1,11 @@
 ﻿@using FunTrophy.Shared.Model
 
-<div class="d-flex flex-row">
+<div class="d-flex flex-row gap-2">
     @foreach (var color in Colors)
     {
-        <div class="p-2" @key="@color.Id">
+        <div class="" @key="@color.Id">
             <input type="radio" class="btn-check" name="colors" id="color-@color.Id" autocomplete="off" value="@color.Id" checked=@(CurrentColorId == color.Id) @onchange="CurrentColorChanged">
-            <label class="btn px-4 @(CurrentColorId == color.Id? "active": "")" style="background-color:@color.Code" for="color-@color.Id">&nbsp;</label>
+            <label class="btn px-3 px-sm-4 @(CurrentColorId == color.Id? "active": "")" style="background-color:@color.Code" for="color-@color.Id">&nbsp;</label>
         </div>
     }
 </div>

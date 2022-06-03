@@ -26,6 +26,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FunTrophy.Web", "FunTrophy.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FunTrophy.Fake", "FunTrophy.Fake\FunTrophy.Fake.csproj", "{CE96FB07-B718-4221-8CAE-186B2ECFB664}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FunTrophy.Web.UnitTests", "FunTrophy.Web.UnitTests\FunTrophy.Web.UnitTests.csproj", "{9B89977B-01DA-4859-8676-8F0CFE31081C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +66,10 @@ Global
 		{CE96FB07-B718-4221-8CAE-186B2ECFB664}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE96FB07-B718-4221-8CAE-186B2ECFB664}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE96FB07-B718-4221-8CAE-186B2ECFB664}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B89977B-01DA-4859-8676-8F0CFE31081C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B89977B-01DA-4859-8676-8F0CFE31081C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B89977B-01DA-4859-8676-8F0CFE31081C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B89977B-01DA-4859-8676-8F0CFE31081C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,6 +78,7 @@ Global
 		{5C6EACE8-32CA-40B4-9DB6-03AD59A6B1D9} = {8B50AF3D-28E3-42BA-BD2B-F1D1513BE3DA}
 		{8488B15A-BFCB-4D5F-88FD-BAD38485C764} = {8B50AF3D-28E3-42BA-BD2B-F1D1513BE3DA}
 		{8C7EDF3E-8AD1-4F3C-8A99-D1959F2CA9B9} = {8B50AF3D-28E3-42BA-BD2B-F1D1513BE3DA}
+		{9B89977B-01DA-4859-8676-8F0CFE31081C} = {8B50AF3D-28E3-42BA-BD2B-F1D1513BE3DA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8335E316-DAC4-4AFB-93BB-2698A069C82B}
