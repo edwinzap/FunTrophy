@@ -1,51 +1,52 @@
 ﻿@inject AppState AppState
 
-<div class="top-row ps-3 navbar navbar-dark">
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">Fun Trophy</a>
-
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+        <a class="navbar-brand px-3" href="#">Fun Trophy</a>
+        <button class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
-    </div>
-</div>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <nav class="navbar-brand navbar-expand-md">
-        <div class="nav-item">
-            <NavLink class="nav-link" href="editeur/courses">Editeur</NavLink>
-        </div>
-        <div class="nav-item">
-            <NavLink class="nav-link" href="chrono">Chrono</NavLink>
-        </div>
-        <div class="nav-item">
-            <NavLink class="nav-link" href="resultats/parcours">Résultats par parcours</NavLink>
-        </div>
-        <div class="nav-item">
-            <NavLink class="nav-link" href="resultats/equipe">Résultats par équipe</NavLink>
-        </div>
-        @if (AppState?.Race?.IsEnded == true)
-        {
-            <div class="nav-item">
-                <NavLink class="nav-link" href="resultats/fin">Résultats finaux</NavLink>
+        <div class="@NavMenuCssClass navbar-collapse">
+            <div class="navbar-nav px-3">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="editeur/courses" @onclick="CloseNavMenu">Editeur</NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="chrono" @onclick="CloseNavMenu">Chrono</NavLink>
+                    </li>
+                    <li class="nav-item dropdown px-3">
+                        <a class="nav-link dropdown-toggle @NavSubMenuCssClass" @onclick="ToggleDropdown">Résultats</a>
+                        <ul class="dropdown-menu @NavSubMenuCssClass">
+                            <li>
+                                <NavLink class="dropdown-item" href="resultats/parcours" @onclick="CloseNavMenu">Par parcours</NavLink>
+                            </li>
+                            <li>
+                                <NavLink class="dropdown-item" href="resultats/equipe" @onclick="CloseNavMenu">Par équipe</NavLink>
+                            </li>
+                            <li>
+                                <NavLink class="dropdown-item" href="resultats/fin" @onclick="CloseNavMenu">Finaux</NavLink>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
-        }
-        @*<div class="nav-item dropdown">
-        <NavLink class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Résultats</NavLink>
-        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-        <li><a class="dropdown-item" href="#">Action</a></li>
-        <li><a class="dropdown-item" href="#">Another action</a></li>
-        <li><hr class="dropdown-divider"></li>
-        <li><a class="dropdown-item" href="#">Something else here</a></li>
-        </ul>
-        </div>*@
-    </nav>
-</div>
+        </div>
+    </div>
+</nav>
 
 @code {
+    private bool expandDropdown = true;
     private bool collapseNavMenu = true;
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    private string? NavSubMenuCssClass => expandDropdown ? "show" : null;
+
+    private void CloseNavMenu()
+    {
+        collapseNavMenu = true;
+    }
 
     private void ToggleNavMenu()
     {
@@ -60,5 +61,10 @@
     public void Dispose()
     {
         AppState.OnChange -= StateHasChanged;
+    }
+
+    private void ToggleDropdown()
+    {
+        expandDropdown = !expandDropdown;
     }
 }

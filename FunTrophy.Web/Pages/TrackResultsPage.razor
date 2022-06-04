@@ -43,7 +43,7 @@
     </div>
 </div>
 
-<div class="my-3 d-flex flex-column flex-md-wrap flex-nowrap gap-2" id="result-list">
+<div class="my-3 mx-lg-3 d-flex flex-column flex-md-wrap flex-nowrap gap-2" id="result-list">
     @if (Results is null)
     {
         <div class="d-flex p-5 justify-content-center">
@@ -92,7 +92,7 @@
             </div>
             <div class="row">
                 <div class="col-auto">
-                    <label class="form-label" for="rotation-interval">Interval</label>
+                    <label class="form-label" for="rotation-interval">Interval (en secondes)</label>
                 </div>
                 <div class="col-auto">
                     <input class="form-control form-control-sm" type="number" id="rotation-interval" min=1 @bind-value="@RotationInterval" />
