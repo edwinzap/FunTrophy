@@ -133,3 +133,13 @@ textarea {
 .navbar {
     box-shadow: 0 4px 12px 0 rgb(0 0 0 / 7%), 0 2px 4px rgb(0 0 0 / 5%);
 }
+
+.dropdown-menu-end {
+    right:0;
+    left:auto;
+}
+
+body {
+    height: 100vh;
+    position: relative;
+}
