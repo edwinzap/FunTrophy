@@ -73,8 +73,6 @@ namespace FunTrophy.Web.Pages
             {
                 Results = null;
                 Results = (await ResultService.GetTeamResults(SelectedTeamId.Value))
-                    .OrderByDescending(x => x.LapDuration.HasValue)
-                    .ThenBy(x => x.LapDuration)
                     .ToList();
             }
         }

@@ -1,6 +1,5 @@
 ﻿@page "/resultats/equipe"
-@using FunTrophy.Shared.Model
-@using FunTrophy.Web.Helpers
+@layout UserLayout
 
 <RedirectToSelectRace />
 <PageTitle>Résultats par équipe</PageTitle>
@@ -16,7 +15,7 @@
             {
                 @foreach (var team in Teams)
                 {
-                    <option value="@team.Id" @key="@team">@team.Name</option>
+                    <option class="p-2" value="@team.Id" @key="@team">@team.Name</option>
                 }
             }
         </select>

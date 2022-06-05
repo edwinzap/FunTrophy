@@ -1,53 +1,79 @@
 ﻿@inject AppState AppState
-
-<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">Fun Trophy</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</div>
-
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="editeur/courses">Courses</NavLink>
+<ul class="nav nav-pills flex-column w-100 mb-auto">
+    <NavLink class="nav-link text-white" href="editeur/courses">
+        <div class="d-flex">
+            <div>
+                <span class="fas fa-person-running me-md-2"></span>
+            </div>
+            <div class="d-none d-md-block">Courses</div>
         </div>
-        @if (AppState.Race is not null)
-        {
-            <div class="nav-item px-3">
-                <NavLink class="nav-link" href="editeur/couleurs">Couleurs</NavLink>
-            </div>
-            <div class="nav-item px-3">
-                <NavLink class="nav-link" href="editeur/equipes">Equipes</NavLink>
-            </div>
-            <div class="nav-item px-3">
-                <NavLink class="nav-link" href="editeur/parcours">Parcours</NavLink>
-            </div>
-            <div class="nav-item px-3">
-                <NavLink class="nav-link" href="editeur/ordreparcours">Ordre des parcours</NavLink>
-            </div>
-            <div class="nav-item px-3">
-                <NavLink class="nav-link" href="editeur/categories">Catégories de bonus-malus</NavLink>
-            </div>
-            <div class="nav-item px-3">
-                <NavLink class="nav-link" href="editeur/bonus-malus">Bonus-malus</NavLink>
-            </div>
-        }
-    </nav>
-</div>
+    </NavLink>
+    @if (AppState.Race is not null)
+    {
+        <li class="nav-item">
+            <NavLink class="nav-link text-white" href="editeur/couleurs">
+                <div class="d-flex">
+                    <div>
+                        <span class="fas fa-palette me-md-2"></span>
+                    </div>
+                    <div class="d-none d-md-block">Couleurs</div>
+                </div>
+            </NavLink>
+        </li>
+        <li class="nav-item">
+            <NavLink class="nav-link text-white" href="editeur/equipes">
+                <div class="d-flex">
+                    <div>
+                        <span class="fas fa-people-group me-md-2"></span>
+                    </div>
+                    <div class="d-none d-md-block">Equipes</div>
+                </div>
+            </NavLink>
+        </li>
+        <li class="nav-item">
+            <NavLink class="nav-link text-white" href="editeur/parcours">
+                <div class="d-flex">
+                    <div>
+                        <span class="fas fa-road me-md-2"></span>
+                    </div>
+                    <div class="d-none d-md-block">Parcours</div>
+                </div>
+            </NavLink>
+        </li>
+        <li class="nav-item">
+            <NavLink class="nav-link text-white" href="editeur/ordreparcours">
+                <div class="d-flex">
+                    <div>
+                        <span class="fas fa-signs-post me-md-2"></span>
+                    </div>
+                    <div class="d-none d-md-block">Ordre des parcours</div>
+                </div>
+            </NavLink>
+        </li>
+        <li class="nav-item">
+            <NavLink class="nav-link text-white" href="editeur/categories">
+                <div class="d-flex">
+                    <div>
+                        <span class="fas fa-clock me-md-2"></span>
+                    </div>
+                    <div class="d-none d-md-block">Catégories de bonus-malus</div>
+                </div>
+            </NavLink>
+        </li>
+        <li class="nav-item">
+            <NavLink class="nav-link text-white" href="editeur/bonus-malus">
+                <div class="d-flex">
+                    <div>
+                        <span class="fas fa-hourglass me-md-2"></span>
+                    </div>
+                    <div class="d-none d-md-block">Bonus-malus</div>
+                </div>
+            </NavLink>
+        </li>
+    }
+</ul>
 
 @code {
-    private bool collapseNavMenu = true;
-
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-
     protected override void OnInitialized()
     {
         AppState.OnChange += StateHasChanged;

@@ -3,12 +3,13 @@
 }
 
 .result-item {
-    max-width: 30em;
+    max-width: 40em;
 }
 
 
 @media screen and (min-width: 576px) {
     #result-list {
-        height: 89vh;
+        height: 80vh;
+        overflow-y: hidden; 
     }
 }

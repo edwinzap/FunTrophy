@@ -52,6 +52,7 @@ namespace FunTrophy.API.Services
         {
             var times = (await _trackTimeRepository.GetOfTeam(teamId))
                 .Where(x => x.StartTime.HasValue)
+                .OrderBy(x => x.StartTime)
                 .ToList();
 
             var results = _mapper.MapOfTeam(times);
