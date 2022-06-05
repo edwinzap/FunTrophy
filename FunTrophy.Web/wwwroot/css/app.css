@@ -12,12 +12,6 @@ a, .btn-link {
     color: #0071c1;
 }
 
-.btn-primary {
-    color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
-}
-
 .content {
     padding-top: 1.1rem;
 }
@@ -140,6 +134,13 @@ textarea {
 }
 
 body {
-    height: 100vh;
     position: relative;
+}
+
+.sidebar {
+    width: 260px;
+    height: 100%;
+    top: 0;
+    position: fixed;
+    padding-top: 57px;
 }

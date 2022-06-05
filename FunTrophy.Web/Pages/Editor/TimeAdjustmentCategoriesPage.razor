@@ -9,7 +9,6 @@
         <thead>
             <tr>
                 <th scope="col">Nom</th>
-                <th scope="col">Date</th>
                 <th></th>
             </tr>
         </thead>
@@ -17,7 +16,7 @@
             @if (Categories is null)
             {
                 <tr>
-                    <td colspan=3 class="text-center">
+                    <td colspan=2 class="text-center">
                         <div class="spinner-border" role="status" />
                     </td>
                 </tr>
@@ -25,7 +24,7 @@
             else if (!Categories.Any())
             {
                 <tr class="p-2">
-                    <td colspan=3 class="text-center">Aucune catégorie de bonus-malus</td>
+                    <td colspan=2 class="text-center">Aucune catégorie de bonus-malus</td>
                 </tr>
             }
             else
@@ -35,8 +34,8 @@
                     <tr @key="@track.Id">
                         <td>@track.Name</td>
                         <td>
-                            <a class="btn btn-secondary btn-sm" @onclick="() => ConfirmEditTrack(track)"><span class="oi oi-pencil"></span></a>
-                            <a class="btn btn-danger btn-sm" @onclick="() => ConfirmDeleteTrack(track)"><span class="oi oi-trash"></span></a>
+                            <a class="btn btn-secondary btn-sm" @onclick="() => ConfirmEditTrack(track)"><span class="fas fa-pencil"></span></a>
+                            <a class="btn btn-danger btn-sm" @onclick="() => ConfirmDeleteTrack(track)"><span class="fas fa-trash"></span></a>
                         </td>
                     </tr>
                 }

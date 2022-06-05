@@ -4,15 +4,6 @@
     flex-direction: column;
 }
 
-.sidebar {
-    width: 260px;
-    height: 100%;
-    top: 0;
-    position: fixed;
-    padding-top: 57px;
-    background-color: #00635D;
-}
-
 main {
     margin-left: 260px;
 }
