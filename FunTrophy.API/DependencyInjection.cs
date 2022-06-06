@@ -6,6 +6,8 @@ using FunTrophy.Infrastructure.Repositories;
 using FunTrophy.Fake.Repositories;
 using FunTrophy.Fake;
 using FunTrophy.API.Contracts.Mappers;
+using FunTrophy.API.Contracts.Helpers;
+using FunTrophy.API.Helpers;
 
 namespace FunTrophy.API
 {
@@ -50,6 +52,12 @@ namespace FunTrophy.API
             services.AddTransient<ITimeAdjustmentRepository, TimeAdjustmentRepository>();
             services.AddTransient<ITimeAdjustmentCategoryRepository, TimeAdjustmentCategoryRepository>();
             services.AddTransient<ITrackTimeRepository, TrackTimeRepository>();
+            return services;
+        }
+
+        public static IServiceCollection AddHelpers(this IServiceCollection services)
+        {
+            services.AddTransient<INotificationHelper, NotificationHelper>();
             return services;
         }
 

@@ -1,4 +1,6 @@
-﻿using FunTrophy.Web.Contracts.Services;
+﻿using FunTrophy.Web.Contracts.Helpers;
+using FunTrophy.Web.Contracts.Services;
+using FunTrophy.Web.Helpers;
 using FunTrophy.Web.Services;
 
 namespace FunTrophy.Web
@@ -19,6 +21,14 @@ namespace FunTrophy.Web
            
             return services;
         }
+
+
+        public static IServiceCollection AddHelpers(this IServiceCollection services)
+        {
+            services.AddTransient<INotificationHubHelper, NotificationHubHelper>();
+            return services;
+        }
+
         private static Action<IServiceProvider, HttpClient> HttpClientConfig()
         {
             return (provider, client) =>

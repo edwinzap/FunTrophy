@@ -1,4 +1,5 @@
 ﻿using FunTrophy.Shared.Model;
+using FunTrophy.Web.Contracts.Helpers;
 using FunTrophy.Web.Contracts.Services;
 using Microsoft.AspNetCore.Components;
 using static FunTrophy.Web.Models.Filters;
@@ -15,6 +16,9 @@ namespace FunTrophy.Web.Pages
         [Inject]
         private IResultService ResultService { get; set; } = default!;
 
+        [Inject]
+        public INotificationHubHelper NotificationHubHelper { get; set; } = default!;
+
         private List<FinalResultDto>? _results;
         private List<FinalResultDto>? Results { get; set; }
 
@@ -25,6 +29,14 @@ namespace FunTrophy.Web.Pages
         protected override async Task OnInitializedAsync()
         {
             await LoadResults();
+            await NotificationHubHelper.ConnectToServer();
+            NotificationHubHelper.TimeAdjustmentChanged += OnTimeAdjustmentChanged;
+        }
+
+        private async Task OnTimeAdjustmentChanged(int teamId)
+        {
+            await LoadResults();
+            StateHasChanged();
         }
 
         private async Task LoadResults()

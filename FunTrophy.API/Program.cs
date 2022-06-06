@@ -1,4 +1,5 @@
 using FunTrophy.API;
+using FunTrophy.API.Services;
 using FunTrophy.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -24,6 +25,7 @@ builder.Services.AddDbContext<FunTrophyContext>(options =>
 builder.Services
     .AddServices()
     .AddMappers()
+    .AddHelpers()
     //.AddFakeRepositories();
     .AddRepositories();
 
@@ -55,5 +57,5 @@ app.UseCors(corsPolicyName);
 app.UseAuthorization();
 
 app.MapControllers();
-//app.MapHub<>();
+app.MapHub<NotificationHub>("notificationhub");
 app.Run();
