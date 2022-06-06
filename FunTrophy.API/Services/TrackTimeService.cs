@@ -1,4 +1,5 @@
-﻿using FunTrophy.API.Contracts.Mappers;
+﻿using FunTrophy.API.Contracts.Helpers;
+using FunTrophy.API.Contracts.Mappers;
 using FunTrophy.API.Contracts.Services;
 using FunTrophy.Infrastructure.Contracts.Repositories;
 using FunTrophy.Infrastructure.Model;
@@ -12,6 +13,7 @@ namespace FunTrophy.API.Services
         private readonly ITrackTimeRepository _trackTimeRepository;
         private readonly ITeamRepository _teamRepository;
         private readonly ITrackTimeMapper _mapper;
+        private readonly INotificationHelper _notificationHelper;
 
         private readonly TimeSpan TRACK_MIN_DURATION = TimeSpan.FromSeconds(60);
 
@@ -19,12 +21,14 @@ namespace FunTrophy.API.Services
             ITrackOrderRepository trackOrderRepository,
             ITrackTimeRepository trackTimeRepository,
             ITeamRepository teamRepository,
-            ITrackTimeMapper mapper)
+            ITrackTimeMapper mapper,
+            INotificationHelper notificationHelper)
         {
             _trackOrderRepository = trackOrderRepository;
             _trackTimeRepository = trackTimeRepository;
             _teamRepository = teamRepository;
             _mapper = mapper;
+            _notificationHelper = notificationHelper;
         }
 
         private async Task<TrackTime?> GetNextTrackTime(Team team, IEnumerable<TrackOrder> trackOrders, IEnumerable<TrackTime> teamTrackTimes)
@@ -55,6 +59,7 @@ namespace FunTrophy.API.Services
                 }
                 var newTrackTimeId = await _trackTimeRepository.Add(addNextTrackTime);
                 nextTrackTime = await _trackTimeRepository.Get(newTrackTimeId);
+                await _notificationHelper.NotifyTrackTimeChanged(nextTrackTime.TrackId, nextTrackTime.TeamId);
             }
             return nextTrackTime;
         }
@@ -102,13 +107,16 @@ namespace FunTrophy.API.Services
                 }
                 currentTrackTime.EndTime = currentTime;
                 await _trackTimeRepository.Update(currentTrackTime);
+                await _notificationHelper.NotifyTrackTimeChanged(currentTrackTime.TrackId, currentTrackTime.TeamId);
             }
 
             if (nextTrackTime is not null)
             {
                 nextTrackTime.StartTime = currentTime;
                 await _trackTimeRepository.Update(nextTrackTime);
+                await _notificationHelper.NotifyTrackTimeChanged(nextTrackTime.TrackId, nextTrackTime.TeamId);
             }
+
         }
 
         public async Task<TeamLapInfoDto> GetTeamLap(int teamId)

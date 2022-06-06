@@ -9,6 +9,8 @@ namespace FunTrophy.Web.Helpers
         private HubConnection? _hubConnection;
 
         public event Func<int, Task>? TimeAdjustmentChanged;
+        
+        public event Func<int, int, Task>? TrackTimeChanged;
 
         public async Task ConnectToServer()
         {
@@ -27,6 +29,11 @@ namespace FunTrophy.Web.Helpers
             _hubConnection.On<int, int>(HubConstants.TimeAdjustmentChanged, (teamId, categoryId) =>
             {
                 TimeAdjustmentChanged?.Invoke(teamId);
+            });
+
+            _hubConnection.On<int, int>(HubConstants.TrackTimeChanged, (trackId, teamId) =>
+            {
+                TrackTimeChanged?.Invoke(trackId, teamId);
             });
         }
     }

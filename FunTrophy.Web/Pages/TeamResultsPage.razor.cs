@@ -54,6 +54,16 @@ namespace FunTrophy.Web.Pages
             await LoadTeams();
             await NotificationHubHelper.ConnectToServer();
             NotificationHubHelper.TimeAdjustmentChanged += OnTimeAdjustmentChanged;
+            NotificationHubHelper.TrackTimeChanged += OnTrackTimeChanged;
+        }
+
+        private async Task OnTrackTimeChanged(int trackId, int teamId)
+        {
+            if (SelectedTeamId == teamId)
+            {
+                await LoadResults();
+                StateHasChanged();
+            }
         }
 
         private async Task OnTimeAdjustmentChanged(int teamId)
