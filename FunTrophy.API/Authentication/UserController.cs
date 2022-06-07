@@ -17,7 +17,7 @@ namespace FunTrophy.API.Authentication
 		[AllowAnonymous]
 		[HttpPost]
 		[Route("authenticate")]
-		public IActionResult Authenticate(AuthenticationUser user)
+		public IActionResult Authenticate([FromBody]AuthenticationUser user)
 		{
 			var token = _jwtRepository.Authenticate(user);
 

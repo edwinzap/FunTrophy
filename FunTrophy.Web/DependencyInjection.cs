@@ -4,6 +4,7 @@ using FunTrophy.Web.Contracts.Services;
 using FunTrophy.Web.Helpers;
 using FunTrophy.Web.Services;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace FunTrophy.Web
 {
@@ -21,7 +22,7 @@ namespace FunTrophy.Web
             services.AddHttpClient<ITimeAdjustmentService, TimeAdjustmentService>(HttpClientConfig());
             services.AddHttpClient<ITrackTimeService, TrackTimeService>(HttpClientConfig());
             services.AddHttpClient<IResultService, ResultService>(HttpClientConfig());
-           
+
             return services;
         }
 

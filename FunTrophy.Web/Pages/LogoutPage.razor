@@ -1,0 +1,16 @@
+﻿@using FunTrophy.Web.Authentication
+@page "/fun-logout"
+
+<h3>Vous êtes déconnecté</h3>
+<a href="/">Retourner à l'accueil</a>
+
+@code {
+    [Inject]
+    IAuthenticationService AuthenticationService { get; set; } = default!;
+
+    protected override Task OnInitializedAsync()
+    {
+        return AuthenticationService.Logout();
+    }
+
+}

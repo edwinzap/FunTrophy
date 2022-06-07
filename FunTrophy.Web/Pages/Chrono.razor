@@ -1,4 +1,4 @@
-﻿@attribute [Authorize(Roles="user,admin")]
+﻿@attribute [AuthorizeRoles(UserRoles.Admin, UserRoles.User)]
 @page "/chrono"
 @layout UserLayout
 
