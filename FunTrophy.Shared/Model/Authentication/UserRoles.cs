@@ -1,6 +1,6 @@
 ﻿namespace FunTrophy.Shared.Model.Authentication
 {
-    public enum UserRole
+    public enum UserRoles
     {
         Admin = 0,
         User = 1,

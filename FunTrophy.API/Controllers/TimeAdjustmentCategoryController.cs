@@ -7,7 +7,7 @@ namespace FunTrophy.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class TimeAdjustmentCategoryController : AuthenticatedControllerBase
+    public class TimeAdjustmentCategoryController : AdminControllerBase
     {
         private readonly ILogger<TimeAdjustmentCategoryController> _logger;
         private readonly ITimeAdjustmentCategoryService _timeAdjustmentCategoryService;

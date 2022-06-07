@@ -1,4 +1,5 @@
-﻿using FunTrophy.Shared.Model.Authentication;
+﻿using FunTrophy.Infrastructure.Model;
+using FunTrophy.Shared.Model.Authentication;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -8,14 +9,14 @@ namespace FunTrophy.API.Authentication
 {
     public class JWTManagerRepository : IJWTManagerRepository
     {
-        private Dictionary<string, string> Users = new()
+        private List<User> Users = new()
         {
-        { "admin","admin"},
-        { "user1","user1"},
-        { "user2","user2"},
-    };
+            new User{ Id = 1, IsAdmin = true, Password = "admin", UserName = "admin" },
+            new User{ Id = 2, IsAdmin = false, Password = "user", UserName = "user" },
+        };
 
         private readonly IConfiguration _configuration;
+        private readonly TimeSpan _tokenExpirationTime = TimeSpan.FromHours(12);
 
         public JWTManagerRepository(IConfiguration configuration)
         {
@@ -24,21 +25,21 @@ namespace FunTrophy.API.Authentication
 
         public Token? Authenticate(AuthenticationUser user)
         {
-            if (!Users.Any(x => x.Key == user.UserName && x.Value == user.Password))
-            {
+            var dbUser = Users.FirstOrDefault(x => x.UserName == user.UserName && x.Password == user.Password);
+            if (dbUser is null)
                 return null;
-            }
 
-            // Else we generate JSON Web Token
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenKey = Encoding.UTF8.GetBytes(_configuration["JWT:Key"]);
+            var claims = new List<Claim>();
+            var userRole = dbUser.IsAdmin ? UserRoles.Admin : UserRoles.User;
+            claims.Add(new Claim(ClaimTypes.Role, userRole.ToString()));
+            claims.Add(new Claim(ClaimTypes.Name, user.UserName));
+
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new Claim[]
-              {
-             new Claim(ClaimTypes.Name, user.UserName)
-              }),
-                Expires = DateTime.UtcNow.AddHours(12),
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.UtcNow.Add(_tokenExpirationTime),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);

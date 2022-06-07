@@ -3,6 +3,6 @@
     public class AddOrUpdateUserDto
     {
         public string UserName { get; set; }
-        public UserRole[] Roles { get; set; }
+        public UserRoles[] Roles { get; set; }
     }
 }

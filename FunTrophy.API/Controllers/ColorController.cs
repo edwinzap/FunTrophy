@@ -7,7 +7,7 @@ namespace FunTrophy.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ColorController : ControllerBase
+    public class ColorController : AdminControllerBase
     {
         private readonly ILogger<ColorController> _logger;
         private readonly IColorService _colorService;
