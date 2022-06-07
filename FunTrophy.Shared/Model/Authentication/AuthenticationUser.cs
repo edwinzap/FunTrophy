@@ -2,10 +2,10 @@
 
 namespace FunTrophy.Shared.Model.Authentication
 {
-    public class User
+    public class AuthenticationUser
     {
         [Required(ErrorMessage = "Email Address is required.")]
-        public string Pseudo { get; set; }
+        public string UserName { get; set; }
 
         [Required(ErrorMessage = "Password is required.")]
         public string Password { get; set; }

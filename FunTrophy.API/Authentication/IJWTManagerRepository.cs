@@ -4,6 +4,6 @@ namespace FunTrophy.API.Authentication
 {
     public interface IJWTManagerRepository
     {
-        Token? Authenticate(User user);
+        Token? Authenticate(AuthenticationUser user);
     }
 }

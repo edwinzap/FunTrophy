@@ -22,9 +22,9 @@ namespace FunTrophy.API.Authentication
             _configuration = configuration;
         }
 
-        public Token? Authenticate(User user)
+        public Token? Authenticate(AuthenticationUser user)
         {
-            if (!Users.Any(x => x.Key == user.Pseudo && x.Value == user.Password))
+            if (!Users.Any(x => x.Key == user.UserName && x.Value == user.Password))
             {
                 return null;
             }
@@ -36,7 +36,7 @@ namespace FunTrophy.API.Authentication
             {
                 Subject = new ClaimsIdentity(new Claim[]
               {
-             new Claim(ClaimTypes.Name, user.Pseudo)
+             new Claim(ClaimTypes.Name, user.UserName)
               }),
                 Expires = DateTime.UtcNow.AddHours(12),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)

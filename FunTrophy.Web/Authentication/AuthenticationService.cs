@@ -22,12 +22,12 @@ namespace FunTrophy.Web.Authentication
             _localStorage = localStorage;
         }
 
-        public async Task<Token?> Login(User userForAuthentication)
+        public async Task<Token?> Login(AuthenticationUser userForAuthentication)
         {
             var data = new FormUrlEncodedContent(new[]
             {
                 new KeyValuePair<string, string>("grant_type", "password"),
-                new KeyValuePair<string, string>("username", userForAuthentication.Pseudo),
+                new KeyValuePair<string, string>("username", userForAuthentication.UserName),
                 new KeyValuePair<string, string>("password", userForAuthentication.Password),
             });
 
