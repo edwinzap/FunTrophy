@@ -1,17 +1,19 @@
 ﻿@inject AppState AppState
 <ul class="nav nav-pills flex-column w-100 mb-auto">
-    <NavLink class="nav-link text-white" href="editeur/courses">
-        <div class="d-flex">
-            <div>
-                <span class="fas fa-person-running me-md-2"></span>
+    <li class="nav-item">
+        <NavLink class="nav-link text-black" href="editeur/courses">
+            <div class="d-flex">
+                <div>
+                    <span class="fas fa-person-running me-md-2"></span>
+                </div>
+                <div class="d-none d-md-block">Courses</div>
             </div>
-            <div class="d-none d-md-block">Courses</div>
-        </div>
-    </NavLink>
+        </NavLink>
+    </li>
     @if (AppState.Race is not null)
     {
         <li class="nav-item">
-            <NavLink class="nav-link text-white" href="editeur/couleurs">
+            <NavLink class="nav-link text-black" href="editeur/couleurs">
                 <div class="d-flex">
                     <div>
                         <span class="fas fa-palette me-md-2"></span>
@@ -21,7 +23,7 @@
             </NavLink>
         </li>
         <li class="nav-item">
-            <NavLink class="nav-link text-white" href="editeur/equipes">
+            <NavLink class="nav-link text-black" href="editeur/equipes">
                 <div class="d-flex">
                     <div>
                         <span class="fas fa-people-group me-md-2"></span>
@@ -31,7 +33,7 @@
             </NavLink>
         </li>
         <li class="nav-item">
-            <NavLink class="nav-link text-white" href="editeur/parcours">
+            <NavLink class="nav-link text-black" href="editeur/parcours">
                 <div class="d-flex">
                     <div>
                         <span class="fas fa-road me-md-2"></span>
@@ -41,7 +43,7 @@
             </NavLink>
         </li>
         <li class="nav-item">
-            <NavLink class="nav-link text-white" href="editeur/ordreparcours">
+            <NavLink class="nav-link text-black" href="editeur/ordreparcours">
                 <div class="d-flex">
                     <div>
                         <span class="fas fa-signs-post me-md-2"></span>
@@ -51,7 +53,7 @@
             </NavLink>
         </li>
         <li class="nav-item">
-            <NavLink class="nav-link text-white" href="editeur/categories">
+            <NavLink class="nav-link text-black" href="editeur/categories">
                 <div class="d-flex">
                     <div>
                         <span class="fas fa-clock me-md-2"></span>
@@ -61,7 +63,7 @@
             </NavLink>
         </li>
         <li class="nav-item">
-            <NavLink class="nav-link text-white" href="editeur/bonus-malus">
+            <NavLink class="nav-link text-black" href="editeur/bonus-malus">
                 <div class="d-flex">
                     <div>
                         <span class="fas fa-hourglass me-md-2"></span>

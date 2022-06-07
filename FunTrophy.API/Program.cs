@@ -1,4 +1,5 @@
 using FunTrophy.API;
+using FunTrophy.API.Services;
 using FunTrophy.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -24,9 +25,11 @@ builder.Services.AddDbContext<FunTrophyContext>(options =>
 builder.Services
     .AddServices()
     .AddMappers()
+    .AddHelpers()
     //.AddFakeRepositories();
     .AddRepositories();
 
+builder.Services.AddSignalR();
 builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -54,5 +57,5 @@ app.UseCors(corsPolicyName);
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.MapHub<NotificationHub>("notificationhub");
 app.Run();

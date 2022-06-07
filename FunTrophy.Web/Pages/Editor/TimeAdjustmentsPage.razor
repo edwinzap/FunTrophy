@@ -58,11 +58,11 @@ else
                             <InputRadioGroup @bind-Value="@isPositive">
                                 <div class="form-check">
                                     <InputRadio Value="false" class="form-check-input" id="radio-less" />
-                                    <label class="form-check-label px-2" for="radio-less"><span class="oi oi-minus"></span></label>
+                                    <label class="form-check-label px-2" for="radio-less"><span class="fas fa-minus"></span></label>
                                 </div>
                                 <div class="form-check">
                                     <InputRadio Value="true" class="form-check-input" id="radio-plus" />
-                                    <label class="form-check-label px-2" for="radio-plus"><span class="oi oi-plus"></span></label>
+                                    <label class="form-check-label px-2" for="radio-plus"><span class="fas fa-plus"></span></label>
                                 </div>
                             </InputRadioGroup>
                         </div>
@@ -119,7 +119,7 @@ else
                                 <td>@timeAdjustment.CategoryName</td>
                                 <td>@(TimeSpan.FromSeconds(timeAdjustment.Seconds).ToTimeString())</td>
                                 <td>
-                                    <a class="btn btn-danger btn-sm" @onclick="() => ConfirmDeleteTimeAdjustment(timeAdjustment)"><span class="oi oi-trash"></span></a>
+                                    <a class="btn btn-danger btn-sm" @onclick="() => ConfirmDeleteTimeAdjustment(timeAdjustment)"><span class="fas fa-trash"></span></a>
                                 </td>
                             </tr>
                         }

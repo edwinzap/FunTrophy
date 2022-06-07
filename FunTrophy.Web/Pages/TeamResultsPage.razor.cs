@@ -1,4 +1,5 @@
 ﻿using FunTrophy.Shared.Model;
+using FunTrophy.Web.Contracts.Helpers;
 using FunTrophy.Web.Contracts.Services;
 using Microsoft.AspNetCore.Components;
 
@@ -16,7 +17,10 @@ namespace FunTrophy.Web.Pages
 
         [Inject]
         public IResultService ResultService { get; set; } = default!;
-        
+
+        [Inject]
+        public INotificationHubHelper NotificationHubHelper { get; set; } = default!;
+
         [Inject]
         public ITimeAdjustmentService TimeAdjustmentService { get; set; } = default!;
 
@@ -48,6 +52,27 @@ namespace FunTrophy.Web.Pages
         protected override async Task OnInitializedAsync()
         {
             await LoadTeams();
+            await NotificationHubHelper.ConnectToServer();
+            NotificationHubHelper.TimeAdjustmentChanged += OnTimeAdjustmentChanged;
+            NotificationHubHelper.TrackTimeChanged += OnTrackTimeChanged;
+        }
+
+        private async Task OnTrackTimeChanged(int trackId, int teamId)
+        {
+            if (SelectedTeamId == teamId)
+            {
+                await LoadResults();
+                StateHasChanged();
+            }
+        }
+
+        private async Task OnTimeAdjustmentChanged(int teamId)
+        {
+            if (SelectedTeamId == teamId)
+            {
+                await LoadTimeAdjustments();
+                StateHasChanged();
+            }
         }
 
         private async Task LoadTeams()

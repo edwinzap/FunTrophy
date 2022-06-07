@@ -1,5 +1,7 @@
 ﻿using FunTrophy.Shared.Model;
+using FunTrophy.Web.Contracts.Helpers;
 using FunTrophy.Web.Contracts.Services;
+using FunTrophy.Web.Helpers;
 using Microsoft.AspNetCore.Components;
 
 namespace FunTrophy.Web.Pages
@@ -16,6 +18,9 @@ namespace FunTrophy.Web.Pages
         [Inject]
         private ITrackTimeService TrackTimeService { get; set; } = default!;
 
+        [Inject]
+        public INotificationHubHelper NotificationHubHelper { get; set; } = default!;
+
         private List<ColorDto>? Colors { get; set; }
 
         private List<TeamLapInfoDto>? Laps { get; set; }
@@ -24,30 +29,39 @@ namespace FunTrophy.Web.Pages
 
         public int? CurrentColorId { get; set; }
 
-        private Timer? _timer;
-
         #endregion
 
         protected override async Task OnInitializedAsync()
         {
             await LoadColors();
-            //await LoadLaps();
             StartTime();
+            await NotificationHubHelper.ConnectToServer();
+            NotificationHubHelper.TrackTimeChanged += OnTrackTimeChanged;
+        }
+
+        private async Task OnTrackTimeChanged(int trackId, int teamId)
+        {
+            if (Laps?.Any(x => x.Team.Id == teamId) == true)
+            {
+                await LoadLaps();
+            }
         }
 
         private void StartTime()
         {
-            _timer = new Timer(_ =>
+            var _timer = new Timer(_ =>
             {
                 if (Laps?.Any() == true)
                 {
                     CurrentDateTime = DateTime.Now;
+                    StateHasChanged();
                 }
-                StateHasChanged();
             }, new AutoResetEvent(false), 1000, 1000);
         }
 
-        public async Task LoadColors()
+        
+        
+        private async Task LoadColors()
         {
             if (AppState.Race != null)
             {

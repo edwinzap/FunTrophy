@@ -1,7 +1,7 @@
 ﻿using FunTrophy.Shared.Model;
 using FunTrophy.Web.Components;
+using FunTrophy.Web.Contracts.Helpers;
 using FunTrophy.Web.Contracts.Services;
-using FunTrophy.Web.Models;
 using Microsoft.AspNetCore.Components;
 using System.Timers;
 using static FunTrophy.Web.Models.Filters;
@@ -20,6 +20,9 @@ namespace FunTrophy.Web.Pages
 
         [Inject]
         public IResultService ResultService { get; set; } = default!;
+
+        [Inject]
+        public INotificationHubHelper NotificationHubHelper { get; set; } = default!;
 
         private List<TrackDto>? Tracks { get; set; }
 
@@ -66,6 +69,17 @@ namespace FunTrophy.Web.Pages
 
             RefreshAutoRotate();
             await LoadTracks();
+            await NotificationHubHelper.ConnectToServer();
+            NotificationHubHelper.TrackTimeChanged += OnTrackTimeChanged;
+        }
+
+        private async Task OnTrackTimeChanged(int trackId, int teamId)
+        {
+            if (SelectedTrackId == trackId)
+            {
+                await LoadResults();
+                StateHasChanged();
+            }
         }
 
         private void OnTimerTick(object? sender, ElapsedEventArgs e)

@@ -50,7 +50,7 @@ else
                 <div class="p-2">
                     <button class="btn btn-primary" @onclick="@UpdateTracksOrder">Enregistrer</button>
                 </div>
-                <div class="p-2"><span class="align-bottom @(CurrentSaveStatus == SaveStatus.Saved ? "oi oi-check text-success" : CurrentSaveStatus == SaveStatus.Saving ?  "oi oi-clock text-info" : "")"></span></div>
+                <div class="p-2"><span class="align-bottom @(CurrentSaveStatus == SaveStatus.Saved ? "fas fa-check text-success" : CurrentSaveStatus == SaveStatus.Saving ?  "fas fa-clock text-info" : "")"></span></div>
             </div>
         </div>
     }

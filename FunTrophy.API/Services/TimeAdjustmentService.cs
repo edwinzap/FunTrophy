@@ -1,8 +1,8 @@
-﻿using FunTrophy.API.Mappers;
+﻿using FunTrophy.API.Contracts.Helpers;
+using FunTrophy.API.Contracts.Mappers;
 using FunTrophy.API.Contracts.Services;
 using FunTrophy.Infrastructure.Contracts.Repositories;
 using FunTrophy.Shared.Model;
-using FunTrophy.API.Contracts.Mappers;
 
 namespace FunTrophy.API.Services
 {
@@ -10,17 +10,24 @@ namespace FunTrophy.API.Services
     {
         private readonly ITimeAdjustmentRepository _repository;
         private readonly ITimeAdjustmentMapper _mapper;
+        private readonly INotificationHelper _notificationHelper;
 
-        public TimeAdjustmentService(ITimeAdjustmentRepository repository, ITimeAdjustmentMapper mapper)
+        public TimeAdjustmentService(
+            ITimeAdjustmentRepository repository,
+            ITimeAdjustmentMapper mapper,
+            INotificationHelper notificationHelper)
         {
             _repository = repository;
             _mapper = mapper;
+            _notificationHelper = notificationHelper;
         }
 
-        public Task<int> Create(AddTimeAdjustmentDto timeAdjustment)
+        public async Task<int> Create(AddTimeAdjustmentDto timeAdjustment)
         {
             var dbTimeAdjustment = _mapper.Map(timeAdjustment);
-            return _repository.Add(dbTimeAdjustment);
+            var id = await _repository.Add(dbTimeAdjustment);
+            await _notificationHelper.NotifyTimeAdjustementChanged(timeAdjustment.TeamId, timeAdjustment.CategoryId);
+            return id;
         }
 
         public async Task<List<TimeAdjustmentDto>> GetAllOfTeam(int teamId)
@@ -31,7 +38,9 @@ namespace FunTrophy.API.Services
 
         public async Task Remove(int timeAdjustmentId)
         {
+            var timeAdjustment = await _repository.Get(timeAdjustmentId);
             await _repository.Remove(timeAdjustmentId);
+            await _notificationHelper.NotifyTimeAdjustementChanged(timeAdjustment.TeamId, timeAdjustment.CategoryId);
         }
     }
 }

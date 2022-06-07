@@ -60,9 +60,9 @@ else
                             <td>@race.Name</td>
                             <td>@race.Date.ToLongDateString()</td>
                             <td>
-                                <button class="btn btn-primary btn-sm" @onclick="() => SelectRace(race)"><span class="oi oi-eye"></span></button>
-                                <button class="btn btn-secondary btn-sm" @onclick="() => ConfirmEditRace(race)"><span class="oi oi-pencil"></span></button>
-                                <button class="btn btn-danger btn-sm" @onclick="() => ConfirmDeleteRace(race)"><span class="oi oi-trash"></span></button>
+                                <button class="btn btn-primary btn-sm" @onclick="() => SelectRace(race)"><span class="fas fa-eye"></span></button>
+                                <button class="btn btn-secondary btn-sm" @onclick="() => ConfirmEditRace(race)"><span class="fas fa-pencil"></span></button>
+                                <button class="btn btn-danger btn-sm" @onclick="() => ConfirmDeleteRace(race)"><span class="fas fa-trash"></span></button>
                             </td>
                         </tr>
                     }
