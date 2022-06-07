@@ -90,5 +90,18 @@ namespace FunTrophy.API.Controllers
             var races = await _raceService.GetAll();
             return Ok(races);
         }
+
+        /// <summary>
+        /// Reset the race
+        /// </summary>
+        /// <param name="raceId">Race Id</param>
+        /// <returns>The new race Id</returns>
+        [HttpPost("reset/{raceId}")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> ResetRace(int raceId)
+        {
+            await _raceService.Reset(raceId);
+            return Ok();
+        }
     }
 }

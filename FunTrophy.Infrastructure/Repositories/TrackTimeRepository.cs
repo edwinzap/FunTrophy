@@ -29,5 +29,12 @@ namespace FunTrophy.Infrastructure.Repositories
         {
             return GetAll(x => x.TrackId == trackId);
         }
+
+        public async Task RemoveAllOfRace(int raceId)
+        {
+            var times = await GetAll(x => x.Track.RaceId == raceId);
+            _dbContext.TrackTimes.RemoveRange(times);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

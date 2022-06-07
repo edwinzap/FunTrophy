@@ -47,7 +47,9 @@
                                             <button class="btn btn-danger" @onclick="() => OnStopClicked(lap.Team.Id)">
                                                 @if (lap.CurrentTrackStartTime.HasValue)
                                                 {
-                                                    @(CurrentDateTime.Subtract(lap.CurrentTrackStartTime.Value).ToTimeString())
+                                                    var diff = CurrentDateTime.Subtract(lap.CurrentTrackStartTime.Value);
+                                                    var text = diff.TotalMilliseconds > 0 ? CurrentDateTime.Subtract(lap.CurrentTrackStartTime.Value).ToTimeString() : "00:00";
+                                                    @(text)
                                                 }
                                                 <span class="ms-2 fas fa-stop"></span>
                                             </button>

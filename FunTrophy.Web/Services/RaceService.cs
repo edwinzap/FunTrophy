@@ -39,6 +39,12 @@ namespace FunTrophy.Web.Services
             return DeleteAsync(url);
         }
 
+        public Task Reset(int raceId)
+        {
+            var url = GetUrl() + "/reset/" + raceId;
+            return PostAsync(url, null);
+        }
+
         public Task Update(int raceId, AddOrUpdateRaceDto race)
         {
             var url = GetUrl() + "/" + raceId;

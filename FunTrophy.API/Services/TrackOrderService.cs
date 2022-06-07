@@ -40,7 +40,7 @@ namespace FunTrophy.API.Services
             var colorId = tracksOrder.ColorId;
             var trackIds = tracksOrder.TrackIds;
 
-            await _trackOrderRepository.RemoveAll(colorId);
+            await _trackOrderRepository.RemoveAllOfColor(colorId);
             var trackOrderList = trackIds.Select((x, index) => new TrackOrder
             {
                 ColorId = colorId,

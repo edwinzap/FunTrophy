@@ -15,5 +15,7 @@ namespace FunTrophy.API.Contracts.Services
         Task Update(int raceId, AddOrUpdateRaceDto race);
 
         Task End(int raceId, bool isEnded);
+
+        Task Reset(int raceId);
     }
 }
