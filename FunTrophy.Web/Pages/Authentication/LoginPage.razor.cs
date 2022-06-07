@@ -2,7 +2,7 @@
 using FunTrophy.Web.Authentication;
 using Microsoft.AspNetCore.Components;
 
-namespace FunTrophy.Web.Pages
+namespace FunTrophy.Web.Pages.Authentication
 {
     public partial class LoginPage
     {
