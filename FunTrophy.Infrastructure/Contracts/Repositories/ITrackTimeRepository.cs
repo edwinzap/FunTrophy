@@ -11,5 +11,7 @@ namespace FunTrophy.Infrastructure.Contracts.Repositories
         Task<List<TrackTime>> GetOfTrack(int trackId);
 
         Task<List<TrackTime>> GetOfRace(int raceId);
+
+        Task RemoveAllOfRace(int raceId);
     }
 }

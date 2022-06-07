@@ -144,3 +144,7 @@ body {
     position: fixed;
     padding-top: 57px;
 }
+
+.sidebar  a.nav-link {
+    color: black;
+}

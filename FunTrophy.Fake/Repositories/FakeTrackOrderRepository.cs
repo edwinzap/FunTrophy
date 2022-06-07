@@ -14,7 +14,7 @@ namespace FunTrophy.Fake.Repositories
             return GetAll(x => x.ColorId == colorId);
         }
 
-        public Task RemoveAll(int colorId)
+        public Task RemoveAllOfColor(int colorId)
         {
             _dbContext.TrackOrders.RemoveAll(x => x.ColorId == colorId);
             return Task.CompletedTask;

@@ -20,6 +20,8 @@ namespace FunTrophy.Web.Pages.Editor
 
         private ConfirmDialog DeleteDialog { get; set; } = default!;
 
+        private ConfirmDialog ResetDialog { get; set; } = default!;
+
         private EditDialog EditDialog { get; set; } = default!;
 
         private List<RaceDto>? Races { get; set; }
@@ -47,7 +49,6 @@ namespace FunTrophy.Web.Pages.Editor
         private void SelectRace(RaceDto race)
         {
             AppState.Race = race;
-            NavigationManager.NavigateTo("editeur/couleurs");
         }
 
         private void ClearSelectedRace()
@@ -101,6 +102,20 @@ namespace FunTrophy.Web.Pages.Editor
                 await RaceService.End(AppState.Race.Id, isEnded);
                 AppState.Race = await RaceService.GetRace(AppState.Race.Id);
                 StateHasChanged();
+            }
+        }
+
+        private void ConfirmResetRace()
+        {
+            var message = "Es-tu sûr de vouloir réinitialiser la course? Cette opération ne peut pas être annulée!";
+            ResetDialog.Show(message);
+        }
+
+        private async Task ResetRace(bool confirm)
+        {
+            if (confirm && AppState.Race?.Id is not null)
+            {
+                await RaceService.Reset(AppState.Race.Id);
             }
         }
     }
