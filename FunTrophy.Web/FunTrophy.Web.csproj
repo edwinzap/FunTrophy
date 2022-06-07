@@ -18,6 +18,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="compilerconfig.json" />
+    <Content Remove="wwwroot\css\app.scss" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="compilerconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Blazored.SessionStorage" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.4" PrivateAssets="all" />
@@ -30,10 +39,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\css\fontawesome\webfonts\fa-brands-400.woff2" />
-    <None Include="wwwroot\css\fontawesome\webfonts\fa-regular-400.woff2" />
-    <None Include="wwwroot\css\fontawesome\webfonts\fa-solid-900.woff2" />
-    <None Include="wwwroot\css\fontawesome\webfonts\fa-v4compatibility.woff2" />
+    <None Include="compilerconfig.json" />
+    <None Include="wwwroot\css\app.scss" />
   </ItemGroup>
 
 </Project>
