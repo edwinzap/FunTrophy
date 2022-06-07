@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FunTrophy.Web.Models
+namespace FunTrophy.Shared.Model.Authentication
 {
-    public class AuthenticationUserModel
+    public class User
     {
         [Required(ErrorMessage = "Email Address is required.")]
-        public string Email { get; set; }
+        public string Pseudo { get; set; }
 
         [Required(ErrorMessage = "Password is required.")]
-        public string Password { get; set; }    
+        public string Password { get; set; }
     }
 }

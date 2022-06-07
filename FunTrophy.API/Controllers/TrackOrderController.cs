@@ -6,7 +6,7 @@ namespace FunTrophy.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class TrackOrderController : ControllerBase
+    public class TrackOrderController : AuthenticatedControllerBase
     {
         private readonly ILogger<TrackOrderController> _logger;
         private readonly ITrackOrderService _trackOrderService;

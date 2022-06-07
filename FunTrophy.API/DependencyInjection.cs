@@ -8,6 +8,10 @@ using FunTrophy.Fake;
 using FunTrophy.API.Contracts.Mappers;
 using FunTrophy.API.Contracts.Helpers;
 using FunTrophy.API.Helpers;
+using FunTrophy.API.Authentication;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace FunTrophy.API
 {
@@ -72,6 +76,33 @@ namespace FunTrophy.API
             services.AddTransient<ITimeAdjustmentCategoryRepository, FakeTimeAdjustmentCategoryRepository>();
             services.AddTransient<ITimeAdjustmentRepository, FakeTimeAdjustmentRepository>();
             services.AddTransient<ITrackTimeRepository, FakeTrackTimeRepository>();
+            return services;
+        }
+
+        public static IServiceCollection AddAuthentication(this IServiceCollection services, ConfigurationManager configuration)
+        {
+            // Add Authentication
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(o =>
+            {
+                var Key = Encoding.UTF8.GetBytes(configuration["JWT:Key"]);
+                o.SaveToken = true;
+                o.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = configuration["JWT:Issuer"],
+                    ValidAudience = configuration["JWT:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Key)
+                };
+            });
+
+            services.AddSingleton<IJWTManagerRepository, JWTManagerRepository>();
             return services;
         }
     }

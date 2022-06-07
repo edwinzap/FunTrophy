@@ -1,10 +1,10 @@
-﻿using FunTrophy.Web.Models;
+﻿using FunTrophy.Shared.Model.Authentication;
 
 namespace FunTrophy.Web.Authentication
 {
     public interface IAuthenticationService
     {
-        Task<AuthenticatedUserModel?> Login(AuthenticationUserModel userForAuthentication);
+        Task<Token?> Login(User userForAuthentication);
         Task Logout();
     }
 }
