@@ -1,4 +1,5 @@
-﻿@page "/chrono"
+﻿@attribute [Authorize(Roles="user,admin")]
+@page "/chrono"
 @layout UserLayout
 
 <RedirectToSelectRace />
