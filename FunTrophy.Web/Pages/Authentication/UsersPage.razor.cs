@@ -34,6 +34,11 @@ namespace FunTrophy.Web.Pages.Authentication
 
         #endregion Properties
 
+        protected override async Task OnInitializedAsync()
+        {
+            await LoadUsers();
+        }
+
         private async Task LoadUsers()
         {
             Users = await UserService.GetAll();
@@ -60,6 +65,7 @@ namespace FunTrophy.Web.Pages.Authentication
             if (confirm && _updateUserId.HasValue)
             {
                 await UserService.Update(_updateUserId.Value, UpdateUserModel);
+                await LoadUsers();
             }
         }
 

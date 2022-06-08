@@ -16,7 +16,7 @@
             @if (Users is null)
             {
                 <tr>
-                    <td colspan=3 class="text-center">
+                    <td colspan=5 class="text-center">
                         <div class="spinner-border" role="status" />
                     </td>
                 </tr>
@@ -24,7 +24,7 @@
             else if (!Users.Any())
             {
                 <tr class="p-2">
-                    <td colspan=3 class="text-center">Aucune course</td>
+                    <td colspan=5 class="text-center">Aucun utilisateur</td>
                 </tr>
             }
             else
@@ -35,7 +35,7 @@
                         <td>@user.FirstName</td>
                         <td>@user.LastName</td>
                         <td>@user.UserName</td>
-                        <td><span class="fa fas-@(user.IsAdmin? "check text-success":"xmark text-danger")"></span></td>
+                        <td><span class="fas fa-@(user.IsAdmin? "check text-success":"xmark text-danger")"></span></td>
                         <td>
                             <button class="btn btn-secondary btn-sm" @onclick="() => ConfirmEditUser(user)"><span class="fas fa-pencil"></span></button>
                             <button class="btn btn-warning btn-sm" @onclick="() => ConfirmChangePassword(user.Id)"><span class="fas fa-key"></span></button>
@@ -49,29 +49,37 @@
 </div>
 
 <h1>Editer les utilisateurs</h1>
-<div class="d-flex flex-row">
-    <EditForm Model="@AddUserModel" OnValidSubmit="@AddUser">
-        <div class="input-group p-2 col-12 col-md-6">
-            <span class="input-group-text fas fa-user"></span>
-            <input type="text" class="form-control" @bind-value="@AddUserModel.FirstName" placeholder="Prénom" required>
+<EditForm Model="@AddUserModel" OnValidSubmit="@AddUser">
+    <div class="justify-content-start">
+        <div class="row col-xl-8">
+            <div class="p-2 col-12 col-md-6">
+                <label for="firstname" class="form-label">Prénom</label>
+                <input id="firstname" class="form-control" type="text" @bind-value="@AddUserModel.FirstName" />
+            </div>
+            <div class="p-2 col-12 col-md-6">
+                <label for="lastname" class="form-label">Nom</label>
+                <input id="lastname" class="form-control" type="text" @bind-value="@AddUserModel.LastName" />
+            </div>
+            <div class="p-2 col-12 col-md-6">
+                <label for="username" class="form-label">Pseudo</label>
+                <input id="username" class="form-control" type="text" @bind-value="@AddUserModel.UserName" />
+            </div>
+            <div class="p-2 col-12 col-md-6">
+                <label for="password" class="form-label">Mot de passe</label>
+                <input id="password" class="form-control" type="password" @bind-value="@AddUserModel.Password" />
+            </div>
+            <div class="py-2">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" @bind-value="@AddUserModel.IsAdmin" id="add-isadmin" checked="@AddUserModel.IsAdmin">
+                    <label class="form-check-label" for="add-isadmin">Est administrateur</label>
+                </div>
+            </div>
+            <div class="p-2 col-12 col-md-6">
+                <button class="btn btn-primary" type="submit">Créer l'utilisateur</button>
+            </div>
         </div>
-        <div class="input-group p-2 col-12 col-md-6">
-            <span class="input-group-text fas fa-user"></span>
-            <input type="text" class="form-control" @bind-value="@AddUserModel.LastName" placeholder="Nom" required>
-        </div>
-        <div class="input-group p-2 col-12 col-md-6">
-            <span class="input-group-text fas fa-user"></span>
-            <input type="text" class="form-control" @bind-value="@AddUserModel.UserName" placeholder="Pseudo" required>
-        </div>
-        <div class="input-group p-2 col-12 col-md-6">
-            <span class="input-group-text fas fa-key"></span>
-            <input type="password" class="form-control" @bind-value="@AddUserModel.Password" placeholder="Mot de passe">
-        </div>
-        <div class="p-2">
-            <button class="btn btn-primary" type="submit">Créer</button>
-        </div>
-    </EditForm>
-</div>
+    </div>
+</EditForm>
 
 <ConfirmDialog @ref="DeleteDialog"
                Title="Supprimer l'utilisateur"
@@ -79,22 +87,22 @@
 <EditDialog @ref="EditDialog"
             Title="Editer l'utilisateur"
             ConfirmationChanged="(confirm) => UpdateUser(confirm)">
-    <div class="d-flex flex-row">
-        <div class="input-group p-2 col-12 col-md-6">
+    <div class="d-flex flex-column">
+        <div class="input-group p-2">
             <span class="input-group-text fas fa-user"></span>
             <input type="text" class="form-control" @bind-value="@UpdateUserModel.FirstName" placeholder="Prénom" required>
         </div>
-        <div class="input-group p-2 col-12 col-md-6">
+        <div class="input-group p-2">
             <span class="input-group-text fas fa-user"></span>
             <input type="text" class="form-control" @bind-value="@UpdateUserModel.LastName" placeholder="Nom" required>
         </div>
-        <div class="input-group p-2 col-12 col-md-6">
+        <div class="input-group p-2">
             <span class="input-group-text fas fa-user"></span>
             <input type="text" class="form-control" @bind-value="@UpdateUserModel.UserName" placeholder="Pseudo" required>
         </div>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" @bind-value="@UpdateUserModel.IsAdmin" id="isAdminCheckBox" checked="@UpdateUserModel.IsAdmin">
-            <label class="form-check-label" for="isAdminCheckBox">Administrateur</label>
+        <div class="form-check p-2 ms-4">
+            <input class="form-check-input" type="checkbox" @bind-value="@UpdateUserModel.IsAdmin" id="update-isadmin" checked="@UpdateUserModel.IsAdmin">
+            <label class="form-check-label" for="update-isadmin">Est administrateur</label>
         </div>
     </div>
 </EditDialog>

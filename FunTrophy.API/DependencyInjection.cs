@@ -1,17 +1,17 @@
-﻿using FunTrophy.API.Mappers;
-using FunTrophy.API.Services;
+﻿using FunTrophy.API.Authentication;
+using FunTrophy.API.Contracts.Helpers;
+using FunTrophy.API.Contracts.Mappers;
 using FunTrophy.API.Contracts.Services;
+using FunTrophy.API.Helpers;
+using FunTrophy.API.Mappers;
+using FunTrophy.API.Services;
+using FunTrophy.Fake;
+using FunTrophy.Fake.Repositories;
 using FunTrophy.Infrastructure.Contracts.Repositories;
 using FunTrophy.Infrastructure.Repositories;
-using FunTrophy.Fake.Repositories;
-using FunTrophy.Fake;
-using FunTrophy.API.Contracts.Mappers;
-using FunTrophy.API.Contracts.Helpers;
-using FunTrophy.API.Helpers;
-using FunTrophy.API.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace FunTrophy.API
 {
@@ -28,6 +28,7 @@ namespace FunTrophy.API
             services.AddTransient<ITimeAdjustmentCategoryService, TimeAdjustmentCategoryService>();
             services.AddTransient<ITrackTimeService, TrackTimeService>();
             services.AddTransient<IResultService, ResultService>();
+            services.AddTransient<IUserService, UserService>();
             return services;
         }
 
@@ -43,6 +44,7 @@ namespace FunTrophy.API
             services.AddTransient<ITimeAdjustmentCategoryMapper, TimeAdjustmentCategoryMapper>();
             services.AddTransient<ITrackTimeMapper, TrackTimeMapper>();
             services.AddTransient<IResultMapper, ResultMapper>();
+            services.AddTransient<IUserMapper, UserMapper>();
             return services;
         }
 
@@ -56,6 +58,7 @@ namespace FunTrophy.API
             services.AddTransient<ITimeAdjustmentRepository, TimeAdjustmentRepository>();
             services.AddTransient<ITimeAdjustmentCategoryRepository, TimeAdjustmentCategoryRepository>();
             services.AddTransient<ITrackTimeRepository, TrackTimeRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
             return services;
         }
 

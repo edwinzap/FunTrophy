@@ -6,8 +6,12 @@ namespace FunTrophy.API.Contracts.Services
     {
         Task ChangePassword(int userId, string password);
 
-        Task Create(AddUserDto user);
+        Task<int> Create(AddUserDto user);
+
+        Task Update(int userId, UpdateUserDto user);
 
         Task Remove(int userId);
+
+        Task<List<UserDto>> GetAll();
     }
 }

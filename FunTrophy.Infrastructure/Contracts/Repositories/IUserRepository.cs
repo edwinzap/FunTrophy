@@ -2,7 +2,7 @@
 
 namespace FunTrophy.Infrastructure.Contracts.Repositories
 {
-    internal interface IUserRepository : IRepositoryBase<User>
+    public interface IUserRepository : IRepositoryBase<User>
     {
     }
 }

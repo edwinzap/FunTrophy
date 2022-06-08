@@ -2,6 +2,7 @@
 using FunTrophy.Shared.Model.Authentication;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Text.Json;
 
 namespace FunTrophy.Web.Authentication
@@ -24,14 +25,15 @@ namespace FunTrophy.Web.Authentication
 
         public async Task<Token?> Login(AuthenticationUser userForAuthentication)
         {
-            var data = new FormUrlEncodedContent(new[]
+            var data = new AuthenticationUser
             {
-                new KeyValuePair<string, string>("grant_type", "password"),
-                new KeyValuePair<string, string>("username", userForAuthentication.UserName),
-                new KeyValuePair<string, string>("password", userForAuthentication.Password),
-            });
+                UserName = userForAuthentication.UserName,
+                Password = userForAuthentication.Password,
+            };
+            var json = JsonSerializer.Serialize(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var authResult = await _client.PostAsync("authenticate", data);
+            var authResult = await _client.PostAsync("User/Authenticate", content);
             var authContent = await authResult.Content.ReadAsStringAsync();
 
             if (authResult.IsSuccessStatusCode == false)

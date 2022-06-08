@@ -11,27 +11,32 @@ namespace FunTrophy.Web.Services
 
         public Task Add(AddUserDto user)
         {
-            throw new NotImplementedException();
+            var url = GetUrl();
+            return PostAsync(url, user);
         }
 
         public Task ChangePassword(int userId, string password)
         {
-            throw new NotImplementedException();
+            var url = GetUrl() + "/" + userId;
+            return PostAsync(url, password);
         }
 
         public Task<List<UserDto>> GetAll()
         {
-            throw new NotImplementedException();
+            var url = GetUrl();
+            return GetAsync<List<UserDto>>(url);
         }
 
         public Task Remove(int userId)
         {
-            throw new NotImplementedException();
+            var url = GetUrl() + "/" + userId;
+            return DeleteAsync(url);
         }
 
         public Task Update(int userId, UpdateUserDto user)
         {
-            throw new NotImplementedException();
+            var url = GetUrl() + "/" + userId;
+            return UpdateAsync(url, user);
         }
     }
 }
