@@ -7,13 +7,11 @@ namespace FunTrophy.Web.Authentication
 {
     public class AuthStateProvider : AuthenticationStateProvider
     {
-        private readonly HttpClient _httpClient;
         private readonly ILocalStorageService _localStorage;
         private readonly AuthenticationState _anonymous = new(new ClaimsPrincipal());
 
-        public AuthStateProvider(HttpClient httpClient, ILocalStorageService localStorage)
+        public AuthStateProvider(ILocalStorageService localStorage)
         {
-            _httpClient = httpClient;
             _localStorage = localStorage;
         }
 
@@ -26,27 +24,15 @@ namespace FunTrophy.Web.Authentication
                 return _anonymous;
             }
 
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
-
             return new AuthenticationState(
                 new ClaimsPrincipal(
                     new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token),
                     "jwtAuthType")));
         }
 
-        public void NotifyUserAuthentication(string token)
+        public void NotifyUserAuthentication()
         {
-            var authenticatedUser = new ClaimsPrincipal(
-                new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token),
-                "jwtAuthType"));
-            var authState = Task.FromResult(new AuthenticationState(authenticatedUser));
-            NotifyAuthenticationStateChanged(authState);
-        }
-
-        public void NotifyUserLogout()
-        {
-            var authState = Task.FromResult(_anonymous);
-            NotifyAuthenticationStateChanged(authState);
+            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
         }
     }
 }

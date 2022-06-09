@@ -46,17 +46,15 @@ namespace FunTrophy.Web.Authentication
 
             await _localStorage.SetItemAsync("authToken", result!.AccessToken);
 
-            ((AuthStateProvider)_authStateProvider).NotifyUserAuthentication(result.AccessToken);
+            ((AuthStateProvider)_authStateProvider).NotifyUserAuthentication();
 
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result.AccessToken);
             return result;
         }
 
         public async Task Logout()
         {
             await _localStorage.RemoveItemAsync("authToken");
-            ((AuthStateProvider)_authStateProvider).NotifyUserLogout();
-            _client.DefaultRequestHeaders.Authorization = null;
+            ((AuthStateProvider)_authStateProvider).NotifyUserAuthentication();
         }
     }
 }

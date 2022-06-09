@@ -34,7 +34,9 @@ namespace FunTrophy.Web
         public static IServiceCollection AddAuthentication(this IServiceCollection services)
         {
             services.AddHttpClient<IAuthenticationService, AuthenticationService>(HttpClientConfig());
-            services.AddHttpClient<AuthenticationStateProvider, AuthStateProvider>(HttpClientConfig());
+            services.AddScoped<AuthStateProvider>();
+            services.AddScoped<AuthenticationStateProvider>(provider =>
+                provider.GetRequiredService<AuthStateProvider>());
             services.AddAuthorizationCore();
 
             return services;
