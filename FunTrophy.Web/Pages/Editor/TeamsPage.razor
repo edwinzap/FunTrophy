@@ -1,6 +1,6 @@
-﻿@layout EditorLayout
+﻿@attribute [AuthorizeRoles(UserRoles.Admin)]
+@layout EditorLayout
 @page "/editeur/equipes"
-@using FunTrophy.Shared.Model
 
 <RedirectToSelectRace />
 <PageTitle>Equipes</PageTitle>

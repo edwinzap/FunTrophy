@@ -8,7 +8,7 @@ namespace FunTrophy.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class TrackTimeController : AdminControllerBase
+    public class TrackTimeController : UserControllerBase
     {
         private readonly ILogger<TrackTimeController> _logger;
         private readonly ITrackTimeService _trackTimeService;

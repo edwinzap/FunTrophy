@@ -1,6 +1,6 @@
-﻿@layout EditorLayout
+﻿@attribute [AuthorizeRoles(UserRoles.Admin, UserRoles.User)]
+@layout EditorLayout
 @page "/editeur/bonus-malus"
-@using FunTrophy.Web.Helpers
 
 <RedirectToSelectRace />
 <PageTitle>Bonus-malus</PageTitle>
