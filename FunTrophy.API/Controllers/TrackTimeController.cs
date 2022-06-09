@@ -24,6 +24,7 @@ namespace FunTrophy.API.Controllers
         /// </summary>
         /// <param name="teamId">Team id</param>
         /// <returns></returns>
+        [AuthorizeRoles(UserRoles.Admin, UserRoles.User)]
         [HttpPost("")]
         [ProducesResponseType(200)]
         public async Task<IActionResult> SaveTeamLap(int teamId)
@@ -37,6 +38,7 @@ namespace FunTrophy.API.Controllers
         /// </summary>
         /// <param name="colorId">Color id</param>
         /// <returns>List of lap infos</returns>
+        [AuthorizeRoles(UserRoles.Admin, UserRoles.User)]
         [HttpGet("")]
         [ProducesResponseType(typeof(List<TeamLapInfoDto>), 200)]
         public async Task<IActionResult> GetAllTeamLapInfos(int colorId)
