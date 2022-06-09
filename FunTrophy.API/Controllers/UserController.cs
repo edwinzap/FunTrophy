@@ -25,11 +25,11 @@ namespace FunTrophy.API.Controllers
         [AllowAnonymous]
         [HttpPost("Authenticate")]
         [ProducesResponseType(typeof(Token), 200)]
-        public IActionResult Authenticate([FromBody] AuthenticationUser user)
+        public async Task<IActionResult> Authenticate([FromBody] AuthenticationUser user)
         {
-            var token = _jwtRepository.Authenticate(user);
+            var token = await _jwtRepository.Authenticate(user);
 
-            if (token == null)
+            if (token is null)
             {
                 return Unauthorized();
             }

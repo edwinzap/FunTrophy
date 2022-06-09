@@ -112,7 +112,7 @@ namespace FunTrophy.API
                 };
             });
 
-            services.AddSingleton<IJWTManagerRepository, JWTManagerRepository>();
+            services.AddTransient<IJWTManagerRepository, JWTManagerRepository>();
             return services;
         }
     }

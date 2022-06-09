@@ -1,7 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using FunTrophy.Shared.Model.Authentication;
 using Microsoft.AspNetCore.Components.Authorization;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 
