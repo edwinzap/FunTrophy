@@ -5,6 +5,9 @@ namespace FunTrophy.Web.Authentication
     public interface IAuthenticationService
     {
         Task<Token?> Login(AuthenticationUser userForAuthentication);
+
         Task Logout();
+
+        Task<bool> IsConnected();
     }
 }

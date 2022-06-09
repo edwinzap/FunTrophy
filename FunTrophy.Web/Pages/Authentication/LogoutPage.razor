@@ -9,9 +9,19 @@
     [Inject]
     IAuthenticationService AuthenticationService { get; set; } = default!;
 
-    protected override Task OnInitializedAsync()
+    [Inject]
+    NavigationManager NavigationManager { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
     {
-        return AuthenticationService.Logout();
+        if (await AuthenticationService.IsConnected())
+        {
+            await AuthenticationService.Logout();
+        }
+        else
+        {
+            NavigationManager.NavigateTo("/fun-login");
+        }
     }
 
 }

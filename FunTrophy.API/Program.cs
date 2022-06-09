@@ -26,7 +26,8 @@ builder.Services
     .AddServices()
     .AddMappers()
     .AddHelpers()
-    .AddRepositories();
+    .AddRepositories()
+    .AddSettings(builder.Configuration);
 
 builder.Services.AddSignalR();
 builder.Services.AddControllers();

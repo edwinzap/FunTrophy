@@ -29,6 +29,8 @@ namespace FunTrophy.Web.Pages
 
         public int? CurrentColorId { get; set; }
 
+        private Timer? _timer;
+
         #endregion
 
         protected override async Task OnInitializedAsync()
@@ -49,7 +51,7 @@ namespace FunTrophy.Web.Pages
 
         private void StartTime()
         {
-            var _timer = new Timer(_ =>
+            _timer = new Timer(_ =>
             {
                 if (Laps?.Any() == true)
                 {

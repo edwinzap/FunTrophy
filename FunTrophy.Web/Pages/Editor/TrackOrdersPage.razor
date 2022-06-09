@@ -1,4 +1,5 @@
-﻿@layout EditorLayout
+﻿@attribute [AuthorizeRoles(UserRoles.Admin)]
+@layout EditorLayout
 @page "/editeur/ordreparcours"
 
 <RedirectToSelectRace />
