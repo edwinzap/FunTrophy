@@ -1,0 +1,40 @@
+﻿<li class="nav-item dropdown @Class">
+    <a class="nav-link dropdown-toggle" @onclick="Toggle">@Title</a>
+    @if (Items is not null && Items.Any(x => x.IsVisible))
+    {
+        <ul class="dropdown-menu dropdown-menu-end @MenuCssClass">
+            @foreach (var item in Items)
+            {
+                @if (item.IsVisible)
+                {
+                    <li>
+                        <NavLink class="dropdown-item" href="@item.Link" @onclick="CloseMenu">@item.Title</NavLink>
+                    </li>
+                }
+            }
+        </ul>
+    }
+</li>
+@code {
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public List<DropDownMenuItem>? Items { get; set; }
+
+    [Parameter, EditorRequired]
+    public string Title { get; set; }
+
+    private bool expandDropdown = false;
+    private string? MenuCssClass => expandDropdown ? "show" : null;
+
+    private void CloseMenu()
+    {
+        expandDropdown = false;
+    }
+
+    private void Toggle()
+    {
+        expandDropdown = !expandDropdown;
+    }
+}

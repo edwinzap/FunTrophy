@@ -23,6 +23,12 @@ namespace FunTrophy.Web.Authentication
             _localStorage = localStorage;
         }
 
+        public async Task<bool> IsConnected()
+        {
+            var state = await _authStateProvider.GetAuthenticationStateAsync();
+            return state.User?.Identity?.IsAuthenticated == true;
+        }
+
         public async Task<Token?> Login(AuthenticationUser userForAuthentication)
         {
             var data = new AuthenticationUser
@@ -37,14 +43,16 @@ namespace FunTrophy.Web.Authentication
             var authContent = await authResult.Content.ReadAsStringAsync();
 
             if (authResult.IsSuccessStatusCode == false)
-            {
                 return null;
-            }
+
             var result = JsonSerializer.Deserialize<Token>(
                 authContent,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            await _localStorage.SetItemAsync("authToken", result!.AccessToken);
+            if (result is null || result?.AccessToken is null)
+                return null;
+
+            await _localStorage.SetItemAsync("authToken", result.AccessToken);
 
             ((AuthStateProvider)_authStateProvider).NotifyUserAuthentication();
 

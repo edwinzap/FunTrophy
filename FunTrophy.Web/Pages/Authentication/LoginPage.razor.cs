@@ -16,6 +16,14 @@ namespace FunTrophy.Web.Pages.Authentication
 
         private AuthenticationUser user = new();
 
+        protected override async Task OnInitializedAsync()
+        {
+            if (await AuthenticationService.IsConnected())
+            {
+                NavigationManager.NavigateTo("/");
+            }
+        }
+
         private async Task Login()
         {
             var token = await AuthenticationService.Login(user);

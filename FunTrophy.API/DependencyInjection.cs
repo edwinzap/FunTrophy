@@ -5,6 +5,7 @@ using FunTrophy.API.Contracts.Services;
 using FunTrophy.API.Helpers;
 using FunTrophy.API.Mappers;
 using FunTrophy.API.Services;
+using FunTrophy.API.Settings;
 using FunTrophy.Fake;
 using FunTrophy.Fake.Repositories;
 using FunTrophy.Infrastructure.Contracts.Repositories;
@@ -59,6 +60,12 @@ namespace FunTrophy.API
             services.AddTransient<ITimeAdjustmentCategoryRepository, TimeAdjustmentCategoryRepository>();
             services.AddTransient<ITrackTimeRepository, TrackTimeRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
+            return services;
+        }
+
+        public static IServiceCollection AddSettings(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.Configure<JWTSettings>(configuration.GetSection("JWT"));
             return services;
         }
 

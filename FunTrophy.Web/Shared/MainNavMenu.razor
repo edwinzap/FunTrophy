@@ -1,5 +1,4 @@
-﻿@inject AppState AppState
-
+﻿@using System.Security.Claims
 <nav class="navbar navbar-expand-md navbar-light fixed-top top-menu bg-light">
     <div class="container-fluid">
         <a class="navbar-brand px-3" href="#">Fun Trophy</a>
@@ -13,7 +12,7 @@
                     <AuthorizeView Roles="Admin">
                         <Authorized>
                             <li class="nav-item px-3">
-                                <NavLink class="nav-link" href="editeur/courses" @onclick="CloseNavMenu">Editeur</NavLink>
+                                <NavLink class="nav-link" href="editeur/courses">Editeur</NavLink>
                             </li>
                         </Authorized>
                     </AuthorizeView>
@@ -22,64 +21,23 @@
                         <AuthorizeView Roles="Admin,User">
                             <Authorized>
                                 <li class="nav-item px-3">
-                                    <NavLink class="nav-link" href="chrono" @onclick="CloseNavMenu">Chrono</NavLink>
+                                    <NavLink class="nav-link" href="chrono">Chrono</NavLink>
                                 </li>
                             </Authorized>
                         </AuthorizeView>
-                        <li class="nav-item dropdown px-3">
-                            <a class="nav-link dropdown-toggle @NavSubMenuCssClass" @onclick="ToggleDropdown">Résultats</a>
-                            <ul class="dropdown-menu dropdown-menu-end @NavSubMenuCssClass">
-                                <li>
-                                    <NavLink class="dropdown-item" href="resultats/parcours" @onclick="CloseNavMenu">Par parcours</NavLink>
-                                </li>
-                                <li>
-                                    <NavLink class="dropdown-item" href="resultats/equipe" @onclick="CloseNavMenu">Par équipe</NavLink>
-                                </li>
-                                @if (AppState.Race.IsEnded)
-                                {
-                                    <li>
-                                        <NavLink class="dropdown-item" href="resultats/fin" @onclick="CloseNavMenu">Finaux</NavLink>
-                                    </li>
-                                }
-                            </ul>
-                        </li>
+                        <DropDownNavMenu Items="ResultMenuItems"
+                                     Class="px-3"
+                                     Title="Résultats" />
                     }
+                    <AuthorizeView>
+                        <Authorized>
+                            <DropDownNavMenu Items="UserMenuItems"
+                                             Class="px-3"
+                                             Title="@(context.User?.FindFirst("given_name")?.Value + " " + context.User?.FindFirst("family_name")?.Value)" />
+                        </Authorized>
+                    </AuthorizeView>
                 </ul>
             </div>
         </div>
     </div>
 </nav>
-
-@code {
-    private bool expandDropdown = false;
-    private bool collapseNavMenu = true;
-
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-    private string? NavSubMenuCssClass => expandDropdown ? "show" : null;
-
-    private void CloseNavMenu()
-    {
-        collapseNavMenu = true;
-        expandDropdown = false;
-    }
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-
-    protected override void OnInitialized()
-    {
-        AppState.OnChange += StateHasChanged;
-    }
-
-    public void Dispose()
-    {
-        AppState.OnChange -= StateHasChanged;
-    }
-
-    private void ToggleDropdown()
-    {
-        expandDropdown = !expandDropdown;
-    }
-}
