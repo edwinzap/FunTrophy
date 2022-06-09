@@ -2,6 +2,7 @@ using FunTrophy.API;
 using FunTrophy.API.Services;
 using FunTrophy.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using System.Reflection;
 
 var corsPolicyName = "FunTrophy";
@@ -17,7 +18,6 @@ builder.Services.AddCors(options =>
     });
 });
 
-
 // Add services to the container.
 builder.Services.AddDbContext<FunTrophyContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("FunTrophyContext")));
@@ -26,16 +26,47 @@ builder.Services
     .AddServices()
     .AddMappers()
     .AddHelpers()
-    //.AddFakeRepositories();
-    .AddRepositories();
+    .AddRepositories()
+    .AddSettings(builder.Configuration);
 
 builder.Services.AddSignalR();
 builder.Services.AddControllers();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Add authentication
+builder.Services.AddAuthentication(builder.Configuration);
+
+// Add Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: 'Bearer 12345abcdef'",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+      {
+        {
+          new OpenApiSecurityScheme
+          {
+            Reference = new OpenApiReference
+              {
+                Type = ReferenceType.SecurityScheme,
+                Id = "Bearer"
+              },
+              Scheme = "oauth2",
+              Name = "Bearer",
+              In = ParameterLocation.Header,
+
+            },
+            new List<string>()
+          }
+        });
+
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     c.IncludeXmlComments(xmlPath);
@@ -54,8 +85,9 @@ app.UseHttpsRedirection();
 
 app.UseCors(corsPolicyName);
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapHub<NotificationHub>("notificationhub");
+app.MapHub<NotificationHub>("notificationhub"); // SignalR
 app.Run();

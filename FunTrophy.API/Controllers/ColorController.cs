@@ -1,12 +1,13 @@
 using FunTrophy.API.Contracts.Services;
 using FunTrophy.Shared.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FunTrophy.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ColorController : ControllerBase
+    public class ColorController : AdminControllerBase
     {
         private readonly ILogger<ColorController> _logger;
         private readonly IColorService _colorService;
@@ -62,6 +63,7 @@ namespace FunTrophy.API.Controllers
         /// </summary>
         /// <param name="raceId">Race Id</param>
         /// <returns>List of colors</returns>
+        [AllowAnonymous]
         [HttpGet("")]
         [ProducesResponseType(typeof(List<TeamDto>), 200)]
         public async Task<IActionResult> GetAllColors(int raceId)

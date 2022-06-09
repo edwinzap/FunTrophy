@@ -1,13 +1,18 @@
-﻿using FunTrophy.API.Mappers;
-using FunTrophy.API.Services;
+﻿using FunTrophy.API.Authentication;
+using FunTrophy.API.Contracts.Helpers;
+using FunTrophy.API.Contracts.Mappers;
 using FunTrophy.API.Contracts.Services;
+using FunTrophy.API.Helpers;
+using FunTrophy.API.Mappers;
+using FunTrophy.API.Services;
+using FunTrophy.API.Settings;
+using FunTrophy.Fake;
+using FunTrophy.Fake.Repositories;
 using FunTrophy.Infrastructure.Contracts.Repositories;
 using FunTrophy.Infrastructure.Repositories;
-using FunTrophy.Fake.Repositories;
-using FunTrophy.Fake;
-using FunTrophy.API.Contracts.Mappers;
-using FunTrophy.API.Contracts.Helpers;
-using FunTrophy.API.Helpers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace FunTrophy.API
 {
@@ -24,6 +29,7 @@ namespace FunTrophy.API
             services.AddTransient<ITimeAdjustmentCategoryService, TimeAdjustmentCategoryService>();
             services.AddTransient<ITrackTimeService, TrackTimeService>();
             services.AddTransient<IResultService, ResultService>();
+            services.AddTransient<IUserService, UserService>();
             return services;
         }
 
@@ -39,6 +45,7 @@ namespace FunTrophy.API
             services.AddTransient<ITimeAdjustmentCategoryMapper, TimeAdjustmentCategoryMapper>();
             services.AddTransient<ITrackTimeMapper, TrackTimeMapper>();
             services.AddTransient<IResultMapper, ResultMapper>();
+            services.AddTransient<IUserMapper, UserMapper>();
             return services;
         }
 
@@ -52,6 +59,13 @@ namespace FunTrophy.API
             services.AddTransient<ITimeAdjustmentRepository, TimeAdjustmentRepository>();
             services.AddTransient<ITimeAdjustmentCategoryRepository, TimeAdjustmentCategoryRepository>();
             services.AddTransient<ITrackTimeRepository, TrackTimeRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            return services;
+        }
+
+        public static IServiceCollection AddSettings(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.Configure<JWTSettings>(configuration.GetSection("JWT"));
             return services;
         }
 
@@ -72,6 +86,33 @@ namespace FunTrophy.API
             services.AddTransient<ITimeAdjustmentCategoryRepository, FakeTimeAdjustmentCategoryRepository>();
             services.AddTransient<ITimeAdjustmentRepository, FakeTimeAdjustmentRepository>();
             services.AddTransient<ITrackTimeRepository, FakeTrackTimeRepository>();
+            return services;
+        }
+
+        public static IServiceCollection AddAuthentication(this IServiceCollection services, ConfigurationManager configuration)
+        {
+            // Add Authentication
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(o =>
+            {
+                var Key = Encoding.UTF8.GetBytes(configuration["JWT:Key"]);
+                o.SaveToken = true;
+                o.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = configuration["JWT:Issuer"],
+                    ValidAudience = configuration["JWT:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Key)
+                };
+            });
+
+            services.AddSingleton<IJWTManagerRepository, JWTManagerRepository>();
             return services;
         }
     }

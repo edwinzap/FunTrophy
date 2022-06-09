@@ -1,12 +1,13 @@
 using FunTrophy.API.Contracts.Services;
 using FunTrophy.Shared.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FunTrophy.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class RaceController : ControllerBase
+    public class RaceController : AdminControllerBase
     {
         private readonly ILogger<RaceController> _logger;
         private readonly IRaceService _raceService;
@@ -78,11 +79,11 @@ namespace FunTrophy.API.Controllers
             return Ok();
         }
 
-
         /// <summary>
         /// Get a list of all races
         /// </summary>
         /// <returns>List of races</returns>
+        [AllowAnonymous]
         [HttpGet("")]
         [ProducesResponseType(typeof(List<RaceDto>), 200)]
         public async Task<IActionResult> GetAllRaces()

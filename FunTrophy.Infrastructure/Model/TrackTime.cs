@@ -1,4 +1,6 @@
-﻿namespace FunTrophy.Infrastructure.Model
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace FunTrophy.Infrastructure.Model
 {
     public class TrackTime : EntityBase
     {

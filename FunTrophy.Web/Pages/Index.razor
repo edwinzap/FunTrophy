@@ -1,6 +1,52 @@
-﻿@page "/"
+﻿@attribute [Microsoft.AspNetCore.Authorization.AllowAnonymous]
+@page "/"
 @layout UserLayout
 
 <PageTitle>Accueil</PageTitle>
 
-<h1>Bienvenue !</h1>
+<div class="p-2 text-center">
+
+    @if (Races is null)
+    {
+        <p>Chargement...</p>
+    }
+    else if (!Races.Any())
+    {
+        <p>Aucune course disponible</p>
+    }
+    else
+    {
+        @if (AppState.Race is not null)
+        {
+
+            <h2>@AppState.Race.Name</h2>
+            <h3>@AppState.Race.Date.ToLongDateString()</h3>
+            <div class="p-2">
+                <a class="btn btn-primary mx-2" href="/resultats/parcours">Résultats par parcours</a>
+                <a class="btn btn-primary mx-2" href="/resultats/equipe">Résultats par équipe</a>
+            </div>
+            @if (AppState.Race.IsEnded)
+            {
+                <div class="p-2">
+                    <a class="btn btn-success mx-2" href="/resultats/final">Classement général</a>
+                </div>
+            }
+        }
+        else
+        {
+            <h1>Bienvenue !</h1>
+            <p>Choisissez une course ci-dessous</p>
+
+            <div class="list-group d-inline-block">
+                @foreach (var race in Races)
+                {
+                    <button class="list-group-item list-group-item-action px-4" @onclick="() => SelectRace(race)">
+                        <div>
+                            <strong>@race.Name</strong>, @race.Date.ToShortDateString()
+                        </div>
+                    </button>
+                }
+            </div>
+        }
+    }
+</div>

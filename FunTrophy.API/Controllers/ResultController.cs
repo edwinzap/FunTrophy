@@ -6,7 +6,7 @@ namespace FunTrophy.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ResultController : ControllerBase
+    public class ResultController : AnonymousControllerBase
     {
         private readonly ILogger<ResultController> _logger;
         private readonly IResultService _resultService;

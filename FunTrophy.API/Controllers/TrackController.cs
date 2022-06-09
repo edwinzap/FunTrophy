@@ -1,12 +1,13 @@
 using FunTrophy.API.Contracts.Services;
 using FunTrophy.Shared.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FunTrophy.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class TrackController : ControllerBase
+    public class TrackController : AdminControllerBase
     {
         private readonly ILogger<TrackController> _logger;
         private readonly ITrackService _trackService;
@@ -62,6 +63,7 @@ namespace FunTrophy.API.Controllers
         /// </summary>
         /// <param name="raceId">Race Id</param>
         /// <returns>List of tracks</returns>
+        [AllowAnonymous]
         [HttpGet("")]
         [ProducesResponseType(typeof(List<TrackDto>), 200)]
         public async Task<IActionResult> GetAllTracks(int raceId)

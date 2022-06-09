@@ -9,6 +9,7 @@ namespace FunTrophy.Infrastructure
         {
         }
 
+        public DbSet<User> Users { get; set; }
         public DbSet<Race> Races { get; set; }
         public DbSet<Color> Colors { get; set; }
         public DbSet<Track> Tracks { get; set; }

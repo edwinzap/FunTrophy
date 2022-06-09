@@ -1,12 +1,13 @@
 using FunTrophy.API.Contracts.Services;
 using FunTrophy.Shared.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FunTrophy.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class TimeAdjustmentController : ControllerBase
+    public class TimeAdjustmentController : AdminControllerBase
     {
         private readonly ILogger<TimeAdjustmentController> _logger;
         private readonly ITimeAdjustmentService _timeAdjustmentService;
@@ -48,6 +49,7 @@ namespace FunTrophy.API.Controllers
         /// </summary>
         /// <param name="teamId">Team Id</param>
         /// <returns>List of time adjustments of a team</returns>
+        [AllowAnonymous]
         [HttpGet("")]
         [ProducesResponseType(typeof(List<TimeAdjustmentDto>), 200)]
         public async Task<IActionResult> GetAllTimeAdjustments(int teamId)
