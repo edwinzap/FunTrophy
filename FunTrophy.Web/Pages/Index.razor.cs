@@ -6,27 +6,53 @@ namespace FunTrophy.Web.Pages
 {
     public partial class Index
     {
+        #region Properties
+
         [Inject]
         private IRaceService RaceService { get; set; } = default!;
 
         [Inject]
-        private AppState AppState { get; set; } = default!;
+        private IAppStateService AppStateService { get; set; } = default!;
 
         private List<RaceDto>? Races { get; set; }
+        public RaceDto? SelectedRace { get; private set; }
+
+        #endregion Properties
 
         protected override async Task OnInitializedAsync()
         {
+            AppStateService.OnAppStateChanged += async () => await UpdateSelectedRace();
+            await UpdateSelectedRace();
             await LoadRaces();
+        }
+
+        public void Dispose()
+        {
+            AppStateService.OnAppStateChanged += async () => await UpdateSelectedRace();
+        }
+
+        private async Task UpdateSelectedRace()
+        {
+            var state = await AppStateService.GetState();
+            SelectedRace = state?.Race;
+            if (SelectedRace is null && Races?.Any() != true)
+            {
+                await LoadRaces();
+            }
+            StateHasChanged();
         }
 
         private async Task LoadRaces()
         {
-            Races = (await RaceService.GetRaces()).OrderByDescending(x => x.Date).ToList();
+            if (SelectedRace is null)
+            {
+                Races = (await RaceService.GetRaces()).OrderByDescending(x => x.Date).ToList();
+            }
         }
 
-        private void SelectRace(RaceDto race)
+        private Task SelectRace(RaceDto race)
         {
-            AppState.Race = race;
+            return AppStateService.SetAppSelectedRace(race);
         }
     }
 }

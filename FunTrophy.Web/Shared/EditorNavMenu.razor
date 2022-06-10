@@ -1,5 +1,4 @@
-﻿@inject AppState AppState
-<ul class="nav nav-pills flex-column w-100 mb-auto">
+﻿<ul class="nav nav-pills flex-column w-100 mb-auto">
     <li class="nav-item">
         <NavLink class="nav-link" href="editeur/utilisateurs">
             <div class="d-flex">
@@ -20,7 +19,7 @@
             </div>
         </NavLink>
     </li>
-    @if (AppState.Race is not null)
+    @if (IsCurrentRaceSelected)
     {
         <li class="nav-item">
             <NavLink class="nav-link" href="editeur/couleurs">
@@ -84,15 +83,3 @@
         </li>
     }
 </ul>
-
-@code {
-    protected override void OnInitialized()
-    {
-        AppState.OnChange += StateHasChanged;
-    }
-
-    public void Dispose()
-    {
-        AppState.OnChange -= StateHasChanged;
-    }
-}

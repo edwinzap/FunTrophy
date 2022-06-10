@@ -4,12 +4,12 @@
 
 <PageTitle>Courses</PageTitle>
 
-@if (AppState.Race is not null)
+@if (SelectedRace is not null)
 {
     <div class="d-flex flex-column">
         <div class="p-2">
-            <h2>@AppState.Race.Name</h2>
-            <p>@AppState.Race.Date.ToLongDateString()</p>
+            <h2>@SelectedRace.Name</h2>
+            <p>@SelectedRace.Date.ToLongDateString()</p>
         </div>
 
         <div class="d-flex flex-column flex-sm-row">
@@ -18,7 +18,7 @@
                     <button class="btn btn-primary" @onclick="ClearSelectedRace">Changer de course...</button>
                 </div>
                 <div class="p-2">
-                    @if (@AppState.Race.IsEnded)
+                    @if (SelectedRace.IsEnded)
                     {
                         <button class="btn btn-success" @onclick="() => EndRace(false)">Ouvrir la course</button>
                     }

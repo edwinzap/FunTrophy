@@ -10,7 +10,7 @@ namespace FunTrophy.Web.Pages
         #region Properties
 
         [Inject]
-        public AppState AppState { get; set; } = default!;
+        public IAppStateService AppStateService { get; set; } = default!;
 
         [Inject]
         public ITeamService TeamService { get; set; } = default!;
@@ -36,6 +36,7 @@ namespace FunTrophy.Web.Pages
         private TeamDto? SelectedTeam => _teams?.FirstOrDefault(x => x.Id == SelectedTeamId);
 
         private string? _searchText;
+        private int? _selectedRaceId;
 
         private string? SearchText
         {
@@ -51,6 +52,8 @@ namespace FunTrophy.Web.Pages
 
         protected override async Task OnInitializedAsync()
         {
+            var state = await AppStateService.GetState();
+            _selectedRaceId = state?.Race?.Id;
             await LoadTeams();
             await NotificationHubHelper.ConnectToServer();
             NotificationHubHelper.TimeAdjustmentChanged += OnTimeAdjustmentChanged;
@@ -77,9 +80,9 @@ namespace FunTrophy.Web.Pages
 
         private async Task LoadTeams()
         {
-            if (AppState.Race is not null)
+            if (_selectedRaceId.HasValue)
             {
-                _teams = (await TeamService.GetTeamsByRace(AppState.Race.Id))
+                _teams = (await TeamService.GetTeamsByRace(_selectedRaceId.Value))
                     .OrderBy(x => x.Name)
                     .ToList();
                 FilterTeams();

@@ -1,4 +1,5 @@
-﻿using FunTrophy.Web.Models;
+﻿using FunTrophy.Web.Contracts.Services;
+using FunTrophy.Web.Models;
 using Microsoft.AspNetCore.Components;
 
 namespace FunTrophy.Web.Shared
@@ -8,7 +9,7 @@ namespace FunTrophy.Web.Shared
         #region Properties
 
         [Inject]
-        private AppState AppState { get; set; } = default!;
+        private IAppStateService AppStateService { get; set; } = default!;
 
         private bool expandDropdown = false;
         private bool collapseNavMenu = true;
@@ -17,17 +18,19 @@ namespace FunTrophy.Web.Shared
         private string? ResultsMenuCssClass => expandDropdown ? "show" : null;
         private List<DropDownMenuItem>? UserMenuItems { get; set; }
         private List<DropDownMenuItem>? ResultMenuItems { get; set; }
+        private bool IsCurrentRaceSelected { get; set; } = false;
+        private bool IsCurrentRaceEnded { get; set; } = false;
 
         #endregion Properties
 
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
             UserMenuItems = new List<DropDownMenuItem>()
             {
                 new DropDownMenuItem("Se déconnecter", "fun-logout")
             };
 
-            var finalMenu = new DropDownMenuItem("Classement final", "resultats/fin", AppState.Race?.IsEnded == true);
+            var finalMenu = new DropDownMenuItem("Classement final", "resultats/fin", IsCurrentRaceSelected);
             ResultMenuItems = new List<DropDownMenuItem>()
             {
                 new DropDownMenuItem("Par parcours", "resultats/parcours"),
@@ -35,17 +38,16 @@ namespace FunTrophy.Web.Shared
                 finalMenu,
             };
 
-            AppState.OnChange += () =>
-            {
-                finalMenu.IsVisible = AppState.Race?.IsEnded == true;
-                StateHasChanged();
-            };
+            AppStateService.OnAppStateChanged += async () => await RefreshMenu();
+            await RefreshMenu();
         }
 
-        private void CloseResultsMenu()
+        private async Task RefreshMenu()
         {
-            collapseNavMenu = true;
-            expandDropdown = false;
+            var appState = await AppStateService.GetState();
+            IsCurrentRaceEnded = appState?.Race?.IsEnded == true;
+            IsCurrentRaceSelected = appState?.Race is not null;
+            StateHasChanged();
         }
 
         private void ToggleNavMenu()
@@ -55,12 +57,7 @@ namespace FunTrophy.Web.Shared
 
         public void Dispose()
         {
-            AppState.OnChange -= StateHasChanged;
-        }
-
-        private void ToggleResults()
-        {
-            expandDropdown = !expandDropdown;
+            AppStateService.OnAppStateChanged -= StateHasChanged;
         }
     }
 }

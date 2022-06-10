@@ -13,7 +13,7 @@ namespace FunTrophy.Web.Pages
         #region Properties
 
         [Inject]
-        public AppState AppState { get; set; } = default!;
+        public IAppStateService AppStateService { get; set; } = default!;
 
         [Inject]
         public ITrackService TrackService { get; set; } = default!;
@@ -50,6 +50,7 @@ namespace FunTrophy.Web.Pages
         private System.Timers.Timer _timer = new System.Timers.Timer();
 
         private int _rotationInterval = 10;
+        private int? _selectedRaceId;
 
         public int RotationInterval
         {
@@ -65,8 +66,10 @@ namespace FunTrophy.Web.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            _timer.Elapsed += new ElapsedEventHandler(OnTimerTick);
+            var state = await AppStateService.GetState();
+            _selectedRaceId = state?.Race?.Id;
 
+            _timer.Elapsed += new ElapsedEventHandler(OnTimerTick);
             RefreshAutoRotate();
             await LoadTracks();
             await NotificationHubHelper.ConnectToServer();
@@ -89,9 +92,9 @@ namespace FunTrophy.Web.Pages
 
         private async Task LoadTracks()
         {
-            if (AppState.Race != null)
+            if (_selectedRaceId.HasValue)
             {
-                Tracks = await TrackService.GetTracks(AppState.Race.Id);
+                Tracks = await TrackService.GetTracks(_selectedRaceId.Value);
                 if (Tracks.Any())
                 {
                     SelectedTrackId = Tracks.First().Id;

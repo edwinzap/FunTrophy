@@ -10,7 +10,7 @@ namespace FunTrophy.Web.Pages.Editor
         #region Properties
 
         [Inject]
-        private AppState AppState { get; set; } = default!;
+        private IAppStateService AppStateService { get; set; } = default!;
 
         [Inject]
         private ITimeAdjustmentCategoryService TimeAdjustmentCategoryService { get; set; } = default!;
@@ -26,6 +26,7 @@ namespace FunTrophy.Web.Pages.Editor
         private UpdateTimeAdjustmentCategoryDto updateCategory = new();
 
         private int? updateCategoryId;
+        private int? _selectedRaceId;
 
         private int? DeleteCategoryId { get; set; }
 
@@ -33,23 +34,25 @@ namespace FunTrophy.Web.Pages.Editor
 
         protected override async Task OnInitializedAsync()
         {
+            var selectedRace = await AppStateService.GetEditorSelectedRace();
+            _selectedRaceId = selectedRace?.Id;
             await LoadCategories();
         }
 
         private async Task LoadCategories()
         {
-            if (AppState.Race != null)
+            if (_selectedRaceId.HasValue)
             {
-                Categories = await TimeAdjustmentCategoryService.GetCategories(AppState.Race.Id);
+                Categories = await TimeAdjustmentCategoryService.GetCategories(_selectedRaceId.Value);
             }
         }
 
         private async Task AddTrack()
         {
-            if (AppState.Race == null)
+            if (!_selectedRaceId.HasValue)
                 return;
 
-            addCategory.RaceId = AppState.Race.Id;
+            addCategory.RaceId = _selectedRaceId.Value;
 
             await TimeAdjustmentCategoryService.Add(addCategory);
             await LoadCategories();

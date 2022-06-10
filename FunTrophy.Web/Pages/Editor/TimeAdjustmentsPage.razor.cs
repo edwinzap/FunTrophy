@@ -11,7 +11,7 @@ namespace FunTrophy.Web.Pages.Editor
         #region Properties
 
         [Inject]
-        private AppState AppState { get; set; } = default!;
+        private IAppStateService AppStateService { get; set; } = default!;
 
         [Inject]
         private ITimeAdjustmentService TimeAdjustmentService { get; set; } = default!;
@@ -41,6 +41,7 @@ namespace FunTrophy.Web.Pages.Editor
         private int addMinutes = 0;
         private int addSeconds = 0;
         private bool isPositive = true;
+        private int? _selectedRaceId;
 
         public int? CurrentColorId { get; set; }
 
@@ -52,16 +53,18 @@ namespace FunTrophy.Web.Pages.Editor
 
         protected override async Task OnInitializedAsync()
         {
+            var selectedRace = await AppStateService.GetEditorSelectedRace();
+            _selectedRaceId = selectedRace?.Id;
             var task = await LoadColors().ContinueWith(_ => LoadTeams());
             await Task.WhenAll(task, LoadCategories());
         }
 
         private async Task LoadColors()
         {
-            if (AppState.Race?.Id == null)
+            if (!_selectedRaceId.HasValue)
                 return;
 
-            Colors = await ColorService.GetColors(AppState.Race.Id);
+            Colors = await ColorService.GetColors(_selectedRaceId.Value);
             if (Colors.Any())
             {
                 CurrentColorId = Colors.First().Id;
@@ -84,11 +87,11 @@ namespace FunTrophy.Web.Pages.Editor
 
         private async Task LoadCategories()
         {
-            if (AppState.Race?.Id == null)
+            if (!_selectedRaceId.HasValue)
                 return;
 
             Categories = null;
-            Categories = await CategoryService.GetCategories(AppState.Race.Id);
+            Categories = await CategoryService.GetCategories(_selectedRaceId.Value);
             SelectedCategoryId = Categories.FirstOrDefault()?.Id;
         }
 

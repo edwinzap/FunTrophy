@@ -10,7 +10,7 @@ namespace FunTrophy.Web.Pages.Editor
         #region Properties
 
         [Inject]
-        private AppState AppState { get; set; } = default!;
+        private IAppStateService AppStateService { get; set; } = default!;
 
         [Inject]
         private IColorService ColorService { get; set; } = default!;
@@ -28,27 +28,31 @@ namespace FunTrophy.Web.Pages.Editor
 
         private EditDialog EditDialog { get; set; } = default!;
 
+        private int? _selectedRaceId;
+
         #endregion Properties
 
         protected override async Task OnInitializedAsync()
         {
+            var selectedRace = await AppStateService.GetEditorSelectedRace();
+            _selectedRaceId = selectedRace?.Id;
             await LoadColors();
         }
 
         public async Task LoadColors()
         {
-            if (AppState.Race != null)
+            if (_selectedRaceId.HasValue)
             {
-                Colors = await ColorService.GetColors(AppState.Race.Id);
+                Colors = await ColorService.GetColors(_selectedRaceId.Value);
             }
         }
 
         private async Task AddColor()
         {
-            if (AppState.Race == null)
+            if (!_selectedRaceId.HasValue)
                 return;
 
-            addColor.RaceId = AppState.Race.Id;
+            addColor.RaceId = _selectedRaceId.Value;
 
             await ColorService.Add(addColor);
             await LoadColors();

@@ -16,7 +16,7 @@
                             </li>
                         </Authorized>
                     </AuthorizeView>
-                    @if (AppState?.Race is not null)
+                    @if (IsCurrentRaceSelected)
                     {
                         <AuthorizeView Roles="Admin,User">
                             <Authorized>

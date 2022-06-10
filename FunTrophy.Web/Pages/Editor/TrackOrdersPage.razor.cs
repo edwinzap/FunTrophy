@@ -7,8 +7,10 @@ namespace FunTrophy.Web.Pages.Editor
 {
     public partial class TrackOrdersPage
     {
+        #region Properties
+
         [Inject]
-        private AppState AppState { get; set; } = default!;
+        private IAppStateService AppStateService { get; set; } = default!;
 
         [Inject]
         private ITrackOrderService TrackOrderService { get; set; } = default!;
@@ -23,21 +25,26 @@ namespace FunTrophy.Web.Pages.Editor
         private int? CurrentColorId { get; set; }
 
         private DraggableItem<TrackDto>? draggingItem;
+        private int? _selectedRaceId;
 
         private SaveStatus CurrentSaveStatus { get; set; } = SaveStatus.NotSaved;
 
+        #endregion Properties
+
         protected override async Task OnInitializedAsync()
         {
+            var selectedRace = await AppStateService.GetEditorSelectedRace();
+            _selectedRaceId = selectedRace?.Id;
             await LoadColors();
             await LoadTrackOrders();
         }
 
         private async Task LoadColors()
         {
-            if (AppState.Race?.Id is null)
+            if (!_selectedRaceId.HasValue)
                 return;
 
-            Colors = await ColorService.GetColors(AppState.Race.Id);
+            Colors = await ColorService.GetColors(_selectedRaceId.Value);
             if (Colors.Any())
             {
                 CurrentColorId = Colors.First().Id;
@@ -68,7 +75,7 @@ namespace FunTrophy.Web.Pages.Editor
 
         private async Task UpdateTracksOrder()
         {
-            if (!TrackOrders.Any() || !CurrentColorId.HasValue)
+            if (TrackOrders?.Any() != true || !CurrentColorId.HasValue)
                 return;
 
             CurrentSaveStatus = SaveStatus.Saving;
@@ -82,7 +89,7 @@ namespace FunTrophy.Web.Pages.Editor
 
         private void HandleDrop(DraggableItem<TrackDto> landingItem)
         {
-            if (draggingItem is null)
+            if (draggingItem is null || TrackOrders?.Any() != true)
                 return;
 
             if (draggingItem == landingItem)

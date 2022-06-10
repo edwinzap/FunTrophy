@@ -10,7 +10,7 @@ namespace FunTrophy.Web.Pages.Editor
         #region Properties
 
         [Inject]
-        private AppState AppState { get; set; } = default!;
+        private IAppStateService AppStateService { get; set; } = default!;
 
         [Inject]
         private ITeamService TeamService { get; set; } = default!;
@@ -33,6 +33,7 @@ namespace FunTrophy.Web.Pages.Editor
         private UpdateTeamDto updateTeam = new();
 
         private int? updateTeamId;
+        private int? _selectedRaceId;
 
         public int? CurrentColorId { get; set; }
 
@@ -40,16 +41,18 @@ namespace FunTrophy.Web.Pages.Editor
 
         protected override async Task OnInitializedAsync()
         {
+            var selectedRace = await AppStateService.GetEditorSelectedRace();
+            _selectedRaceId = selectedRace?.Id;
             await LoadColors();
             await LoadTeams();
         }
 
         private async Task LoadColors()
         {
-            if (AppState.Race?.Id == null)
+            if (!_selectedRaceId.HasValue)
                 return;
 
-            Colors = await ColorService.GetColors(AppState.Race.Id);
+            Colors = await ColorService.GetColors(_selectedRaceId.Value);
             if (Colors.Any())
             {
                 CurrentColorId = Colors.First().Id;
@@ -81,9 +84,9 @@ namespace FunTrophy.Web.Pages.Editor
 
         private async Task AddTeam()
         {
-            if (AppState.Race?.Id != null && CurrentColorId.HasValue)
+            if (_selectedRaceId.HasValue && CurrentColorId.HasValue)
             {
-                addTeam.RaceId = AppState.Race.Id;
+                addTeam.RaceId = _selectedRaceId.Value;
                 addTeam.ColorId = CurrentColorId.Value;
                 await TeamService.Add(addTeam);
                 await LoadTeams();
