@@ -66,10 +66,20 @@
                 </div>
 
                 <div class="flex-fill text-nowrap team-name">
-                    @(result.Team.Name.Length > 20? result.Team.Name.Substring(0, 20) + "..." : result.Team.Name)
-                    </div>
+                    @(result.Team.Name.Length > 25? result.Team.Name.Substring(0, 25) + "..." : result.Team.Name)
+                </div>
 
-                <div class="pe-2">@(result.LapDuration.HasValue ? result.LapDuration.Value.ToTimeString(): "En cours...")</div>
+                <div class="pe-2">
+                    @if (result.LapDuration.HasValue)
+                    {
+                        @result.LapDuration.Value.ToTimeString()
+                    }
+                    else
+                    {
+                        @*<span class="fas fa-running fa-beat" style="--fa-animation-duration: 2s; --fa-beat-scale: 1.4;"></span>*@
+                        <span class="fas fa-spinner fa-spin-pulse fa-lg"></span>
+                    }
+                </div>
             </div>
         }
     }
