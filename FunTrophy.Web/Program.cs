@@ -9,9 +9,10 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped<AppState>();
 builder.Services
-    .AddServices()
+    .AddServices(builder.Configuration)
     .AddHelpers()
-    .AddAuthentication();
+    .AddAuthentication(builder.Configuration)
+    .AddSettings(builder.Configuration);
 
 builder.Services.AddBlazoredLocalStorage();
 

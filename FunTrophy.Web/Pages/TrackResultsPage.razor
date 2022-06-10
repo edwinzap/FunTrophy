@@ -65,7 +65,9 @@
                     <span class="@(HtmlHelper.GetFaIcon(result.Team.Type))"></span>
                 </div>
 
-                <div class="flex-fill">@result.Team.Name</div>
+                <div class="flex-fill text-nowrap team-name">
+                    @(result.Team.Name.Length > 20? result.Team.Name.Substring(0, 20) + "..." : result.Team.Name)
+                    </div>
 
                 <div class="pe-2">@(result.LapDuration.HasValue ? result.LapDuration.Value.ToTimeString(): "En cours...")</div>
             </div>

@@ -122,7 +122,8 @@ namespace FunTrophy.Web.Pages.Editor
             if (SelectedRace is not null)
             {
                 await RaceService.End(SelectedRace.Id, isEnded);
-                SelectedRace = await RaceService.GetRace(SelectedRace.Id);
+                var race = await RaceService.GetRace(SelectedRace.Id);
+                await AppStateService.SetEditorSelectedRace(race);
                 StateHasChanged();
             }
         }

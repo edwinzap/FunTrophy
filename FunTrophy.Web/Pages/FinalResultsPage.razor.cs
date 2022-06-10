@@ -19,6 +19,9 @@ namespace FunTrophy.Web.Pages
         [Inject]
         public INotificationHubHelper NotificationHubHelper { get; set; } = default!;
 
+        [Inject]
+        public NavigationManager NavigationManager { get; set; } = default!;
+
         private List<FinalResultDto>? _results;
         private int? _selectedRaceId;
 
@@ -30,8 +33,14 @@ namespace FunTrophy.Web.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            var selectedRace = await AppStateService.GetEditorSelectedRace();
-            _selectedRaceId = selectedRace?.Id;
+            var state = await AppStateService.GetState();
+
+            if (state?.Race?.IsEnded != true)
+            {
+                NavigationManager.NavigateTo("/");
+            }
+
+            _selectedRaceId = state?.Race?.Id;
             await LoadResults();
             await NotificationHubHelper.ConnectToServer();
             NotificationHubHelper.TimeAdjustmentChanged += OnTimeAdjustmentChanged;

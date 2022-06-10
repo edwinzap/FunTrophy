@@ -1,5 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using FunTrophy.Shared.Model;
+using FunTrophy.Web.Contracts.Helpers;
 using FunTrophy.Web.Contracts.Services;
 
 namespace FunTrophy.Web.Services
@@ -7,6 +8,8 @@ namespace FunTrophy.Web.Services
     public class AppStateService : IAppStateService
     {
         private readonly ILocalStorageService _localStorage;
+        private readonly IRaceService _raceService;
+        private readonly INotificationHubHelper _notificationHubHelper;
         private static readonly string AppStateKey = "AppState";
         private static readonly string EditorSelectedRaceKey = "EditorSelectedRace";
 
@@ -14,9 +17,31 @@ namespace FunTrophy.Web.Services
 
         public event Action? OnEditorStateChanged;
 
-        public AppStateService(ILocalStorageService localStorage)
+        public AppStateService(
+            ILocalStorageService localStorage, 
+            IRaceService raceService, 
+            INotificationHubHelper notificationHubHelper)
         {
             _localStorage = localStorage;
+            _raceService = raceService;
+            _notificationHubHelper = notificationHubHelper;
+        }
+
+        public async Task StartListeningToChange()
+        {
+            await _notificationHubHelper.ConnectToServer();
+            _notificationHubHelper.RaceStatusChanged += OnRaceChanged;
+        }
+
+        private async Task OnRaceChanged(int raceId, bool isEnded)
+        {
+            var state = await GetState();
+            var currentRaceId = state?.Race?.Id;
+            if (currentRaceId == raceId)
+            {
+                var race = await _raceService.GetRace(raceId);
+                await SetAppSelectedRace(race);
+            }
         }
 
         public async Task<AppState?> GetState()
