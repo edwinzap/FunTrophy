@@ -2,7 +2,6 @@
 @page "/chrono"
 @layout UserLayout
 
-<RedirectToSelectRace />
 <PageTitle>Chrono</PageTitle>
 <div>
     <ColorSelector Colors="@Colors" CurrentColorIdChanged="(value) => OnCurrentColorChanged(value)" />
@@ -45,15 +44,15 @@
                                     <div class="row align-items-center">
                                         <div class="col-lg-6">@lap.CurrentTrack.Name</div>
                                         <div class="col-lg-6 d-grid">
-                                            <button class="btn btn-danger" @onclick="() => OnStopClicked(lap.Team.Id)">
-                                                @if (lap.CurrentTrackStartTime.HasValue)
-                                                {
-                                                    var diff = CurrentDateTime.Subtract(lap.CurrentTrackStartTime.Value);
-                                                    var text = diff.TotalMilliseconds > 0 ? CurrentDateTime.Subtract(lap.CurrentTrackStartTime.Value).ToTimeString() : "00:00";
+                                            @if (lap.CurrentTrackStartTime.HasValue)
+                                            {
+                                                var diff = CurrentDateTime.Subtract(lap.CurrentTrackStartTime.Value);
+                                                var text = diff.TotalMilliseconds > 0 ? CurrentDateTime.Subtract(lap.CurrentTrackStartTime.Value).ToTimeString() : "00:00";
+                                                <button class="btn btn-danger" disabled=@(diff.TotalSeconds < 60) @onclick="() => OnStopClicked(lap.Team.Id)">
                                                     @(text)
-                                                }
-                                                <span class="ms-2 fas fa-stop"></span>
-                                            </button>
+                                                    <span class="ms-2 fas fa-stop"></span>
+                                                </button>
+                                            }
                                         </div>
                                     </div>
                                 }

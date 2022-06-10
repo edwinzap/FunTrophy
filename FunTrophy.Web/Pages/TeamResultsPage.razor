@@ -2,7 +2,6 @@
 @page "/resultats/equipe"
 @layout UserLayout
 
-<RedirectToSelectRace />
 <PageTitle>Résultats par équipe</PageTitle>
 
 <div class="d-flex justify-content-center d-sm-block d-md-none">
@@ -30,7 +29,7 @@
             <input class="form-control" type="search"
                    @bind="SearchText"
                    @bind:event="oninput"
-                   placeholder="Rechercher une équipe...">
+                   placeholder="Rechercher un nom ou n° d'équipe">
             <span class="input-group-text">
                 <i class="fas fa-search"></i>
             </span>
@@ -109,7 +108,17 @@
                             <tr @key="@result">
                                 <td>@(Results.IndexOf(result) + 1)</td>
                                 <td>@result.Track.Name</td>
-                                <td>@(result.LapDuration.HasValue ? result.LapDuration.Value.ToTimeString(): "En cours...")</td>
+                                <td>
+                                    @if (result.LapDuration.HasValue)
+                                    {
+                                        @result.LapDuration.Value.ToTimeString()
+                                    }
+                                    else
+                                    {
+                                        @*<span class="fas fa-running fa-beat" style="--fa-animation-duration: 2s; --fa-beat-scale: 1.4;"></span>*@
+                                        <span class="fas fa-spinner fa-spin-pulse fa-lg"></span>
+                                    }
+                                </td>
                             </tr>
                         }
                     }

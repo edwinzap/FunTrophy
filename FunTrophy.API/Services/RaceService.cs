@@ -1,4 +1,5 @@
-﻿using FunTrophy.API.Contracts.Mappers;
+﻿using FunTrophy.API.Contracts.Helpers;
+using FunTrophy.API.Contracts.Mappers;
 using FunTrophy.API.Contracts.Services;
 using FunTrophy.Infrastructure.Contracts.Repositories;
 using FunTrophy.Shared.Model;
@@ -11,17 +12,20 @@ namespace FunTrophy.API.Services
         private readonly IRaceMapper _mapper;
         private readonly ITrackTimeRepository _trackTimeRepository;
         private readonly ITimeAdjustmentRepository _timeAdjustmentRepository;
+        private readonly INotificationHelper _notificationHelper;
 
         public RaceService(
             IRaceRepository repository,
             IRaceMapper mapper,
             ITrackTimeRepository trackTimeRepository,
-            ITimeAdjustmentRepository timeAdjustmentRepository)
+            ITimeAdjustmentRepository timeAdjustmentRepository,
+            INotificationHelper notificationHelper)
         {
             _repository = repository;
             _mapper = mapper;
             _trackTimeRepository = trackTimeRepository;
             _timeAdjustmentRepository = timeAdjustmentRepository;
+            _notificationHelper = notificationHelper;
         }
 
         public async Task<RaceDto> Get(int raceId)
@@ -62,6 +66,7 @@ namespace FunTrophy.API.Services
 
             dbRace.IsEnded = isEnded;
             await _repository.Update(dbRace);
+            await _notificationHelper.NotifyRaceStatusChanged(raceId, isEnded);
         }
 
         public async Task Reset(int raceId)

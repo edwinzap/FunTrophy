@@ -9,19 +9,20 @@ namespace FunTrophy.Web
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddServices(this IServiceCollection services)
+        public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration config)
         {
             services.AddTransient<CustomAuthorizationHandler>();
-            services.AddCustomHttpClient<IRaceService, RaceService>();
-            services.AddCustomHttpClient<IColorService, ColorService>();
-            services.AddCustomHttpClient<ITeamService, TeamService>();
-            services.AddCustomHttpClient<ITrackService, TrackService>();
-            services.AddCustomHttpClient<ITrackOrderService, TrackOrderService>();
-            services.AddCustomHttpClient<ITimeAdjustmentCategoryService, TimeAdjustmentCategoryService>();
-            services.AddCustomHttpClient<ITimeAdjustmentService, TimeAdjustmentService>();
-            services.AddCustomHttpClient<ITrackTimeService, TrackTimeService>();
-            services.AddCustomHttpClient<IResultService, ResultService>();
-            services.AddCustomHttpClient<IUserService, UserService>();
+            services.AddCustomHttpClient<IRaceService, RaceService>(config);
+            services.AddCustomHttpClient<IColorService, ColorService>(config);
+            services.AddCustomHttpClient<ITeamService, TeamService>(config);
+            services.AddCustomHttpClient<ITrackService, TrackService>(config);
+            services.AddCustomHttpClient<ITrackOrderService, TrackOrderService>(config);
+            services.AddCustomHttpClient<ITimeAdjustmentCategoryService, TimeAdjustmentCategoryService>(config);
+            services.AddCustomHttpClient<ITimeAdjustmentService, TimeAdjustmentService>(config);
+            services.AddCustomHttpClient<ITrackTimeService, TrackTimeService>(config);
+            services.AddCustomHttpClient<IResultService, ResultService>(config);
+            services.AddCustomHttpClient<IUserService, UserService>(config);
+            services.AddScoped<IAppStateService, AppStateService>();
             return services;
         }
 
@@ -31,9 +32,9 @@ namespace FunTrophy.Web
             return services;
         }
 
-        public static IServiceCollection AddAuthentication(this IServiceCollection services)
+        public static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration config)
         {
-            services.AddHttpClient<IAuthenticationService, AuthenticationService>(HttpClientConfig());
+            services.AddHttpClient<IAuthenticationService, AuthenticationService>(HttpClientConfig(config));
             services.AddScoped<AuthStateProvider>();
             services.AddScoped<AuthenticationStateProvider>(provider =>
                 provider.GetRequiredService<AuthStateProvider>());
@@ -42,19 +43,26 @@ namespace FunTrophy.Web
             return services;
         }
 
-        private static IHttpClientBuilder AddCustomHttpClient<TInterface, TImplementation>(this IServiceCollection services)
+        public static IServiceCollection AddSettings(this IServiceCollection services, IConfiguration config)
+        {
+            services.Configure<AppSettings>(options => config.Bind(options));
+            return services;
+        }
+
+        private static IHttpClientBuilder AddCustomHttpClient<TInterface, TImplementation>(this IServiceCollection services, IConfiguration config)
             where TInterface : class
             where TImplementation : class, TInterface
         {
-            return services.AddHttpClient<TInterface, TImplementation>(HttpClientConfig())
+            return services.AddHttpClient<TInterface, TImplementation>(HttpClientConfig(config))
                 .AddHttpMessageHandler<CustomAuthorizationHandler>();
         }
 
-        private static Action<IServiceProvider, HttpClient> HttpClientConfig()
+        private static Action<IServiceProvider, HttpClient> HttpClientConfig(IConfiguration config)
         {
+            var url = config.GetValue<string>("ApiUrl");
             return (provider, client) =>
             {
-                client.BaseAddress = new Uri("https://localhost:7183/");
+                client.BaseAddress = new Uri(url);
             };
         }
     }

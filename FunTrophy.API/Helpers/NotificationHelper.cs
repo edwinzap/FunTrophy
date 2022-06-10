@@ -23,5 +23,10 @@ namespace FunTrophy.API.Helpers
         {
             return _hubContext.Clients.All.SendAsync(HubConstants.TrackTimeChanged, trackId, teamId);
         }
+
+        public Task NotifyRaceStatusChanged(int raceId, bool isEnded)
+        {
+            return _hubContext.Clients.All.SendAsync(HubConstants.RaceStatusChanged, raceId, isEnded);
+        }
     }
 }

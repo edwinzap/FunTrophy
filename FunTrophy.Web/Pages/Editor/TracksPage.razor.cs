@@ -10,7 +10,7 @@ namespace FunTrophy.Web.Pages.Editor
         #region Properties
 
         [Inject]
-        private AppState AppState { get; set; } = default!;
+        private IAppStateService AppStateService { get; set; } = default!;
 
         [Inject]
         private ITrackService TrackService { get; set; } = default!;
@@ -29,6 +29,7 @@ namespace FunTrophy.Web.Pages.Editor
         private UpdateTrackDto updateTrack = new();
 
         private int? updateTrackId;
+        private int? _selectedRaceId;
 
         private int? DeleteTrackId { get; set; }
 
@@ -36,23 +37,25 @@ namespace FunTrophy.Web.Pages.Editor
 
         protected override async Task OnInitializedAsync()
         {
+            var selectedRace = await AppStateService.GetEditorSelectedRace();
+            _selectedRaceId = selectedRace?.Id;
             await LoadTracks();
         }
 
         private async Task LoadTracks()
         {
-            if (AppState.Race != null)
+            if (_selectedRaceId.HasValue)
             {
-                Tracks = await TrackService.GetTracks(AppState.Race.Id);
+                Tracks = await TrackService.GetTracks(_selectedRaceId.Value);
             }
         }
 
         private async Task AddTrack()
         {
-            if (AppState.Race == null)
+            if (!_selectedRaceId.HasValue)
                 return;
 
-            addTrack.RaceId = AppState.Race.Id;
+            addTrack.RaceId = _selectedRaceId.Value;
 
             await TrackService.Add(addTrack);
             await LoadTracks();

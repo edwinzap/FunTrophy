@@ -1,13 +1,14 @@
 ﻿@using FunTrophy.Web.Contracts.Services
 @inject IAppStateService AppStateService
 @inject NavigationManager Navigator
+
 @code {
     protected override async Task OnInitializedAsync()
     {
-        var appState = await AppStateService.GetState();
-        if (appState?.Race is null)
+        var selectedRace = await AppStateService.GetEditorSelectedRace();
+        if (selectedRace is null)
         {
-            Navigator.NavigateTo("/");
+            Navigator.NavigateTo("editeur/courses");
         }
     }
 }

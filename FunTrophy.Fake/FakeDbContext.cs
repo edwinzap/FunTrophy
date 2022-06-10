@@ -89,7 +89,7 @@ namespace FunTrophy.Fake
             var race = Races.Last();
             for (int index = 1; index < Some.Int(6,10); index++)
             {
-                var track = new Track { Id = index, Name = Some.CompanyName(), Race = race, RaceId = race.Id };
+                var track = new Track { Id = index, Name = Some.Street(), Race = race, RaceId = race.Id };
                 Tracks.Add(track);
             }
         }

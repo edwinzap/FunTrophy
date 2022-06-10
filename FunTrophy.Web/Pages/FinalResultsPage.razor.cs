@@ -11,7 +11,7 @@ namespace FunTrophy.Web.Pages
         #region Properties
 
         [Inject]
-        private AppState AppState { get; set; } = default!;
+        private IAppStateService AppStateService { get; set; } = default!;
 
         [Inject]
         private IResultService ResultService { get; set; } = default!;
@@ -19,7 +19,12 @@ namespace FunTrophy.Web.Pages
         [Inject]
         public INotificationHubHelper NotificationHubHelper { get; set; } = default!;
 
+        [Inject]
+        public NavigationManager NavigationManager { get; set; } = default!;
+
         private List<FinalResultDto>? _results;
+        private int? _selectedRaceId;
+
         private List<FinalResultDto>? Results { get; set; }
 
         private TeamTypeFilter TeamTypeFilter { get; set; }
@@ -28,6 +33,14 @@ namespace FunTrophy.Web.Pages
 
         protected override async Task OnInitializedAsync()
         {
+            var state = await AppStateService.GetState();
+
+            if (state?.Race?.IsEnded != true)
+            {
+                NavigationManager.NavigateTo("/");
+            }
+
+            _selectedRaceId = state?.Race?.Id;
             await LoadResults();
             await NotificationHubHelper.ConnectToServer();
             NotificationHubHelper.TimeAdjustmentChanged += OnTimeAdjustmentChanged;
@@ -48,9 +61,9 @@ namespace FunTrophy.Web.Pages
 
         private async Task LoadResults()
         {
-            if (AppState.Race?.Id is not null)
+            if (_selectedRaceId.HasValue)
             {
-                _results = await ResultService.GetFinalResults(AppState.Race.Id);
+                _results = await ResultService.GetFinalResults(_selectedRaceId.Value);
                 FilterResults();
             }
         }

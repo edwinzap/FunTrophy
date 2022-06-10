@@ -1,5 +1,6 @@
 ﻿using FunTrophy.API.Contracts.Mappers;
 using FunTrophy.API.Settings;
+using FunTrophy.Infrastructure.Contracts.Repositories;
 using FunTrophy.Infrastructure.Model;
 using FunTrophy.Shared.Model.Authentication;
 using Microsoft.Extensions.Options;
@@ -12,22 +13,18 @@ namespace FunTrophy.API.Authentication
 {
     public class JWTManagerRepository : IJWTManagerRepository
     {
-        private List<User> Users = new()
-        {
-            new User{ Id = 1, IsAdmin = true, Password = "admin", UserName = "admin", FirstName = "Admin", LastName = "Test"},
-            new User{ Id = 2, IsAdmin = false, Password = "user", UserName = "user",  FirstName = "User", LastName = "Test"},
-        };
-
         private readonly JWTSettings _configuration;
+        private readonly IUserRepository _userRepository;
 
-        public JWTManagerRepository(IOptions<JWTSettings> configuration)
+        public JWTManagerRepository(IOptions<JWTSettings> configuration, IUserRepository userRepository)
         {
             _configuration = configuration.Value;
+            _userRepository = userRepository;
         }
 
-        public Token? Authenticate(AuthenticationUser user)
+        public async Task<Token?> Authenticate(AuthenticationUser user)
         {
-            var dbUser = Users.FirstOrDefault(x => x.UserName == user.UserName && x.Password == user.Password);
+            var dbUser = await _userRepository.Get(user.UserName, user.Password);
             if (dbUser is null)
                 return null;
 

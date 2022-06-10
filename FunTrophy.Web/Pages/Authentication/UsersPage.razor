@@ -1,6 +1,8 @@
-﻿@page "/editeur/utilisateurs"
+﻿@page "/editeur"
+@page "/editeur/utilisateurs"
 @layout EditorLayout
 
+<h1>Editer les utilisateurs</h1>
 <div>
     <table class="table table-striped">
         <thead>
@@ -48,7 +50,6 @@
     </table>
 </div>
 
-<h1>Editer les utilisateurs</h1>
 <EditForm Model="@AddUserModel" OnValidSubmit="@AddUser">
     <div class="justify-content-start">
         <div class="row col-xl-8">

@@ -13,7 +13,7 @@ namespace FunTrophy.Web.Pages.Editor
         public NavigationManager NavigationManager { get; set; } = default!;
 
         [Inject]
-        private AppState AppState { get; set; } = default!;
+        private IAppStateService AppStateService { get; set; } = default!;
 
         [Inject]
         private IRaceService RaceService { get; set; } = default!;
@@ -27,6 +27,7 @@ namespace FunTrophy.Web.Pages.Editor
         private List<RaceDto>? Races { get; set; }
 
         private int? DeleteRaceId { get; set; }
+        private RaceDto? SelectedRace { get; set; }
 
         private AddOrUpdateRaceDto addRace = new() { Name = "Fun Trophy", Date = DateTime.Now };
 
@@ -38,22 +39,43 @@ namespace FunTrophy.Web.Pages.Editor
 
         protected override async Task OnInitializedAsync()
         {
+            AppStateService.OnEditorStateChanged += async () => await UpdateSelectedRace();
+            await UpdateSelectedRace();
             await LoadRaces();
+        }
+
+        public void Dispose()
+        {
+            AppStateService.OnEditorStateChanged += async () => await UpdateSelectedRace();
+        }
+
+        private async Task UpdateSelectedRace()
+        {
+            var currentRace = await AppStateService.GetEditorSelectedRace();
+            SelectedRace = currentRace;
+            if (SelectedRace is null || Races?.Any() != true)
+            {
+                await LoadRaces();
+            }
+            StateHasChanged();
         }
 
         private async Task LoadRaces()
         {
-            Races = (await RaceService.GetRaces()).OrderByDescending(x => x.Date).ToList();
+            if (SelectedRace is null)
+            {
+                Races = (await RaceService.GetRaces()).OrderByDescending(x => x.Date).ToList();
+            }
         }
 
-        private void SelectRace(RaceDto race)
+        private Task SelectRace(RaceDto race)
         {
-            AppState.Race = race;
+            return AppStateService.SetEditorSelectedRace(race);
         }
 
-        private void ClearSelectedRace()
+        private Task ClearSelectedRace()
         {
-            AppState.Race = null;
+            return AppStateService.SetEditorSelectedRace(null);
         }
 
         private async Task AddRace()
@@ -97,10 +119,11 @@ namespace FunTrophy.Web.Pages.Editor
 
         private async void EndRace(bool isEnded)
         {
-            if (AppState.Race is not null)
+            if (SelectedRace is not null)
             {
-                await RaceService.End(AppState.Race.Id, isEnded);
-                AppState.Race = await RaceService.GetRace(AppState.Race.Id);
+                await RaceService.End(SelectedRace.Id, isEnded);
+                var race = await RaceService.GetRace(SelectedRace.Id);
+                await AppStateService.SetEditorSelectedRace(race);
                 StateHasChanged();
             }
         }
@@ -113,9 +136,9 @@ namespace FunTrophy.Web.Pages.Editor
 
         private async Task ResetRace(bool confirm)
         {
-            if (confirm && AppState.Race?.Id is not null)
+            if (confirm && SelectedRace?.Id is not null)
             {
-                await RaceService.Reset(AppState.Race.Id);
+                await RaceService.Reset(SelectedRace.Id);
             }
         }
     }

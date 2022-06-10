@@ -6,6 +6,8 @@
 
         event Func<int, int, Task>? TrackTimeChanged;
 
+        event Func<int, bool, Task>? RaceStatusChanged;
+
         Task ConnectToServer();
     }
 }

@@ -28,6 +28,8 @@ namespace FunTrophy.Fake
 
         public List<TrackTime> TrackTimes { get; private set; } = new();
 
+        public List<User> Users { get; private set; } = new();
+
         #region Seed
 
         public void SeedData()
@@ -38,19 +40,21 @@ namespace FunTrophy.Fake
             SeedTracks();
             SeedTrackOrder();
             SeedTimeAdjustmentCategories();
+            SeedUsers();
         }
 
         public async Task ApplySeeding()
         {
             await _dbContext.Database.EnsureDeletedAsync();
             await _dbContext.Database.EnsureCreatedAsync();
-            
+
             _dbContext.Races.AddRange(Races);
             _dbContext.Colors.AddRange(Colors);
             _dbContext.Teams.AddRange(Teams);
             _dbContext.Tracks.AddRange(Tracks);
             _dbContext.TrackOrders.AddRange(TrackOrders);
             _dbContext.TimeAdjustmentCategories.AddRange(TimeAdjustmentCategories);
+            _dbContext.Users.AddRange(Users);
 
             await _dbContext.SaveChangesAsync();
         }
@@ -133,6 +137,15 @@ namespace FunTrophy.Fake
                 new TimeAdjustmentCategory { Name = "Pénalités", Race = race},
                 new TimeAdjustmentCategory { Name = "Tir à l'arc", Race = race},
                 new TimeAdjustmentCategory { Name = "Frisbee", Race = race},
+            };
+        }
+
+        private void SeedUsers()
+        {
+            Users = new List<User>()
+            {
+                new User { FirstName = "Miguel", LastName = "Forget", IsAdmin = true, Password = "admin", UserName = "admin"},
+                new User { FirstName = "Toto", LastName = "Dupont", IsAdmin = false, Password = "user", UserName = "user"},
             };
         }
 

@@ -1,7 +1,6 @@
 ﻿using FunTrophy.Shared.Model;
 using FunTrophy.Web.Contracts.Helpers;
 using FunTrophy.Web.Contracts.Services;
-using FunTrophy.Web.Helpers;
 using Microsoft.AspNetCore.Components;
 
 namespace FunTrophy.Web.Pages
@@ -9,8 +8,9 @@ namespace FunTrophy.Web.Pages
     public partial class Chrono
     {
         #region Properties
+
         [Inject]
-        private AppState AppState { get; set; } = default!;
+        private IAppStateService AppStateService { get; set; } = default!;
 
         [Inject]
         private IColorService ColorService { get; set; } = default!;
@@ -30,11 +30,14 @@ namespace FunTrophy.Web.Pages
         public int? CurrentColorId { get; set; }
 
         private Timer? _timer;
+        private int? _selectedRaceId;
 
-        #endregion
+        #endregion Properties
 
         protected override async Task OnInitializedAsync()
         {
+            var state = await AppStateService.GetState();
+            _selectedRaceId = state?.Race?.Id;
             await LoadColors();
             StartTime();
             await NotificationHubHelper.ConnectToServer();
@@ -61,13 +64,11 @@ namespace FunTrophy.Web.Pages
             }, new AutoResetEvent(false), 1000, 1000);
         }
 
-        
-        
         private async Task LoadColors()
         {
-            if (AppState.Race != null)
+            if (_selectedRaceId.HasValue)
             {
-                Colors = await ColorService.GetColors(AppState.Race.Id);
+                Colors = await ColorService.GetColors(_selectedRaceId.Value);
                 if (Colors.Any())
                 {
                     CurrentColorId = Colors.First().Id;
