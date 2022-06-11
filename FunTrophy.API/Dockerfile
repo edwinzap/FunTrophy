@@ -8,6 +8,10 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["FunTrophy.API/FunTrophy.API.csproj", "FunTrophy.API/"]
+COPY ["FunTrophy.Infrastructure/FunTrophy.Infrastructure.csproj", "FunTrophy.Infrastructure/"]
+COPY ["FunTrophy.Fake/FunTrophy.Fake.csproj", "FunTrophy.Fake/"]
+COPY ["FunTrophy.Tests.Utils/FunTrophy.Tests.Utils.csproj", "FunTrophy.Tests.Utils/"]
+COPY ["FunTrophy.Shared/FunTrophy.Shared.csproj", "FunTrophy.Shared/"]
 RUN dotnet restore "FunTrophy.API/FunTrophy.API.csproj"
 COPY . .
 WORKDIR "/src/FunTrophy.API"

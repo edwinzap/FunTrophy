@@ -16,7 +16,7 @@
 
     public enum TeamType
     {
-        Family = 0,
+        Fun = 0,
         Warrior = 1,
     }
 }

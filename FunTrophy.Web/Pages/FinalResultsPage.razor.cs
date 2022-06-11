@@ -83,7 +83,7 @@ namespace FunTrophy.Web.Pages
                     break;
 
                 case TeamTypeFilter.Family:
-                    Results = _results?.Where(x => x.Team.Type == TeamType.Family).ToList();
+                    Results = _results?.Where(x => x.Team.Type == TeamType.Fun).ToList();
                     break;
 
                 case TeamTypeFilter.Warrior:

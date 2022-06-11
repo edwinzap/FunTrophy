@@ -1,0 +1,51 @@
+version: "3.9"
+services:
+    api:
+        container_name: api
+        hostname: api
+        build:
+            context: .
+            dockerfile: FunTrophy.API/Dockerfile
+        ports:
+            - ${API_PORT:-8080}:80
+        env_file:
+            - .env
+        depends_on:
+            - db
+        environment:
+            - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT:-Development}
+    db:
+        container_name: db
+        hostname: db
+        image: "mcr.microsoft.com/mssql/server"
+        environment:
+            SA_PASSWORD: ${DB_PASSWORD}
+            ACCEPT_EULA: "Y"
+        ports:
+            - ${DB_PORT:-1433}:1433
+        env_file:
+            - .env
+        volumes:
+            - sqlsystem:/var/opt/mssql
+            - sqldata:/var/opt/sqlserver/data
+            - sqllog:/var/opt/sqlserver/log
+    web:
+        container_name: web
+        build:
+            context: .
+            dockerfile: FunTrophy.Web/Dockerfile
+        ports:
+            - ${WEB_PORT:-80}:80
+        env_file:
+            - .env
+        depends_on:
+            - api
+        environment:
+            - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT:-Development}
+        volumes:
+            - ./FunTrophy.Web/wwwroot/appsettings.json:/usr/share/nginx/html/appsettings.json
+            
+volumes:
+    sqlsystem:
+    sqldata:
+    sqllog:

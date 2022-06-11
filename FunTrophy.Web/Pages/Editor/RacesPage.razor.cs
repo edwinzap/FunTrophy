@@ -29,7 +29,7 @@ namespace FunTrophy.Web.Pages.Editor
         private int? DeleteRaceId { get; set; }
         private RaceDto? SelectedRace { get; set; }
 
-        private AddOrUpdateRaceDto addRace = new() { Name = "Fun Trophy", Date = DateTime.Now };
+        private AddOrUpdateRaceDto addRace = new() { Name = "Fun Trophy", Date = DateTime.UtcNow };
 
         private AddOrUpdateRaceDto updateRace = new();
 
