@@ -2,6 +2,7 @@
 using FunTrophy.Web.Contracts.Helpers;
 using FunTrophy.Web.Contracts.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using static FunTrophy.Web.Models.Filters;
 
 namespace FunTrophy.Web.Pages
@@ -20,6 +21,9 @@ namespace FunTrophy.Web.Pages
         public INotificationHubHelper NotificationHubHelper { get; set; } = default!;
 
         [Inject]
+        public AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
+
+        [Inject]
         public NavigationManager NavigationManager { get; set; } = default!;
 
         private List<FinalResultDto>? _results;
@@ -35,7 +39,8 @@ namespace FunTrophy.Web.Pages
         {
             var state = await AppStateService.GetState();
 
-            if (state?.Race?.IsEnded != true)
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            if (state?.Race?.IsEnded != true && authState.User is null)
             {
                 NavigationManager.NavigateTo("/");
             }
