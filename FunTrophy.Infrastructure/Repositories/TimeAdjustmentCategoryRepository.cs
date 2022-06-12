@@ -9,7 +9,7 @@ namespace FunTrophy.Infrastructure.Repositories
         {
         }
 
-        public Task<List<TimeAdjustmentCategory>> GetAll(int raceId)
+        public Task<List<TimeAdjustmentCategory>> GetOfRace(int raceId)
         {
             return GetAll(x => x.RaceId == raceId);
         }
