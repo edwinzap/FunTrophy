@@ -10,7 +10,7 @@ namespace FunTrophy.API.Mappers
         {
             return type switch
             {
-                TeamType.Family => ApiTeamType.Family,
+                TeamType.Fun => ApiTeamType.Fun,
                 TeamType.Warrior => ApiTeamType.Warrior,
                 _ => throw new NotImplementedException("This type is not handled")
             };
@@ -20,7 +20,7 @@ namespace FunTrophy.API.Mappers
         {
             return type switch
             {
-                ApiTeamType.Family => TeamType.Family,
+                ApiTeamType.Fun => TeamType.Fun,
                 ApiTeamType.Warrior => TeamType.Warrior,
                 _ => throw new NotImplementedException("This type is not handled")
             };

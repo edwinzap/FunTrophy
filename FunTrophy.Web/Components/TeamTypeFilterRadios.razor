@@ -8,7 +8,7 @@
 <div class="form-check @(IsInline ? "form-check-inline": "")">
     <input type="radio" name="teamtype-filter" class="form-check-input" id="radio-family"
            value="@Filters.TeamTypeFilter.Family" @onchange="OnTeamTypeFilterChanged" checked="@(SelectedFilter == @Filters.TeamTypeFilter.Family)" />
-    <label class="form-check-label px-2" for="radio-family"><span class="pe-1 @HtmlHelper.GetFaIcon(TeamType.Family)"></span>Family</label>
+    <label class="form-check-label px-2" for="radio-family"><span class="pe-1 @HtmlHelper.GetFaIcon(TeamType.Fun)"></span>Family</label>
 </div>
 <div class="form-check @(IsInline ? "form-check-inline": "")">
     <input type="radio" name="teamtype-filter" class="form-check-input" id="radio-warrior"

@@ -91,7 +91,7 @@ namespace FunTrophy.API.Services
 
         public async Task SaveTeamLap(int teamId)
         {
-            var currentTime = DateTime.Now;
+            var currentTime = DateTime.UtcNow;
             var team = await _teamRepository.Get(teamId);
             var trackOrders = (await _trackOrderRepository.GetOfColor(team.ColorId)).OrderBy(x => x.SortOrder);
             var teamTrackTimes = (await _trackTimeRepository.GetOfTeam(teamId)).OrderBy(x => x.StartTime);

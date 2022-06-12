@@ -2,6 +2,7 @@
 using FunTrophy.Web.Contracts.Services;
 using FunTrophy.Web.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace FunTrophy.Web.Shared
 {
@@ -13,7 +14,7 @@ namespace FunTrophy.Web.Shared
         private IAppStateService AppStateService { get; set; } = default!;
 
         [Inject]
-        private INotificationHubHelper NotificationHubHelper { get; set; } = default!;
+        private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
 
         private bool collapseNavMenu = true;
 
@@ -22,7 +23,7 @@ namespace FunTrophy.Web.Shared
 
         private DropDownMenuItem _finalMenu;
 
-        private List<DropDownMenuItem>? ResultMenuItems { get; set; }
+        private List<DropDownMenuItem> ResultMenuItems { get; set; }
         private bool IsCurrentRaceSelected { get; set; } = false;
         private bool IsCurrentRaceEnded { get; set; } = false;
 
@@ -46,24 +47,27 @@ namespace FunTrophy.Web.Shared
             };
 
             AppStateService.OnAppStateChanged += async () => await RefreshMenu();
+            AuthenticationStateProvider.AuthenticationStateChanged += async (_) => await RefreshMenu();
             await AppStateService.StartListeningToChange();
             await RefreshMenu();
-
-            
         }
 
         private async Task RefreshMenu()
         {
             var appState = await AppStateService.GetState();
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
             IsCurrentRaceEnded = appState?.Race?.IsEnded == true;
             IsCurrentRaceSelected = appState?.Race is not null;
-            if (IsCurrentRaceEnded)
+            if (IsCurrentRaceEnded || authState.User.Identity?.IsAuthenticated == true)
             {
-                ResultMenuItems?.Add(_finalMenu);
+                if (ResultMenuItems.Contains(_finalMenu))
+                    return;
+
+                ResultMenuItems.Add(_finalMenu);
             }
             else
             {
-                ResultMenuItems?.Remove(_finalMenu);
+                ResultMenuItems.Remove(_finalMenu);
             }
             StateHasChanged();
         }

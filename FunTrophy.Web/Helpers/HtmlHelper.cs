@@ -6,7 +6,7 @@ namespace FunTrophy.Web.Helpers
     {
         public static string GetFaIcon(TeamType teamType)
         {
-            return teamType == TeamType.Family ? "fas fa-paw" : "fas fa-shield-halved";
+            return teamType == TeamType.Fun ? "fas fa-paw" : "fas fa-shield-halved";
         }
 
         public static string GetRankSup(int number)

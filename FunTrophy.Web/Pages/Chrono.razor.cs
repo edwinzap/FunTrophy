@@ -25,7 +25,7 @@ namespace FunTrophy.Web.Pages
 
         private List<TeamLapInfoDto>? Laps { get; set; }
 
-        private DateTime CurrentDateTime { get; set; } = DateTime.Now;
+        private DateTime CurrentDateTime { get; set; } = DateTime.UtcNow;
 
         public int? CurrentColorId { get; set; }
 
@@ -58,7 +58,7 @@ namespace FunTrophy.Web.Pages
             {
                 if (Laps?.Any() == true)
                 {
-                    CurrentDateTime = DateTime.Now;
+                    CurrentDateTime = DateTime.UtcNow;
                     StateHasChanged();
                 }
             }, new AutoResetEvent(false), 1000, 1000);
