@@ -31,7 +31,7 @@ namespace FunTrophy.API.UnitTests.Services
         public async Task GetTeamsByTimeAdjustmentCategory_RaceId_CreateFile()
         {
             var raceId = Some.Int();
-            var amount = Some.Int(1, 5);
+            var amount = Some.Int(1,5);
 
             var colors = new List<Color>();
             for (int i = 0; i < amount; i++)
@@ -46,7 +46,7 @@ namespace FunTrophy.API.UnitTests.Services
                 .RuleFor(x => x.Number, () => Some.Int(1, 10))
                 .RuleFor(x => x.Name, () => Some.CompanyName())
                 .RuleFor(x => x.Color, () => Some.From(colors.ToArray()))
-                .Generate(Some.Int(1, 50));
+                .Generate(Some.Int(10, 50));
 
             var categories = Some.InstanceOf<TimeAdjustmentCategory>()
                 .RuleFor(x => x.Name, () => Some.CompanyName())
@@ -57,7 +57,7 @@ namespace FunTrophy.API.UnitTests.Services
             _fakeTimeAdjustmentCategory.Setup(x => x.GetOfRace(raceId))
                 .ReturnsAsync(categories);
 
-            await Sut.GetTeamsByTimeAdjustmentCategory(raceId);
+            await Sut.GetTeamsByTimeAdjustmentCategoryFile(raceId);
             _fakeTeamRepository.Verify(x => x.GetOfRace(raceId), Times.Once);
         }
     }

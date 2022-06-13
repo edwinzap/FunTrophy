@@ -17,11 +17,7 @@ namespace FunTrophy.Web.Services
 
         public async Task<List<TrackDto>> GetTracks(int raceId)
         {
-            var parameters = new Dictionary<string, object>()
-            {
-                { "raceId", raceId }
-            };
-            var url = GetUrl(parameters);
+            var url = GetUrl("raceId", raceId);
             return await GetAsync<List<TrackDto>>(url);
         }
 

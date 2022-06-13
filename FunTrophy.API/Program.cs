@@ -31,6 +31,7 @@ builder.Services
 
 builder.Services.AddSignalR();
 builder.Services.AddControllers();
+builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
 // Add authentication
 builder.Services.AddAuthentication(builder.Configuration);

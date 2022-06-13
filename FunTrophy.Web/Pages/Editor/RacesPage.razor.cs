@@ -18,6 +18,9 @@ namespace FunTrophy.Web.Pages.Editor
         [Inject]
         private IRaceService RaceService { get; set; } = default!;
 
+        [Inject]
+        private IExportService ExportService { get; set; } = default!;
+
         private ConfirmDialog DeleteDialog { get; set; } = default!;
 
         private ConfirmDialog ResetDialog { get; set; } = default!;
@@ -34,6 +37,8 @@ namespace FunTrophy.Web.Pages.Editor
         private AddOrUpdateRaceDto updateRace = new();
 
         private int? updateRaceId;
+
+        private string DownloadCategoriesFileUrl => SelectedRace is null ? string.Empty : ExportService.GetTeamsByTimeAdjustmentCategoryFileUrl(SelectedRace.Id);
 
         #endregion Properties
 

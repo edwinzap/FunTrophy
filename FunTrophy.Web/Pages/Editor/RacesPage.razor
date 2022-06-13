@@ -7,7 +7,7 @@
 @if (SelectedRace is not null)
 {
     <div class="d-flex flex-column">
-        <div class="p-2">
+        <div>
             <h2>@SelectedRace.Name</h2>
             <p>@SelectedRace.Date.ToLongDateString()</p>
         </div>
@@ -32,7 +32,14 @@
                 <button class="btn btn-danger" @onclick="ConfirmResetRace">Réinitialiser la course</button>
             </div>
         </div>
-
+        <div class="mt-4">
+            <h3>Exporter</h3>
+            <div class="d-flex flex-column">
+                <div class="p-2">
+                    <a class="btn btn-primary" href="@DownloadCategoriesFileUrl" download target="=_top"><span class="fas fa-download"></span> Equipes par catégorie de bonus</a>
+                </div>
+            </div>
+        </div>
     </div>
 }
 else

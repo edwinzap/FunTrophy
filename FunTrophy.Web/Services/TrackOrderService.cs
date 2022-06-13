@@ -11,11 +11,7 @@ namespace FunTrophy.Web.Services
 
         public async Task<List<TrackDto>> GetTrackOrders(int colorId)
         {
-            var parameters = new Dictionary<string, object>()
-            {
-                { "colorId", colorId }
-            };
-            var url = GetUrl(parameters);
+            var url = GetUrl("colorId", colorId);
             var trackOrders = await GetAsync<List<TrackOrderDto>>(url);
             var tracks = trackOrders.OrderBy(x => x.SortOrder).Select(x => x.Track).ToList();
             return tracks;

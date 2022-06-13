@@ -17,11 +17,7 @@ namespace FunTrophy.Web.Services
 
         public async Task<List<TimeAdjustmentDto>> GetTimeAdjustments(int teamId)
         {
-            var parameters = new Dictionary<string, object>()
-            {
-                { "teamId", teamId }
-            };
-            var url = GetUrl(parameters);
+            var url = GetUrl("teamId", teamId);
             return await GetAsync<List<TimeAdjustmentDto>>(url);
         }
 

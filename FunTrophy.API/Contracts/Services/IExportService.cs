@@ -2,6 +2,6 @@
 {
     public interface IExportService
     {
-        Task GetTeamsByTimeAdjustmentCategory(int raceId);
+        Task<byte[]> GetTeamsByTimeAdjustmentCategoryFile(int raceId);
     }
 }
