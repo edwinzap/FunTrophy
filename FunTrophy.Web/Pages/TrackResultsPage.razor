@@ -58,39 +58,41 @@
         @foreach (var result in Results)
         {
             var index = Results.IndexOf(result) + 1;
-            <div class="p-2 d-flex gap-2 align-items-center border result-item">
+            <a href="/resultats/equipe/@result.Team.Id" class="link-unstyled result-item">
+                <div class="p-2 d-flex gap-2 align-items-center border">
+                    <div class="px-1 team-number">
+                        @if (result.LapDuration.HasValue)
+                        {
+                            @index
+                            <sup>@(HtmlHelper.GetRankSup(index))</sup>
+                        }
+                        else
+                        {
+                            <span>?</span>
+                        }
+                    </div>
+                    
+                    <div class="team-color" style="border-color:@result.Team.Color.Code">
+                        <span class="@(HtmlHelper.GetFaIcon(result.Team.Type))"></span>
+                    </div>
+                   
+                    <div class="flex-fill text-nowrap team-name">
+                        @(result.Team.Name.Length > 25? result.Team.Name.Substring(0, 25) + "..." : result.Team.Name)
+                    </div>
 
-                <div class="px-1 team-number">
-                    @if (result.LapDuration.HasValue)
-                    {
-                        @index
-                        <sup>@(HtmlHelper.GetRankSup(index))</sup>
-                    }
-                    else
-                    {
-                        <span>?</span>
-                    }
+                    <div class="pe-2">
+                        @if (result.LapDuration.HasValue)
+                        {
+                            @result.LapDuration.Value.ToTimeString()
+                        }
+                        else
+                        {
+                            @*<span class="fas fa-running fa-beat" style="--fa-animation-duration: 2s; --fa-beat-scale: 1.4;"></span>*@
+                            <span class="fas fa-spinner fa-spin-pulse fa-lg"></span>
+                        }
+                    </div>
                 </div>
-                <div class="team-color" style="border-color:@result.Team.Color.Code">
-                    <span class="@(HtmlHelper.GetFaIcon(result.Team.Type))"></span>
-                </div>
-
-                <div class="flex-fill text-nowrap team-name">
-                    @(result.Team.Name.Length > 25? result.Team.Name.Substring(0, 25) + "..." : result.Team.Name)
-                </div>
-
-                <div class="pe-2">
-                    @if (result.LapDuration.HasValue)
-                    {
-                        @result.LapDuration.Value.ToTimeString()
-                    }
-                    else
-                    {
-                        @*<span class="fas fa-running fa-beat" style="--fa-animation-duration: 2s; --fa-beat-scale: 1.4;"></span>*@
-                        <span class="fas fa-spinner fa-spin-pulse fa-lg"></span>
-                    }
-                </div>
-            </div>
+            </a>
         }
     }
 </div>

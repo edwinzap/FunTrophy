@@ -37,7 +37,13 @@
                     {
                         <tr @key="@lap">
                             <td class="fit">@lap.Team.Number</td>
-                            <td>@lap.Team.Name</td>
+                            <td>
+                                <a href="/resultats/equipe/@lap.Team.Id" class="link-unstyled">
+                                    <div>
+                                        @lap.Team.Name
+                                    </div>
+                                </a>
+                            </td>
                             <td>
                                 @if (lap.CurrentTrack is not null)
                                 {

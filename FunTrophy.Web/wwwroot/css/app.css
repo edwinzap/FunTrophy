@@ -153,3 +153,15 @@ body {
     padding: 15px;
     margin: auto;
 }
+
+.link-unstyled {
+    color: inherit;
+    text-decoration: inherit;
+}
+
+    .link-unstyled:hover {
+        color: inherit;
+    }
+        .link-unstyled:hover > div {
+            background: #00000020;
+        }
