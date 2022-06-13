@@ -36,7 +36,7 @@
                     @foreach (var lap in Laps)
                     {
                         <tr @key="@lap">
-                            <td>@lap.Team.Number</td>
+                            <td class="fit">@lap.Team.Number</td>
                             <td>@lap.Team.Name</td>
                             <td>
                                 @if (lap.CurrentTrack is not null)
