@@ -30,6 +30,7 @@ namespace FunTrophy.API
             services.AddTransient<ITrackTimeService, TrackTimeService>();
             services.AddTransient<IResultService, ResultService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IExportService, ExportService>();
             return services;
         }
 

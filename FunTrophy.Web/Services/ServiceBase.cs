@@ -15,32 +15,44 @@ namespace FunTrophy.Web.Services
             _basePath = basePath;
         }
 
+        protected string GetUrl()
+            => _basePath;
+
         protected string GetUrl(string parameterName, object parameterValue)
+            => GetUrl(null, parameterName, parameterValue);
+
+        protected string GetUrl(Dictionary<string, object> queryParameters)
+            => GetUrl(null, queryParameters);
+
+        protected string GetUrl(string? relativePath, string parameterName, object parameterValue)
         {
             var parameters = new Dictionary<string, object>
             {
                 { parameterName, parameterValue }
             };
-            return GetUrl(parameters);
+
+            return GetUrl(relativePath, parameters);
         }
 
-        protected string GetUrl(Dictionary<string, object> queryParameters)
+        protected string GetUrl(string? relativePath, Dictionary<string, object> queryParameters)
         {
             if (queryParameters == null || !queryParameters.Any())
-            {
                 return _basePath;
+
+            var url = _basePath;
+
+            if (!string.IsNullOrWhiteSpace(relativePath))
+            {
+                url += "/" + relativePath.Trim('/');
             }
 
-            var url = _basePath + "?";
             var parameters = string.Join("&", queryParameters.Select(p => $"{p.Key}={p.Value.ToString()}"));
-            url += parameters;
+            url += "?" + parameters;
             return url;
         }
 
-        protected string GetUrl()
-        {
-            return _basePath;
-        }
+        protected Task GetAsync(string url)
+            => _httpClient.GetAsync(url);
 
         protected async Task<T> GetAsync<T>(string url) where T : class
         {
