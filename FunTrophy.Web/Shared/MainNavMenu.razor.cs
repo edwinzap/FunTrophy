@@ -72,6 +72,15 @@ namespace FunTrophy.Web.Shared
             StateHasChanged();
         }
 
+        private void CloseNavMenu()
+        {
+            if (!collapseNavMenu)
+            {
+                collapseNavMenu = true;
+                StateHasChanged();
+            }
+        }
+
         private void ToggleNavMenu()
         {
             collapseNavMenu = !collapseNavMenu;
