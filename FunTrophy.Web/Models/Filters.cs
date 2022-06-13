@@ -5,7 +5,7 @@
         public enum TeamTypeFilter
         {
             All,
-            Family,
+            Fun,
             Warrior,
         }
     }

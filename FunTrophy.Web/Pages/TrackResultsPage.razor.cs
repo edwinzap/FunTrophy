@@ -125,7 +125,7 @@ namespace FunTrophy.Web.Pages
                     Results = _results;
                     break;
 
-                case TeamTypeFilter.Family:
+                case TeamTypeFilter.Fun:
                     Results = _results?.Where(x => x.Team.Type == TeamType.Fun).ToList();
                     break;
 
