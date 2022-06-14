@@ -8,16 +8,49 @@ namespace FunTrophy.Web.Authentication
         public static IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
         {
             var claims = new List<Claim>();
+            var keyValuePairs = GetKeyValuePairsFromJwt(jwt);
+
+            if (keyValuePairs is null)
+                return claims;
+
+            ExtractRolesFromJWT(claims, keyValuePairs);
+            claims.AddRange(keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString())));
+
+            return claims;
+        }
+
+        private static Dictionary<string, object>? GetKeyValuePairsFromJwt(string jwt)
+        {
+            if (string.IsNullOrWhiteSpace(jwt))
+                return null;
+            
             var payload = jwt.Split('.')[1];
 
             var jsonBytes = ParseBase64WithoutPadding(payload);
             var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
+            return keyValuePairs;
+        }
 
-            ExtractRolesFromJWT(claims, keyValuePairs);
+        public static DateTime? GetExpirationDateFromJwt(string jwt)
+        {
+            var keyValuePairs = GetKeyValuePairsFromJwt(jwt);
+            return ExtractExpirationDateFromJWT(keyValuePairs);
+        }
 
-            claims.AddRange(keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString())));
-
-            return claims;
+        private static DateTime? ExtractExpirationDateFromJWT(Dictionary<string, object>? keyValuePairs)
+        {
+            if (keyValuePairs is null)
+                return null;
+            
+            keyValuePairs.TryGetValue("exp", out object? jwtExpirationDate);
+            if (jwtExpirationDate is not null)
+            {
+                if (int.TryParse(jwtExpirationDate.ToString(), out int seconds))
+                {
+                    return DateTimeOffset.FromUnixTimeSeconds(seconds).DateTime;
+                }
+            }
+            return null;
         }
 
         private static void ExtractRolesFromJWT(List<Claim> claims, Dictionary<string, object> keyValuePairs)

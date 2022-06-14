@@ -1,6 +1,5 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
-using System.Net.Http.Headers;
 using System.Security.Claims;
 
 namespace FunTrophy.Web.Authentication
@@ -21,6 +20,13 @@ namespace FunTrophy.Web.Authentication
 
             if (string.IsNullOrWhiteSpace(token))
             {
+                return _anonymous;
+            }
+
+            var expirationDate = JwtParser.GetExpirationDateFromJwt(token);
+            if (expirationDate.HasValue && expirationDate < DateTime.UtcNow)
+            {
+                await _localStorage.RemoveItemAsync("authToken");
                 return _anonymous;
             }
 

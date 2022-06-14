@@ -65,7 +65,10 @@ namespace FunTrophy.Web.Services
 
         public async Task SetEditorSelectedRace(RaceDto? race)
         {
-            await _localStorage.SetItemAsync(EditorSelectedRaceKey, race);
+            if (race == null)
+                await _localStorage.RemoveItemAsync(EditorSelectedRaceKey);
+            else
+                await _localStorage.SetItemAsync(EditorSelectedRaceKey, race);
             NotifyEditorStateChanged();
         }
 
