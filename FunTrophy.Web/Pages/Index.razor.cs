@@ -42,6 +42,11 @@ namespace FunTrophy.Web.Pages
             StateHasChanged();
         }
 
+        private Task ClearSelectedRace()
+        {
+            return AppStateService.SetAppSelectedRace(null);
+        }
+
         private async Task LoadRaces()
         {
             if (SelectedRace is null)
