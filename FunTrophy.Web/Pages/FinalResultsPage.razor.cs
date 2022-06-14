@@ -40,7 +40,7 @@ namespace FunTrophy.Web.Pages
             var state = await AppStateService.GetState();
 
             var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-            if (state?.Race?.IsEnded != true && !authState.User.IsInRole("Admin,User"))
+            if (state?.Race?.IsEnded != true && !(authState.User.IsInRole("Admin") || authState.User.IsInRole("User")))
             {
                 NavigationManager.NavigateTo("/");
             }
