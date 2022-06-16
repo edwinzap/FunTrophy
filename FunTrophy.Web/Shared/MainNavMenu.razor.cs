@@ -1,5 +1,4 @@
-﻿using FunTrophy.Web.Contracts.Helpers;
-using FunTrophy.Web.Contracts.Services;
+﻿using FunTrophy.Web.Contracts.Services;
 using FunTrophy.Web.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -15,6 +14,9 @@ namespace FunTrophy.Web.Shared
 
         [Inject]
         private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
+
+        [Inject]
+        private NavigationManager NavigationManager { get; set; } = default!;
 
         private bool collapseNavMenu = true;
 
@@ -50,6 +52,8 @@ namespace FunTrophy.Web.Shared
             AuthenticationStateProvider.AuthenticationStateChanged += async (_) => await RefreshMenu();
             await AppStateService.StartListeningToChange();
             await RefreshMenu();
+
+            NavigationManager.LocationChanged += (_,_) => CloseNavMenu();
         }
 
         private async Task RefreshMenu()
@@ -70,6 +74,15 @@ namespace FunTrophy.Web.Shared
                 ResultMenuItems.Remove(_finalMenu);
             }
             StateHasChanged();
+        }
+
+        private void CloseNavMenu()
+        {
+            if (!collapseNavMenu)
+            {
+                collapseNavMenu = true;
+                StateHasChanged();
+            }
         }
 
         private void ToggleNavMenu()

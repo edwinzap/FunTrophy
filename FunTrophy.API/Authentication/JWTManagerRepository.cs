@@ -1,7 +1,5 @@
-﻿using FunTrophy.API.Contracts.Mappers;
-using FunTrophy.API.Settings;
+﻿using FunTrophy.API.Settings;
 using FunTrophy.Infrastructure.Contracts.Repositories;
-using FunTrophy.Infrastructure.Model;
 using FunTrophy.Shared.Model.Authentication;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -44,7 +42,8 @@ namespace FunTrophy.API.Authentication
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            return new Token {
+            return new Token
+            {
                 AccessToken = tokenHandler.WriteToken(token),
             };
         }

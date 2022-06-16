@@ -5,7 +5,7 @@ namespace FunTrophy.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ExportController : AdminControllerBase
+    public class ExportController : AnonymousControllerBase
     {
         private readonly ILogger<ExportController> _logger;
         private readonly IExportService _exportService;

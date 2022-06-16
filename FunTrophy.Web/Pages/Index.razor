@@ -9,20 +9,25 @@
     {
         <h2>@SelectedRace.Name</h2>
         <h3>@SelectedRace.Date.ToLongDateString()</h3>
+
         <div class="p-2 d-flex flex-sm-row flex-column justify-content-center">
             <div class="p-2">
-                <a class="btn btn-primary" href="/resultats/parcours">Résultats par parcours</a>
+                <a class="btn btn-primary btn-lg" href="/resultats/parcours"><span class="fas fa-road"></span> Résultats par parcours</a>
             </div>
             <div class="p-2">
-                <a class="btn btn-primary" href="/resultats/equipe">Résultats par équipe</a>
+                <a class="btn btn-primary btn-lg" href="/resultats/equipe"><span class="fas fa-people-group"></span> Résultats par équipe</a>
             </div>
         </div>
+
         @if (SelectedRace.IsEnded)
         {
             <div class="p-2">
-                <a class="btn btn-success" href="/resultats/fin">Classement général</a>
+                <a class="btn btn-success btn-lg" href="/resultats/fin">Classement général</a>
             </div>
         }
+        <div>
+            <button class="btn btn-secondary btn-sm" @onclick="ClearSelectedRace"><span class="fas fa-right-left"></span> Changer de course</button>
+        </div>
     }
     else
     {

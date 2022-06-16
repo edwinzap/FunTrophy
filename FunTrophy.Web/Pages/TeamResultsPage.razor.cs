@@ -24,6 +24,9 @@ namespace FunTrophy.Web.Pages
         [Inject]
         public ITimeAdjustmentService TimeAdjustmentService { get; set; } = default!;
 
+        [Inject]
+        public NavigationManager NavigationManager { get; set; } = default!;
+
         private List<TeamDto>? _teams { get; set; }
         private List<TeamDto>? Teams { get; set; }
 
@@ -32,6 +35,9 @@ namespace FunTrophy.Web.Pages
         private List<TimeAdjustmentDto>? TimeAdjustments { get; set; }
 
         private int? SelectedTeamId { get; set; }
+
+        [Parameter]
+        public string? SelectedTeamIdParam { get; set; }
 
         private TeamDto? SelectedTeam => _teams?.FirstOrDefault(x => x.Id == SelectedTeamId);
 
@@ -97,6 +103,11 @@ namespace FunTrophy.Web.Pages
 
         private async Task LoadResults()
         {
+            if (int.TryParse(SelectedTeamIdParam, out int selectedTeamId))
+            {
+                SelectedTeamId = selectedTeamId;
+            }
+
             if (SelectedTeamId.HasValue)
             {
                 Results = null;
@@ -122,6 +133,7 @@ namespace FunTrophy.Web.Pages
             {
                 await Task.WhenAll(LoadResults(), LoadTimeAdjustments());
             }
+            StateHasChanged();
         }
 
         private async Task OnSelectedTeamChanged(ChangeEventArgs args)
@@ -131,9 +143,11 @@ namespace FunTrophy.Web.Pages
             await RefreshTeamResults();
         }
 
-        private async Task OnSelectTeam(int teamId)
+        private async void OnSelectTeam(int teamId)
         {
             SelectedTeamId = teamId;
+            NavigationManager.NavigateTo("resultats/equipe/" + teamId);
+            SelectedTeamIdParam = null;
             await RefreshTeamResults();
         }
 

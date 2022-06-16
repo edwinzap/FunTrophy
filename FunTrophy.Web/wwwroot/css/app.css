@@ -1,6 +1,4 @@
-﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
-
-html, body {
+﻿html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
@@ -154,4 +152,17 @@ body {
     max-width: 330px;
     padding: 15px;
     margin: auto;
+    margin-top: 24vh;
 }
+
+.link-unstyled {
+    color: inherit;
+    text-decoration: inherit;
+}
+
+    .link-unstyled:hover {
+        color: inherit;
+    }
+        .link-unstyled:hover > div {
+            background: #00000020;
+        }

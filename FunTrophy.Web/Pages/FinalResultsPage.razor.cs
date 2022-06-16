@@ -40,7 +40,7 @@ namespace FunTrophy.Web.Pages
             var state = await AppStateService.GetState();
 
             var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-            if (state?.Race?.IsEnded != true && authState.User is null)
+            if (state?.Race?.IsEnded != true && authState.User.Identity?.IsAuthenticated != true)
             {
                 NavigationManager.NavigateTo("/");
             }
@@ -87,7 +87,7 @@ namespace FunTrophy.Web.Pages
                     Results = _results;
                     break;
 
-                case TeamTypeFilter.Family:
+                case TeamTypeFilter.Fun:
                     Results = _results?.Where(x => x.Team.Type == TeamType.Fun).ToList();
                     break;
 

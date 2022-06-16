@@ -41,15 +41,19 @@
                     <tr @key="@result">
                         <th class="pe-3">@index<sup>@(HtmlHelper.GetRankSup(index))</sup></th>
                         <td>
-                            <div class="d-flex gap-2 align-items-center">
-                                <div class="team-color" style="border-color:@result.Team.Color.Code">
-                                    <span class="@HtmlHelper.GetFaIcon(result.Team.Type)"></span>
+                            <a href="/resultats/equipe/@result.Team.Id" class="link-unstyled">
+                                <div class="d-flex gap-2 align-items-center">
+                                    <div class="team-color" style="border-color:@result.Team.Color.Code">
+                                        <span class="@HtmlHelper.GetFaIcon(result.Team.Type)"></span>
+                                    </div>
+                                    <div>@result.Team.Name</div>
                                 </div>
-                                <div>@result.Team.Name</div>
-                            </div>
+                            </a>
                         </td>
                         <td class="d-none d-sm-table-cell">@result.TracksTotalDuration.ToTimeString()</td>
-                        <td class="d-none d-sm-table-cell">@result.TimeAdjustmentsTotalDuration.ToTimeString()</td>
+                        <td class="d-none d-sm-table-cell @(result.TimeAdjustmentsTotalDuration.TotalSeconds >= 0 ? "text-success": "text-danger")">
+                            @result.TimeAdjustmentsTotalDuration.ToTimeString()
+                        </td>
                         <td>@result.TotalDuration.ToTimeString()</td>
                     </tr>
                 }

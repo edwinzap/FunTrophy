@@ -1,20 +1,23 @@
-﻿<li class="nav-item dropdown @Class">
-    <a class="nav-link dropdown-toggle" @onclick="Toggle">@Title</a>
-    @if (Items is not null && Items.Any(x => x.IsVisible))
-    {
-        <ul class="dropdown-menu dropdown-menu-end @MenuCssClass">
-            @foreach (var item in Items)
-            {
-                @if (item.IsVisible)
+﻿<ClickOutsideContainer OnClickOutside="CloseMenu">
+    <li class="nav-item dropdown @Class">
+        <a class="nav-link dropdown-toggle" @onclick="Toggle">@Title</a>
+        @if (Items is not null && Items.Any(x => x.IsVisible))
+        {
+            <ul class="dropdown-menu dropdown-menu-end @MenuCssClass">
+                @foreach (var item in Items)
                 {
-                    <li>
-                        <NavLink class="dropdown-item" href="@item.Link" @onclick="CloseMenu">@item.Title</NavLink>
-                    </li>
+                    @if (item.IsVisible)
+                    {
+                        <li>
+                            <NavLink class="dropdown-item" href="@item.Link" @onclick="CloseMenu">@item.Title</NavLink>
+                        </li>
+                    }
                 }
-            }
-        </ul>
-    }
-</li>
+            </ul>
+        }
+    </li>
+</ClickOutsideContainer>
+
 @code {
     [Parameter]
     public string? Class { get; set; }
@@ -30,7 +33,11 @@
 
     private void CloseMenu()
     {
-        expandDropdown = false;
+        if (expandDropdown)
+        {
+            expandDropdown = false;
+            StateHasChanged();
+        }
     }
 
     private void Toggle()
