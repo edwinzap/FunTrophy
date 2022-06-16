@@ -1,44 +1,50 @@
 ﻿<ClickOutsideContainer OnClickOutside="CloseNavMenu">
-<nav class="navbar navbar-expand-md navbar-light fixed-top top-menu bg-light">
-    <div class="container-fluid">
-        <a class="navbar-brand px-3" href="#">Fun Trophy</a>
-        <button class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top top-menu bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand px-3" href="#">Fun Trophy</a>
+            <button class="navbar-toggler" @onclick="ToggleNavMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <div class="@NavMenuCssClass navbar-collapse">
-            <div class="navbar-nav px-3 ms-md-auto">
-                <ul class="navbar-nav">
-                    <AuthorizeView Roles="Admin">
-                        <Authorized>
-                            <li class="nav-item px-3">
-                                <NavLink class="nav-link" href="editeur">Editeur</NavLink>
-                            </li>
-                        </Authorized>
-                    </AuthorizeView>
-                    @if (IsCurrentRaceSelected)
-                    {
-                        <AuthorizeView Roles="Admin,User">
+            <div class="@NavMenuCssClass navbar-collapse">
+                <div class="navbar-nav px-3 ms-md-auto">
+                    <ul class="navbar-nav">
+                        <AuthorizeView Roles="Admin">
                             <Authorized>
                                 <li class="nav-item px-3">
-                                    <NavLink class="nav-link" href="chrono">Chrono</NavLink>
+                                    <NavLink class="nav-link" href="editeur">Editeur</NavLink>
                                 </li>
                             </Authorized>
                         </AuthorizeView>
-                        <DropDownNavMenu Items="ResultMenuItems"
-                                     Class="px-3"
-                                     Title="Résultats" />
-                    }
-                    <AuthorizeView>
-                        <Authorized>
-                            <DropDownNavMenu Items="UserMenuItems"
-                                             Class="px-3"
-                                             Title="@(context.User?.FindFirst("given_name")?.Value + " " + context.User?.FindFirst("family_name")?.Value)" />
-                        </Authorized>
-                    </AuthorizeView>
-                </ul>
+                        @if (IsCurrentRaceSelected)
+                        {
+                            <AuthorizeView Roles="Admin,User">
+                                <Authorized>
+                                    <li class="nav-item px-3">
+                                        <NavLink class="nav-link" href="chrono">Chrono</NavLink>
+                                    </li>
+                                </Authorized>
+                            </AuthorizeView>
+                            <DropDownNavMenu Items="ResultMenuItems"
+                                         Class="px-3"
+                                         Title="Résultats" />
+                        }
+                        @if (ShowFinalResultMenu)
+                        {
+                            <li class="nav-item px-3">
+                                <NavLink class="nav-link" href="resultats/fin">Classement final</NavLink>
+                            </li>
+                        }
+                        <AuthorizeView>
+                            <Authorized>
+                                <DropDownNavMenu Items="UserMenuItems"
+                                                 Class="px-3"
+                                                 Title="@(context.User?.FindFirst("given_name")?.Value + " " + context.User?.FindFirst("family_name")?.Value)" />
+                            </Authorized>
+                        </AuthorizeView>
+                    </ul>
+                </div>
             </div>
         </div>
-    </div>
-</nav>
+    </nav>
 </ClickOutsideContainer>
