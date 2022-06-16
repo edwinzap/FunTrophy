@@ -7,14 +7,14 @@ namespace FunTrophy.Web.Services
     {
         private readonly AppSettings _settings;
 
-        public ExportService(HttpClient httpClient, IOptions<AppSettings> settings) : base(httpClient, "Export")
+        public ExportService(HttpClient httpClient, IOptions<AppSettings> settings) : base(httpClient, "export")
         {
             _settings = settings.Value;
         }
 
         public string GetTeamsByTimeAdjustmentCategoryFileUrl(int raceId)
         {
-            return _settings.ApiUrl + GetUrl("Categories", "raceId", raceId);
+            return _settings.ApiUrl + GetUrl("categories", "raceId", raceId);
         }
     }
 }

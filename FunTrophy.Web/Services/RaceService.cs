@@ -5,7 +5,7 @@ namespace FunTrophy.Web.Services
 {
     public class RaceService : ServiceBase, IRaceService
     {
-        public RaceService(HttpClient httpClient) : base(httpClient, "Race")
+        public RaceService(HttpClient httpClient) : base(httpClient, "race")
         {
         }
 

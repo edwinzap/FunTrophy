@@ -50,7 +50,7 @@ namespace FunTrophy.API.Controllers
             return Ok(userId);
         }
 
-        [HttpPost("{userId}/ChangePassword")]
+        [HttpPost("{userId}/changepassword")]
         [ProducesResponseType(200)]
         public async Task<IActionResult> ChangeUserPassword(int userId, [FromBody] string password)
         {

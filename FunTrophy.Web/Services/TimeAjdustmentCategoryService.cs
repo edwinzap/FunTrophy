@@ -5,7 +5,7 @@ namespace FunTrophy.Web.Services
 {
     public class TimeAdjustmentCategoryService : ServiceBase, ITimeAdjustmentCategoryService
     {
-        public TimeAdjustmentCategoryService(HttpClient httpClient) : base(httpClient, "TimeAdjustmentCategory")
+        public TimeAdjustmentCategoryService(HttpClient httpClient) : base(httpClient, "timeadjustmentcategory")
         {
         }
 

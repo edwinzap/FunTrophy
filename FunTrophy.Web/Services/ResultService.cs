@@ -5,7 +5,7 @@ namespace FunTrophy.Web.Services
 {
     public class ResultService : ServiceBase, IResultService
     {
-        public ResultService(HttpClient httpClient) : base(httpClient, "Result")
+        public ResultService(HttpClient httpClient) : base(httpClient, "result")
         {
         }
 

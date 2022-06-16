@@ -5,7 +5,7 @@ namespace FunTrophy.Web.Services
 {
     public class UserService : ServiceBase, IUserService
     {
-        public UserService(HttpClient httpClient) : base(httpClient, "User")
+        public UserService(HttpClient httpClient) : base(httpClient, "user")
         {
         }
 
@@ -17,7 +17,7 @@ namespace FunTrophy.Web.Services
 
         public Task ChangePassword(int userId, string password)
         {
-            var url = GetUrl() + "/" + userId;
+            var url = GetUrl() + "/" + userId + "/changepassword";
             return PostAsync(url, password);
         }
 

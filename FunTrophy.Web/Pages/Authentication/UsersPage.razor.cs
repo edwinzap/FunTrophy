@@ -97,6 +97,7 @@ namespace FunTrophy.Web.Pages.Authentication
             {
                 await UserService.ChangePassword(_newPasswordUserId.Value, NewPassword);
             }
+            NewPassword = null;
         }
     }
 }
