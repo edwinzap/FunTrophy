@@ -28,6 +28,8 @@ namespace FunTrophy.Web.Shared
         private List<DropDownMenuItem> ResultMenuItems { get; set; }
         private bool IsCurrentRaceSelected { get; set; } = false;
         private bool IsCurrentRaceEnded { get; set; } = false;
+        private bool ShowFinalResultMenu { get; set; } = false;
+
 
         #endregion Properties
 
@@ -53,7 +55,7 @@ namespace FunTrophy.Web.Shared
             await AppStateService.StartListeningToChange();
             await RefreshMenu();
 
-            NavigationManager.LocationChanged += (_,_) => CloseNavMenu();
+            NavigationManager.LocationChanged += (_, _) => CloseNavMenu();
         }
 
         private async Task RefreshMenu()
@@ -62,17 +64,7 @@ namespace FunTrophy.Web.Shared
             var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
             IsCurrentRaceEnded = appState?.Race?.IsEnded == true;
             IsCurrentRaceSelected = appState?.Race is not null;
-            if (IsCurrentRaceEnded || authState.User.Identity?.IsAuthenticated == true)
-            {
-                if (ResultMenuItems.Contains(_finalMenu))
-                    return;
-
-                ResultMenuItems.Add(_finalMenu);
-            }
-            else
-            {
-                ResultMenuItems.Remove(_finalMenu);
-            }
+            ShowFinalResultMenu = IsCurrentRaceEnded || authState.User.Identity?.IsAuthenticated == true && !ResultMenuItems.Contains(_finalMenu);
             StateHasChanged();
         }
 
