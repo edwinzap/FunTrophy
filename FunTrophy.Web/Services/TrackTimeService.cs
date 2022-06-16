@@ -5,7 +5,7 @@ namespace FunTrophy.Web.Services
 {
     public class TrackTimeService : ServiceBase, ITrackTimeService
     {
-        public TrackTimeService(HttpClient httpClient) : base(httpClient, "TrackTime")
+        public TrackTimeService(HttpClient httpClient) : base(httpClient, "tracktime")
         {
         }
 

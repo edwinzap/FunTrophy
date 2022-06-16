@@ -5,7 +5,7 @@ namespace FunTrophy.Web.Services
 {
     public class TrackOrderService : ServiceBase, ITrackOrderService
     {
-        public TrackOrderService(HttpClient httpClient) : base(httpClient, "TrackOrder")
+        public TrackOrderService(HttpClient httpClient) : base(httpClient, "trackorder")
         {
         }
 

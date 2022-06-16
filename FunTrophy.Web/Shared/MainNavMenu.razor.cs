@@ -64,7 +64,7 @@ namespace FunTrophy.Web.Shared
             var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
             IsCurrentRaceEnded = appState?.Race?.IsEnded == true;
             IsCurrentRaceSelected = appState?.Race is not null;
-            ShowFinalResultMenu = IsCurrentRaceEnded || authState.User.Identity?.IsAuthenticated == true && !ResultMenuItems.Contains(_finalMenu);
+            ShowFinalResultMenu = IsCurrentRaceEnded || authState.User.Identity?.IsAuthenticated == true;
             StateHasChanged();
         }
 

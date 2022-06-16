@@ -5,7 +5,7 @@ namespace FunTrophy.Web.Services
 {
     public class TeamService : ServiceBase, ITeamService
     {
-        public TeamService(HttpClient httpClient) : base(httpClient, "Team")
+        public TeamService(HttpClient httpClient) : base(httpClient, "team")
         {
         }
 

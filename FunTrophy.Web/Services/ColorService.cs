@@ -5,7 +5,7 @@ namespace FunTrophy.Web.Services
 {
     public class ColorService : ServiceBase, IColorService
     {
-        public ColorService(HttpClient httpClient) : base(httpClient, "Color")
+        public ColorService(HttpClient httpClient) : base(httpClient, "color")
         {
         }
 
