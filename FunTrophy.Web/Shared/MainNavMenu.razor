@@ -28,13 +28,14 @@
                             <DropDownNavMenu Items="ResultMenuItems"
                                          Class="px-3"
                                          Title="Résultats" />
+                            @if (ShowFinalResultMenu)
+                            {
+                                <li class="nav-item px-3">
+                                    <NavLink class="nav-link" href="resultats/fin">Classement final</NavLink>
+                                </li>
+                            }
                         }
-                        @if (ShowFinalResultMenu)
-                        {
-                            <li class="nav-item px-3">
-                                <NavLink class="nav-link" href="resultats/fin">Classement final</NavLink>
-                            </li>
-                        }
+
                         <AuthorizeView>
                             <Authorized>
                                 <DropDownNavMenu Items="UserMenuItems"
