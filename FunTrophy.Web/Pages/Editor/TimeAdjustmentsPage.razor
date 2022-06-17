@@ -1,9 +1,9 @@
 ﻿@attribute [AuthorizeRoles(UserRoles.Admin, UserRoles.User)]
 @layout EditorLayout
-@page "/editeur/bonus-malus"
+@page "/editeur/bonus"
 
-<PageTitle>Bonus-malus</PageTitle>
-<h1>Editer les bonus-malus</h1>
+<PageTitle>Bonus</PageTitle>
+<h1>Editer les bonus</h1>
 
 @if (Colors is null)
 {
@@ -108,7 +108,7 @@ else
                     else if (!TimeAdjustments.Any())
                     {
                         <tr class="p-2">
-                            <td colspan=3 class="text-center">Aucun bonus-malus</td>
+                            <td colspan=3 class="text-center">Aucun bonus</td>
                         </tr>
                     }
                     else
@@ -131,6 +131,6 @@ else
 }
 
 <ConfirmDialog @ref="DeleteDialog"
-               Title="Supprimer le bonus-malus"
+               Title="Supprimer le bonus"
                ConfirmationChanged="(confirm) => RemoveTimeAdjustment(confirm)">
 </ConfirmDialog>
