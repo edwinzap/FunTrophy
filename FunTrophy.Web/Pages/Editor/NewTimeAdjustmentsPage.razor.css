@@ -1,0 +1,15 @@
+﻿.positive {
+    box-shadow: 0 0 6px rgb(0 200 0);
+}
+
+.negative {
+    box-shadow: 0 0 6px rgb(200 0 0);
+}
+
+.positive,.negative {
+    border-radius: 0.3em;
+}
+
+span.fa {
+    font-size:0.8em;
+}

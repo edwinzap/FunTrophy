@@ -15,9 +15,15 @@ namespace FunTrophy.Web.Services
             await PostAsync(url, timeAdjustment); 
         }
 
+        public async Task<List<TeamTimeAdjustmentDto>> GetTimeAdjustmentForCategory(int categoryId)
+        {
+            var url = GetUrl() + "/bycategory/" + categoryId;
+            return await GetAsync<List<TeamTimeAdjustmentDto>>(url);
+        }
+
         public async Task<List<TimeAdjustmentDto>> GetTimeAdjustments(int teamId)
         {
-            var url = GetUrl("teamId", teamId);
+            var url = GetUrl() + "/byteam/" + teamId;
             return await GetAsync<List<TimeAdjustmentDto>>(url);
         }
 
@@ -25,6 +31,12 @@ namespace FunTrophy.Web.Services
         {
             var url = GetUrl() + "/" + timeAdjustmentId;
             return DeleteAsync(url);
+        }
+
+        public Task Update(AddTimeAdjustmentDto updateTimeAdjustment)
+        {
+            var url = GetUrl();
+            return UpdateAsync(url, updateTimeAdjustment);
         }
     }
 }

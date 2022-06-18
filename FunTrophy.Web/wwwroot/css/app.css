@@ -103,11 +103,13 @@ textarea {
     border-radius: 2em;
     border-style: solid;
     border-width: 5px;
+    width: 2.4em;
 }
 
     .team-color.team-color-sm {
         padding: 0 0.3em;
         border-width: 3px;
+        width: auto;
     }
 
 .dropdown > .nav-link {

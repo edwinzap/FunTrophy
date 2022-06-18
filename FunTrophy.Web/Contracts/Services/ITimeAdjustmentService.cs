@@ -9,5 +9,9 @@ namespace FunTrophy.Web.Contracts.Services
         Task<List<TimeAdjustmentDto>> GetTimeAdjustments(int teamId);
 
         Task Remove(int timeAdjustmentId);
+
+        Task<List<TeamTimeAdjustmentDto>> GetTimeAdjustmentForCategory(int categoryId);
+        
+        Task Update(AddTimeAdjustmentDto updateTimeAdjustment);
     }
 }

@@ -16,6 +16,17 @@ namespace FunTrophy.Fake.Repositories
             return base.Add(entity);
         }
 
+        public Task<TimeAdjustment?> GetByTeamAndCategory(int teamId, int categoryId)
+        {
+            var timeAdjustment = _dbContext.TimeAdjustments.FirstOrDefault(x => x.TeamId == teamId && x.CategoryId == categoryId);
+            return Task.FromResult(timeAdjustment);
+        }
+
+        public Task<List<TimeAdjustment>> GetOfCategory(int categoryId)
+        {
+            return GetAll(x => x.CategoryId == categoryId);
+        }
+
         public Task<List<TimeAdjustment>> GetOfRace(int raceId)
         {
             return GetAll(x => x.Team.Color.RaceId == raceId);
