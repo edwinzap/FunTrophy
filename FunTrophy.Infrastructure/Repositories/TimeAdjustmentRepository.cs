@@ -1,5 +1,6 @@
 ﻿using FunTrophy.Infrastructure.Contracts.Repositories;
 using FunTrophy.Infrastructure.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace FunTrophy.Infrastructure.Repositories
 {
@@ -7,7 +8,17 @@ namespace FunTrophy.Infrastructure.Repositories
     {
         public TimeAdjustmentRepository(FunTrophyContext dbContext) : base(dbContext)
         {
-            Includes = new string[] { "Category" };
+            Includes = new string[] { "Category", "Team" };
+        }
+
+        public Task<TimeAdjustment?> GetByTeamAndCategory(int teamId, int categoryId)
+        {
+            return _dbContext.TimeAdjustments.FirstOrDefaultAsync(x => x.TeamId == teamId && x.CategoryId == categoryId);
+        }
+
+        public Task<List<TimeAdjustment>> GetOfCategory(int categoryId)
+        {
+            return GetAll(x => x.CategoryId == categoryId);
         }
 
         public Task<List<TimeAdjustment>> GetOfRace(int raceId)

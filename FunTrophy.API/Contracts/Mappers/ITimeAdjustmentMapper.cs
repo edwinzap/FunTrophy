@@ -5,10 +5,12 @@ namespace FunTrophy.API.Contracts.Mappers
 {
     public interface ITimeAdjustmentMapper
     {
-        TimeAdjustment Map(AddTimeAdjustmentDto team);
+        TimeAdjustment Map(AddTimeAdjustmentDto timeAdjustment);
 
-        TimeAdjustmentDto Map(TimeAdjustment team);
+        TimeAdjustmentDto Map(TimeAdjustment teamtimeAdjustment);
 
-        List<TimeAdjustmentDto> Map(List<TimeAdjustment> teams);
+        List<TimeAdjustmentDto> Map(List<TimeAdjustment> timeAdjustments);
+
+        List<TeamTimeAdjustmentDto> MapTeamTimeAdjustment(List<TimeAdjustment> timeAdjustments, List<Team> teams);
     }
 }

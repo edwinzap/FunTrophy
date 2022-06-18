@@ -8,6 +8,10 @@ namespace FunTrophy.Infrastructure.Contracts.Repositories
 
         Task<List<TimeAdjustment>> GetOfRace(int raceId);
 
+        Task<List<TimeAdjustment>> GetOfCategory(int categoryId);
+
         Task RemoveAllOfRace(int raceId);
+
+        Task<TimeAdjustment?> GetByTeamAndCategory(int teamId, int categoryId);
     }
 }

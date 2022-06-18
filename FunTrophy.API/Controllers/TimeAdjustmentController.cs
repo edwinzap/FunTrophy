@@ -50,12 +50,39 @@ namespace FunTrophy.API.Controllers
         /// <param name="teamId">Team Id</param>
         /// <returns>List of time adjustments of a team</returns>
         [AllowAnonymous]
-        [HttpGet("")]
+        [HttpGet("byteam/{teamId}")]
         [ProducesResponseType(typeof(List<TimeAdjustmentDto>), 200)]
-        public async Task<IActionResult> GetAllTimeAdjustments(int teamId)
+        public async Task<IActionResult> GetTimeAdjustmentsByTeam(int teamId)
         {
             var timeAdjustments = await _timeAdjustmentService.GetAllOfTeam(teamId);
             return Ok(timeAdjustments);
+        }
+
+        /// <summary>
+        /// Get a list of all time adjustments of a category
+        /// </summary>
+        /// <param name="categoryId">Category Id</param>
+        /// <returns>List of team time adjustments</returns>
+        [AllowAnonymous]
+        [HttpGet("bycategory/{categoryId}")]
+        [ProducesResponseType(typeof(List<TeamTimeAdjustmentDto>), 200)]
+        public async Task<IActionResult> GetTimeAdjustmentsByCategory(int categoryId)
+        {
+            var timeAdjustments = await _timeAdjustmentService.GetAllOfCategory(categoryId);
+            return Ok(timeAdjustments);
+        }
+
+        /// <summary>
+        /// Update the time adjustment
+        /// </summary>
+        /// <param name="timeAdjustement">Time adjustment</param>
+        /// <returns></returns>
+        [HttpPut("")]
+        [ProducesResponseType(typeof(int), 200)]
+        public async Task<IActionResult> UpdateTimeAdjustment([FromBody] AddTimeAdjustmentDto timeAdjustement)
+        {
+            var timeAdjustmentId = await _timeAdjustmentService.Update(timeAdjustement);
+            return Ok(timeAdjustmentId);
         }
     }
 }
