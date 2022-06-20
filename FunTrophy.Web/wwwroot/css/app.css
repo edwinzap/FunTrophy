@@ -129,12 +129,18 @@ textarea {
 }
 
 .dropdown-menu-end {
-    right:0;
-    left:auto;
+    right: 0;
+    left: auto;
 }
 
 body {
     position: relative;
+}
+
+.auth-view {
+    margin: auto;
+    margin-top: 24vh;
+    text-align: center;
 }
 
 .sidebar {
@@ -145,9 +151,9 @@ body {
     padding-top: 68px;
 }
 
-.sidebar  a.nav-link {
-    color: black;
-}
+    .sidebar a.nav-link {
+        color: black;
+    }
 
 .form-signin {
     width: 100%;
@@ -165,6 +171,7 @@ body {
     .link-unstyled:hover {
         color: inherit;
     }
+
         .link-unstyled:hover > div {
             background: #00000020;
         }
