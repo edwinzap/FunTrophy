@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace FunTrophy.Web.Pages
 {
-    public partial class Index
+    public partial class Index: IAsyncDisposable
     {
         #region Properties
 
@@ -15,30 +15,26 @@ namespace FunTrophy.Web.Pages
         private IAppStateService AppStateService { get; set; } = default!;
 
         private List<RaceDto>? Races { get; set; }
-        public RaceDto? SelectedRace { get; private set; }
+
+        private RaceDto? SelectedRace { get; set; }
+
+        private Action OnAppStateChanged => async () => await UpdateSelectedRace();
 
         #endregion Properties
 
         protected override async Task OnInitializedAsync()
         {
-            AppStateService.OnAppStateChanged += async () => await UpdateSelectedRace();
+            AppStateService.OnAppStateChanged += OnAppStateChanged;
+            await AppStateService.StartListeningToChange();
             await UpdateSelectedRace();
             await LoadRaces();
-        }
-
-        public void Dispose()
-        {
-            AppStateService.OnAppStateChanged += async () => await UpdateSelectedRace();
         }
 
         private async Task UpdateSelectedRace()
         {
             var state = await AppStateService.GetState();
             SelectedRace = state?.Race;
-            if (SelectedRace is null && Races?.Any() != true)
-            {
-                await LoadRaces();
-            }
+            await LoadRaces();
             StateHasChanged();
         }
 
@@ -58,6 +54,13 @@ namespace FunTrophy.Web.Pages
         private Task SelectRace(RaceDto race)
         {
             return AppStateService.SetAppSelectedRace(race);
+        }
+
+        public async ValueTask DisposeAsync()
+        {
+            AppStateService.OnAppStateChanged -= OnAppStateChanged;
+            await AppStateService.StopListeningToChange();
+            GC.SuppressFinalize(this);
         }
     }
 }

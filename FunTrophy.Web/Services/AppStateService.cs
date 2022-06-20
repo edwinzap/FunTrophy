@@ -5,7 +5,7 @@ using FunTrophy.Web.Contracts.Services;
 
 namespace FunTrophy.Web.Services
 {
-    public class AppStateService : IAppStateService
+    public class AppStateService : IAppStateService, IAsyncDisposable
     {
         private readonly ILocalStorageService _localStorage;
         private readonly IRaceService _raceService;
@@ -18,8 +18,8 @@ namespace FunTrophy.Web.Services
         public event Action? OnEditorStateChanged;
 
         public AppStateService(
-            ILocalStorageService localStorage, 
-            IRaceService raceService, 
+            ILocalStorageService localStorage,
+            IRaceService raceService,
             INotificationHubHelper notificationHubHelper)
         {
             _localStorage = localStorage;
@@ -27,10 +27,30 @@ namespace FunTrophy.Web.Services
             _notificationHubHelper = notificationHubHelper;
         }
 
+        #region Private methods
+
+        private async Task SetState(AppState state)
+        {
+            await _localStorage.SetItemAsync(AppStateKey, state);
+            NotifyStateChanged();
+        }
+
+        private void NotifyStateChanged() => OnAppStateChanged?.Invoke();
+
+        private void NotifyEditorStateChanged() => OnEditorStateChanged?.Invoke();
+
+        #endregion Private methods
+
         public async Task StartListeningToChange()
         {
             await _notificationHubHelper.ConnectToServer();
             _notificationHubHelper.RaceStatusChanged += OnRaceChanged;
+        }
+
+        public async Task StopListeningToChange()
+        {
+            await _notificationHubHelper.DisconnectFromServer();
+            _notificationHubHelper.RaceStatusChanged -= OnRaceChanged;
         }
 
         private async Task OnRaceChanged(int raceId, bool isEnded)
@@ -41,6 +61,13 @@ namespace FunTrophy.Web.Services
             {
                 var race = await _raceService.GetRace(raceId);
                 await SetAppSelectedRace(race);
+            }
+
+            var editorState = await GetEditorSelectedRace();
+            if (editorState?.Id == raceId)
+            {
+                var race = await _raceService.GetRace(raceId);
+                await SetEditorSelectedRace(race);
             }
         }
 
@@ -72,18 +99,10 @@ namespace FunTrophy.Web.Services
             NotifyEditorStateChanged();
         }
 
-        #region Private methods
-
-        private async Task SetState(AppState state)
+        public async ValueTask DisposeAsync()
         {
-            await _localStorage.SetItemAsync(AppStateKey, state);
-            NotifyStateChanged();
+            await StopListeningToChange();
+            GC.SuppressFinalize(this);
         }
-
-        private void NotifyStateChanged() => OnAppStateChanged?.Invoke();
-
-        private void NotifyEditorStateChanged() => OnEditorStateChanged?.Invoke();
-
-        #endregion Private methods
     }
 }

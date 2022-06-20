@@ -9,5 +9,7 @@
         event Func<int, bool, Task>? RaceStatusChanged;
 
         Task ConnectToServer();
+
+        Task DisconnectFromServer();
     }
 }

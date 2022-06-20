@@ -23,6 +23,7 @@ namespace FunTrophy.API.Controllers
         /// </summary>
         /// <param name="raceId">Race Id</param>
         /// <returns>The race</returns>
+        [AllowAnonymous]
         [HttpGet("{raceId}")]
         [ProducesResponseType(typeof(RaceDto), 200)]
         public async Task<IActionResult> GetRace(int raceId)

@@ -49,5 +49,13 @@ namespace FunTrophy.Web.Helpers
                 RaceStatusChanged?.Invoke(raceId, isEnded);
             });
         }
+
+        public async Task DisconnectFromServer()
+        {
+            if (_hubConnection is not null)
+            {
+                await _hubConnection.StopAsync();
+            }
+        }
     }
 }
