@@ -13,6 +13,7 @@ namespace FunTrophy.Web.Contracts.Services
         Task SetEditorSelectedRace(RaceDto? race);
 
         Task StartListeningToChange();
+        Task StopListeningToChange();
 
         event Action? OnAppStateChanged;
 

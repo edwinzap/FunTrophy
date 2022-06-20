@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 
 namespace FunTrophy.Web.Shared
 {
-    public partial class MainNavMenu
+    public partial class MainNavMenu: IAsyncDisposable
     {
         #region Properties
 
@@ -22,20 +22,17 @@ namespace FunTrophy.Web.Shared
 
         private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
         private List<DropDownMenuItem>? UserMenuItems { get; set; }
-
-        private DropDownMenuItem _finalMenu;
-
         private List<DropDownMenuItem> ResultMenuItems { get; set; }
         private bool IsCurrentRaceSelected { get; set; } = false;
         private bool IsCurrentRaceEnded { get; set; } = false;
         private bool ShowFinalResultMenu { get; set; } = false;
-
+        private Action OnEditorStateChanged => async () => await RefreshMenu();
+        private AuthenticationStateChangedHandler OnAuthenticationStateChanged => async (_) => await RefreshMenu();
 
         #endregion Properties
 
         public MainNavMenu()
         {
-            _finalMenu = new DropDownMenuItem("Classement final", "resultats/fin", true);
             ResultMenuItems = new List<DropDownMenuItem>()
             {
                 new DropDownMenuItem("Par parcours", "resultats/parcours"),
@@ -50,8 +47,8 @@ namespace FunTrophy.Web.Shared
                 new DropDownMenuItem("Se déconnecter", "fun-logout")
             };
 
-            AppStateService.OnAppStateChanged += async () => await RefreshMenu();
-            AuthenticationStateProvider.AuthenticationStateChanged += async (_) => await RefreshMenu();
+            AppStateService.OnAppStateChanged += OnEditorStateChanged;
+            AuthenticationStateProvider.AuthenticationStateChanged += OnAuthenticationStateChanged;
             await AppStateService.StartListeningToChange();
             await RefreshMenu();
 
@@ -82,9 +79,11 @@ namespace FunTrophy.Web.Shared
             collapseNavMenu = !collapseNavMenu;
         }
 
-        public void Dispose()
+        public async ValueTask DisposeAsync()
         {
-            AppStateService.OnAppStateChanged -= StateHasChanged;
+            AppStateService.OnAppStateChanged -= OnEditorStateChanged;
+            AuthenticationStateProvider.AuthenticationStateChanged -= OnAuthenticationStateChanged;
+            await AppStateService.StopListeningToChange();
         }
     }
 }

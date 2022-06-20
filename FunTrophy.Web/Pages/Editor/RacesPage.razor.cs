@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace FunTrophy.Web.Pages.Editor
 {
-    public partial class RacesPage
+    public partial class RacesPage: IAsyncDisposable
     {
         #region Properties
 
@@ -39,29 +39,23 @@ namespace FunTrophy.Web.Pages.Editor
         private int? updateRaceId;
 
         private string DownloadCategoriesFileUrl => SelectedRace is null ? string.Empty : ExportService.GetTeamsByTimeAdjustmentCategoryFileUrl(SelectedRace.Id);
+        private Action OnEditorStateChanged => async () => await UpdateSelectedRace();
 
         #endregion Properties
 
         protected override async Task OnInitializedAsync()
         {
-            AppStateService.OnEditorStateChanged += async () => await UpdateSelectedRace();
+            AppStateService.OnEditorStateChanged += OnEditorStateChanged;
+            await AppStateService.StartListeningToChange();
             await UpdateSelectedRace();
             await LoadRaces();
-        }
-
-        public void Dispose()
-        {
-            AppStateService.OnEditorStateChanged += async () => await UpdateSelectedRace();
         }
 
         private async Task UpdateSelectedRace()
         {
             var currentRace = await AppStateService.GetEditorSelectedRace();
             SelectedRace = currentRace;
-            if (SelectedRace is null || Races?.Any() != true)
-            {
-                await LoadRaces();
-            }
+            await LoadRaces();
             StateHasChanged();
         }
 
@@ -127,8 +121,8 @@ namespace FunTrophy.Web.Pages.Editor
             if (SelectedRace is not null)
             {
                 await RaceService.End(SelectedRace.Id, isEnded);
-                var race = await RaceService.GetRace(SelectedRace.Id);
-                await AppStateService.SetEditorSelectedRace(race);
+                //var race = await RaceService.GetRace(SelectedRace.Id);
+                //await AppStateService.SetEditorSelectedRace(race);
                 StateHasChanged();
             }
         }
@@ -145,6 +139,13 @@ namespace FunTrophy.Web.Pages.Editor
             {
                 await RaceService.Reset(SelectedRace.Id);
             }
+        }
+
+        async ValueTask IAsyncDisposable.DisposeAsync()
+        {
+            AppStateService.OnEditorStateChanged -= OnEditorStateChanged;
+            await AppStateService.StopListeningToChange();
+            GC.SuppressFinalize(this);
         }
     }
 }
