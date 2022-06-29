@@ -53,7 +53,10 @@ namespace FunTrophy.Web.Pages.Editor
             if (!SelectedCategoryId.HasValue)
                 return;
             TimeAdjustments = null;
-            TimeAdjustments = await TimeAdjustmentService.GetTimeAdjustmentForCategory(SelectedCategoryId.Value);
+            TimeAdjustments = (await TimeAdjustmentService.GetTimeAdjustmentForCategory(SelectedCategoryId.Value))
+                .OrderBy(x => x.Team.Color.Id)
+                .ThenBy(x => x.Team.Number)
+                .ToList();
         }
 
         private async Task OnSelectedCategoryChanged(ChangeEventArgs args)
@@ -76,48 +79,5 @@ namespace FunTrophy.Web.Pages.Editor
 
             await TimeAdjustmentService.Update(updateTimeAdjustment);
         }
-
-        //private async Task AddTimeAdjustment()
-        //{
-        //    var totalSeconds = addMinutes * 60 + addSeconds;
-        //    if (!CurrentTeamId.HasValue || !SelectedCategoryId.HasValue || totalSeconds == 0)
-        //        return;
-
-        //    if (!isPositive)
-        //        totalSeconds = -totalSeconds;
-
-        //    addTimeAdjustment.TeamId = CurrentTeamId.Value;
-        //    addTimeAdjustment.Seconds = totalSeconds;
-        //    addTimeAdjustment.CategoryId = SelectedCategoryId.Value;
-
-        //    await TimeAdjustmentService.Add(addTimeAdjustment);
-        //    await LoadTimeAdjustments();
-
-        //    addTimeAdjustment.Seconds = 0;
-        //    addMinutes = 0;
-        //    addSeconds = 0;
-        //}
-
-        //private void ConfirmDeleteTimeAdjustment(TimeAdjustmentDto timeAdjustment)
-        //{
-        //    DeleteTimeAdjustmentId = timeAdjustment.Id;
-        //    var message = $"Es-tu sûr de vouloir supprimer '{timeAdjustment.CategoryName}: {TimeSpan.FromSeconds(timeAdjustment.Seconds).ToTimeString()}'?";
-        //    DeleteDialog.Show(message);
-        //}
-
-        //private async Task RemoveTimeAdjustment(bool confirm)
-        //{
-        //    if (confirm && DeleteTimeAdjustmentId.HasValue)
-        //    {
-        //        await TimeAdjustmentService.Remove(DeleteTimeAdjustmentId.Value);
-        //        await LoadTimeAdjustments();
-        //    }
-        //}
-
-        //private async Task OnCurrentColorChanged(int colorId)
-        //{
-        //    CurrentColorId = colorId;
-        //    await LoadTeams();
-        //}
     }
 }
