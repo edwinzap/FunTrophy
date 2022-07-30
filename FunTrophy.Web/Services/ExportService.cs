@@ -16,5 +16,10 @@ namespace FunTrophy.Web.Services
         {
             return _settings.ApiUrl + GetUrl("categories", "raceId", raceId);
         }
+
+        public string GetTracksByColorFileUrl(int raceId)
+        {
+            return _settings.ApiUrl + GetUrl("colors", "raceId", raceId);
+        }
     }
 }

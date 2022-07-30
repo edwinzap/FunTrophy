@@ -3,5 +3,7 @@
     public interface IExportService
     {
         Task<byte[]> GetTeamsByTimeAdjustmentCategoryFile(int raceId);
+
+        Task<byte[]> GetTracksByColorFile(int raceId);
     }
 }

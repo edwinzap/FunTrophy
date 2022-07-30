@@ -136,18 +136,18 @@ namespace FunTrophy.Web.Pages
             StateHasChanged();
         }
 
-        private async Task OnSelectedTeamChanged(ChangeEventArgs args)
+        private Task OnSelectedTeamChanged(ChangeEventArgs args)
         {
             var teamId = int.Parse(args.Value!.ToString()!);
-            OnSelectTeam(teamId);
+            return OnSelectTeam(teamId);
         }
 
-        private async void OnSelectTeam(int teamId)
+        private Task OnSelectTeam(int teamId)
         {
             SelectedTeamId = teamId;
             NavigationManager.NavigateTo("resultats/equipe/" + teamId);
             SelectedTeamIdParam = null;
-            await RefreshTeamResults();
+            return RefreshTeamResults();
         }
 
         private void FilterTeams()
