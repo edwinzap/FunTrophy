@@ -32,5 +32,22 @@ namespace FunTrophy.API.Controllers
 
             return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "FunTrophy_Catégories.xlsx");
         }
+
+        /// <summary>
+        /// Generate an excel file with a page for each color with each track
+        /// </summary>
+        /// <param name="raceId">Race id</param>
+        /// <returns>Excel file</returns>
+        [HttpGet("colors")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> GetTracksByColorFile(int raceId)
+        {
+            if (raceId <= 0)
+                return BadRequest("RaceId must be positive");
+
+            var fileBytes = await _exportService.GetTracksByColorFile(raceId);
+
+            return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "FunTrophy_Couleurs.xlsx");
+        }
     }
 }

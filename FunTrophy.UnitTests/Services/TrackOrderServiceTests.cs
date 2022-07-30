@@ -31,7 +31,7 @@ namespace FunTrophy.API.UnitTests
             _fakeColorRepository.Setup(x => x.Get(It.IsAny<int>()))
                 .ReturnsAsync(Some.Generated<Color>());
 
-            _fakeTrackRepository.Setup(x => x.GetAll(It.IsAny<int>()))
+            _fakeTrackRepository.Setup(x => x.GetOfRace(It.IsAny<int>()))
                 .ReturnsAsync(Some.Generated<Track>(0, 3));
         }
 
@@ -82,7 +82,7 @@ namespace FunTrophy.API.UnitTests
 
             await Sut.GetAll(Some.Int());
 
-            _fakeTrackRepository.Verify(x => x.GetAll(color.RaceId), Times.Once);
+            _fakeTrackRepository.Verify(x => x.GetOfRace(color.RaceId), Times.Once);
         }
 
         [Fact]
@@ -92,7 +92,7 @@ namespace FunTrophy.API.UnitTests
             var tracks = Some.Generated<Track>(0, 3);
             var trackOrders = Some.Generated<TrackOrder>(0, 3);
 
-            _fakeTrackRepository.Setup(x => x.GetAll(It.IsAny<int>()))
+            _fakeTrackRepository.Setup(x => x.GetOfRace(It.IsAny<int>()))
                 .ReturnsAsync(tracks);
             _fakeTrackOrderRepository.Setup(x => x.GetOfColor(colorId))
                 .ReturnsAsync(trackOrders);

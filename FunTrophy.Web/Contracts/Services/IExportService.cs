@@ -3,5 +3,6 @@
     public interface IExportService
     {
         string GetTeamsByTimeAdjustmentCategoryFileUrl(int raceId);
+        string GetTracksByColorFileUrl(int raceId);
     }
 }

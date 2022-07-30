@@ -10,12 +10,19 @@ namespace FunTrophy.API.Services
     {
         private readonly ITeamRepository _teamRepository;
         private readonly ITimeAdjustmentCategoryRepository _categoryRepository;
+        private readonly ITrackOrderRepository _trackOrderRepository;
+        private readonly ITrackRepository _trackRepository;
+        private readonly int PORTRAIT_MAX_WIDTH = 140;
 
         public ExportService(ITeamRepository teamRepository,
-            ITimeAdjustmentCategoryRepository categoryRepository)
+            ITimeAdjustmentCategoryRepository categoryRepository,
+            ITrackOrderRepository trackOrderRepository,
+            ITrackRepository trackRepository)
         {
             _teamRepository = teamRepository;
             _categoryRepository = categoryRepository;
+            _trackOrderRepository = trackOrderRepository;
+            _trackRepository = trackRepository;
         }
 
         #region Private methods
@@ -105,6 +112,71 @@ namespace FunTrophy.API.Services
                 var widths = new[] { 10, 8, 40, 30 };
                 ResizeColumns(sheet.Columns[1, 4], widths);
             }
+            var fileBytes = await package.GetAsByteArrayAsync();
+            return fileBytes;
+        }
+
+        public async Task<byte[]> GetTracksByColorFile(int raceId)
+        {
+            var teams = (await _teamRepository.GetOfRace(raceId))
+                .OrderBy(x => x.Color.Id)
+                .ThenBy(x => x.Number)
+                .ToList();
+            var colors = teams.GroupBy(x => x.Color)
+                .Select(x => x.First().Color)
+                .ToList();
+            var tracks = await _trackRepository.GetOfRace(raceId);
+
+            using var package = new ExcelPackage();
+            foreach (var color in colors)
+            {
+                var sheet = package.Workbook.Worksheets.Add(color.Code);
+                var teamsOfColor = teams.Where(x => x.ColorId == color.Id).ToList();
+                var trackOrders = await _trackOrderRepository.GetOfColor(color.Id);
+
+                // title
+                var titleLen = 2 + trackOrders.Count;
+                var title = sheet.Cells[1, 1, 1, titleLen];
+                title.Merge = true;
+                title.Value = color.Code;
+                
+                var htmlColor = ColorTranslator.FromHtml(color.Code);
+                title.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                title.Style.Fill.BackgroundColor.SetColor(htmlColor);
+                FormatTitle(title);
+
+                sheet.Cells["A2"].Value = "N°";
+                sheet.Cells["B2"].Value = "Nom";
+                var index = 3;
+                foreach (var trackOrder in trackOrders)
+                {
+                    var trackName = tracks.First(x => x.Id == trackOrder.TrackId).Name;
+                    sheet.Cells[2, index++].Value = trackName;
+                }
+                FormatHeaders(sheet.Cells[2, 1, 2, titleLen]);
+
+                // teams
+                for (int i = 0; i < teamsOfColor.Count; i++)
+                {
+                    var row = i + 3;
+                    var team = teamsOfColor[i];
+
+                    sheet.Cells[row, 1].Value = team.Number;
+                    sheet.Cells[row, 2].Value = team.Name;
+                }
+
+                sheet.Cells["A3:A100"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                var range = sheet.Cells[1, 1, teamsOfColor.Count + 2, titleLen];
+                SetBorders(range);
+
+                var widths = new[] { 8, 25 };
+                var trackWidth = (PORTRAIT_MAX_WIDTH - (8 + 25)) / trackOrders.Count;
+                var trackWidths = Enumerable.Repeat(trackWidth, trackOrders.Count).ToArray();
+                widths = widths.Concat(trackWidths).ToArray();
+                
+                ResizeColumns(sheet.Columns[1, titleLen], widths);
+            }         
+
             var fileBytes = await package.GetAsByteArrayAsync();
             return fileBytes;
         }

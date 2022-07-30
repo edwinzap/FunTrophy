@@ -26,7 +26,7 @@ namespace FunTrophy.API.Services
 
         public async Task<List<FinalResultDto>> GetFinalResults(int raceId)
         {
-            var tracks = await _trackRepository.GetAll(raceId);
+            var tracks = await _trackRepository.GetOfRace(raceId);
             var times = await _trackTimeRepository.GetOfRace(raceId);
             var filteredTimes = times.Where(x => x.StartTime.HasValue && x.EndTime.HasValue).ToList();
 

@@ -31,7 +31,7 @@ namespace FunTrophy.API.Services
         {
             var color = await _colorRepository.Get(colorId);
             var dbTrackOrders = await _trackOrderRepository.GetOfColor(colorId);
-            var dbTracks = await _trackRepository.GetAll(color.RaceId);
+            var dbTracks = await _trackRepository.GetOfRace(color.RaceId);
             return _mapper.Map(colorId, dbTrackOrders, dbTracks);
         }
 

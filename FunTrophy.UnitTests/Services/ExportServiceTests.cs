@@ -15,17 +15,24 @@ namespace FunTrophy.API.UnitTests.Services
     public class ExportServiceTests
     {
         private readonly Mock<ITeamRepository> _fakeTeamRepository;
-        private readonly Mock<ITimeAdjustmentCategoryRepository> _fakeTimeAdjustmentCategory;
+        private readonly Mock<ITimeAdjustmentCategoryRepository> _fakeTimeAdjustmentCategoryRepository;
+        private readonly Mock<ITrackOrderRepository> _fakeTrackOrderRepository;
+        private readonly Mock<ITrackRepository> _fakeTrackRepository;
 
         public ExportServiceTests()
         {
             _fakeTeamRepository = new Mock<ITeamRepository>();
-            _fakeTimeAdjustmentCategory = new Mock<ITimeAdjustmentCategoryRepository>();
+            _fakeTimeAdjustmentCategoryRepository = new Mock<ITimeAdjustmentCategoryRepository>();
+            _fakeTrackOrderRepository = new Mock<ITrackOrderRepository>();
+            _fakeTrackRepository = new Mock<ITrackRepository>();
         }
 
         private ExportService Sut => new(
             _fakeTeamRepository.Object,
-            _fakeTimeAdjustmentCategory.Object);
+            _fakeTimeAdjustmentCategoryRepository.Object,
+            _fakeTrackOrderRepository.Object,
+            _fakeTrackRepository.Object
+            );
 
         [Fact]
         public async Task GetTeamsByTimeAdjustmentCategory_RaceId_CreateFile()
@@ -54,7 +61,7 @@ namespace FunTrophy.API.UnitTests.Services
 
             _fakeTeamRepository.Setup(x => x.GetOfRace(raceId))
                 .ReturnsAsync(teams);
-            _fakeTimeAdjustmentCategory.Setup(x => x.GetOfRace(raceId))
+            _fakeTimeAdjustmentCategoryRepository.Setup(x => x.GetOfRace(raceId))
                 .ReturnsAsync(categories);
 
             await Sut.GetTeamsByTimeAdjustmentCategoryFile(raceId);

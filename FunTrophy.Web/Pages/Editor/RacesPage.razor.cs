@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace FunTrophy.Web.Pages.Editor
 {
-    public partial class RacesPage: IAsyncDisposable
+    public partial class RacesPage : IAsyncDisposable
     {
         #region Properties
 
@@ -39,6 +39,8 @@ namespace FunTrophy.Web.Pages.Editor
         private int? updateRaceId;
 
         private string DownloadCategoriesFileUrl => SelectedRace is null ? string.Empty : ExportService.GetTeamsByTimeAdjustmentCategoryFileUrl(SelectedRace.Id);
+
+        private string DownloadColorsFileUrl => SelectedRace is null ? string.Empty : ExportService.GetTracksByColorFileUrl(SelectedRace.Id);
         private Action OnEditorStateChanged => async () => await UpdateSelectedRace();
 
         #endregion Properties

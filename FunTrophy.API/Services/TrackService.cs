@@ -25,7 +25,7 @@ namespace FunTrophy.API.Services
 
         public async Task<List<TrackDto>> GetAll(int raceId)
         {
-            var dbTracks = await _repository.GetAll(raceId);
+            var dbTracks = await _repository.GetOfRace(raceId);
             return _mapper.Map(dbTracks);
         }
 
