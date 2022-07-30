@@ -9,12 +9,20 @@ namespace FunTrophy.API.Services
     public class TeamService : ServiceBase, ITeamService
     {
         private readonly ITeamRepository _repository;
+        private readonly ITrackTimeRepository _trackTimeRepository;
+        private readonly ITimeAdjustmentRepository _timeAdjustmentRepository;
         private readonly ITeamMapper _mapper;
         private readonly ITeamTypeMapper _typeMapper;
 
-        public TeamService(ITeamRepository repository, ITeamMapper mapper, ITeamTypeMapper typeMapper)
+        public TeamService(
+            ITeamRepository repository,
+            ITrackTimeRepository trackTimeRepository,
+            ITimeAdjustmentRepository timeAdjustmentRepository,
+            ITeamMapper mapper, ITeamTypeMapper typeMapper)
         {
             _repository = repository;
+            _trackTimeRepository = trackTimeRepository;
+            _timeAdjustmentRepository = timeAdjustmentRepository;
             _mapper = mapper;
             _typeMapper = typeMapper;
         }
@@ -39,6 +47,8 @@ namespace FunTrophy.API.Services
 
         public async Task Remove(int teamId)
         {
+            await _timeAdjustmentRepository.RemoveAllOfTeam(teamId);
+            await _trackTimeRepository.RemoveAllOfTeam(teamId);
             await _repository.Remove(teamId);
         }
 

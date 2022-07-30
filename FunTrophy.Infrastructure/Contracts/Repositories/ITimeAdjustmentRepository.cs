@@ -12,6 +12,8 @@ namespace FunTrophy.Infrastructure.Contracts.Repositories
 
         Task RemoveAllOfRace(int raceId);
 
+        Task RemoveAllOfTeam(int teamId);
+
         Task<TimeAdjustment?> GetByTeamAndCategory(int teamId, int categoryId);
     }
 }
