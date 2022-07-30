@@ -139,8 +139,7 @@ namespace FunTrophy.Web.Pages
         private async Task OnSelectedTeamChanged(ChangeEventArgs args)
         {
             var teamId = int.Parse(args.Value!.ToString()!);
-            SelectedTeamId = teamId;
-            await RefreshTeamResults();
+            OnSelectTeam(teamId);
         }
 
         private async void OnSelectTeam(int teamId)
