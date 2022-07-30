@@ -42,5 +42,11 @@ namespace FunTrophy.Fake.Repositories
             _dbContext.TimeAdjustments.RemoveAll(x => x.Team.Color.RaceId == raceId);
             return Task.CompletedTask;
         }
+
+        public Task RemoveAllOfTeam(int teamId)
+        {
+            _dbContext.TimeAdjustments.RemoveAll(x => x.TeamId == teamId);
+            return Task.CompletedTask;
+        }
     }
 }

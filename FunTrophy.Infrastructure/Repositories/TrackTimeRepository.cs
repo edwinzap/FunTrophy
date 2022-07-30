@@ -36,5 +36,12 @@ namespace FunTrophy.Infrastructure.Repositories
             _dbContext.TrackTimes.RemoveRange(times);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task RemoveAllOfTeam(int teamId)
+        {
+            var times = await GetAll(x => x.TeamId == teamId);
+            _dbContext.TrackTimes.RemoveRange(times);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }
