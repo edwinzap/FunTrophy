@@ -13,5 +13,6 @@ namespace FunTrophy.Shared.Model
 
         public TrackDto? NextTrack { get; set; }
         public DateTime? CurrentTrackStartTime { get; set; }
+        public DateTime ServerTime { get; set; }
     }
 }

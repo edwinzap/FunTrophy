@@ -30,6 +30,7 @@ namespace FunTrophy.Web.Pages
         public int? CurrentColorId { get; set; }
 
         private Timer? _timer;
+        private TimeSpan serverTimeDiff = TimeSpan.Zero;
         private int? _selectedRaceId;
 
         #endregion Properties
@@ -58,7 +59,7 @@ namespace FunTrophy.Web.Pages
             {
                 if (Laps?.Any() == true)
                 {
-                    CurrentDateTime = DateTime.UtcNow;
+                    CurrentDateTime = DateTime.UtcNow - serverTimeDiff;
                     StateHasChanged();
                 }
             }, new AutoResetEvent(false), 1000, 1000);
@@ -82,6 +83,12 @@ namespace FunTrophy.Web.Pages
             if (CurrentColorId.HasValue)
             {
                 Laps = await TrackTimeService.GetLaps(CurrentColorId.Value);
+                var serverTime = Laps.FirstOrDefault()?.ServerTime;
+                if (serverTime.HasValue)
+                {
+                    var currentDate = DateTime.UtcNow;
+                    serverTimeDiff = currentDate.Subtract(serverTime.Value);
+                }
             }
         }
 
