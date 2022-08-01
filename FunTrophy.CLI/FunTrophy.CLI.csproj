@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FunTrophy.API\FunTrophy.API.csproj" />
     <ProjectReference Include="..\FunTrophy.Fake\FunTrophy.Fake.csproj" />
     <ProjectReference Include="..\FunTrophy.Infrastructure\FunTrophy.Infrastructure.csproj" />
   </ItemGroup>

@@ -23,6 +23,10 @@ namespace FunTrophy.Infrastructure
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<TrackTime>()
+                .HasIndex(x => new { x.TrackId, x.TeamId })
+                .IsUnique(true);
+
             foreach (var foreignKey in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
                 foreignKey.DeleteBehavior = DeleteBehavior.NoAction;
