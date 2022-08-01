@@ -16,6 +16,7 @@ namespace FunTrophy.API.Services
         private readonly INotificationHelper _notificationHelper;
 
         private readonly TimeSpan TRACK_MIN_DURATION = TimeSpan.FromSeconds(60);
+        private static readonly SemaphoreSlim mutex = new SemaphoreSlim(1, 1);
 
         public TrackTimeService(
             ITrackOrderRepository trackOrderRepository,
@@ -66,27 +67,34 @@ namespace FunTrophy.API.Services
 
         public async Task<List<TeamLapInfoDto>> GetTeamLaps(int colorId)
         {
-            var trackTimes = await _trackTimeRepository.GetOfColor(colorId);
-
-            var teams = await _teamRepository.GetOfColor(colorId);
-            if (!teams.Any())
-                return new List<TeamLapInfoDto>();
-
-            var trackOrders = await _trackOrderRepository.GetOfColor(colorId);
-            if (!trackOrders.Any())
-                return new List<TeamLapInfoDto>();
-
-            var laps = new List<TeamLapInfoDto>();
-            foreach (var team in teams)
+            await mutex.WaitAsync();
+            try
             {
-                var teamTrackTimes = trackTimes.Where(x => x.TeamId == team.Id).OrderBy(x => x.StartTime);
-                var nextTrackTime = await GetNextTrackTime(team, trackOrders, teamTrackTimes);
-                var currentTrackTime = teamTrackTimes.Where(x => x.StartTime.HasValue && !x.EndTime.HasValue).LastOrDefault();
-                var lapInfo = _mapper.Map(currentTrackTime, nextTrackTime, team);
-                laps.Add(lapInfo);
-            }
+                var trackTimes = await _trackTimeRepository.GetOfColor(colorId);
 
-            return laps;
+                var teams = await _teamRepository.GetOfColor(colorId);
+                if (!teams.Any())
+                    return new List<TeamLapInfoDto>();
+
+                var trackOrders = await _trackOrderRepository.GetOfColor(colorId);
+                if (!trackOrders.Any())
+                    return new List<TeamLapInfoDto>();
+
+                var laps = new List<TeamLapInfoDto>();
+                foreach (var team in teams)
+                {
+                    var teamTrackTimes = trackTimes.Where(x => x.TeamId == team.Id).OrderBy(x => x.StartTime);
+                    var nextTrackTime = await GetNextTrackTime(team, trackOrders, teamTrackTimes);
+                    var currentTrackTime = teamTrackTimes.Where(x => x.StartTime.HasValue && !x.EndTime.HasValue).LastOrDefault();
+                    var lapInfo = _mapper.Map(currentTrackTime, nextTrackTime, team);
+                    laps.Add(lapInfo);
+                }
+                return laps;
+            }
+            finally
+            {
+                mutex.Release();
+            }
         }
 
         public async Task SaveTeamLap(int teamId)
@@ -116,7 +124,6 @@ namespace FunTrophy.API.Services
                 await _trackTimeRepository.Update(nextTrackTime);
                 await _notificationHelper.NotifyTrackTimeChanged(nextTrackTime.TrackId, nextTrackTime.TeamId);
             }
-
         }
 
         public async Task<TeamLapInfoDto> GetTeamLap(int teamId)
