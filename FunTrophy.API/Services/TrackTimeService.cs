@@ -89,6 +89,8 @@ namespace FunTrophy.API.Services
                     var lapInfo = _mapper.Map(currentTrackTime, nextTrackTime, team);
                     laps.Add(lapInfo);
                 }
+                var currentDate = DateTime.UtcNow;
+                laps.ForEach(x => x.ServerTime = currentDate);
                 return laps;
             }
             finally
