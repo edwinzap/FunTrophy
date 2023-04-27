@@ -4,7 +4,7 @@ namespace FunTrophy.Web.UnitTests
 {
     public class ExtensionsTests
     {
-        private static IEnumerable<object[]> TimeSpan_FormattedString()
+        public static IEnumerable<object[]> TimeSpan_FormattedString()
         {
             yield return new object[] { new TimeSpan(0, 0, 0), "00:00" };
             yield return new object[] { new TimeSpan(0, 0, 25), "00:25" };
