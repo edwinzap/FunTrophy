@@ -24,7 +24,7 @@ namespace FunTrophy.Tests.Utils
 
         public Func<FunTrophyContext> CreateDbContext => () =>
               new FunTrophyContext(new DbContextOptionsBuilder<FunTrophyContext>()
-                  .UseSqlServer(_connection)
+                  .UseSqlite(_connection)
                   .Options);
 
         public void Dispose()

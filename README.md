@@ -10,6 +10,9 @@ Each color has the same track order.
 To begin, the team need to go to the referee of its color to know the next track where it needs to go. When the track is ended, the team comes back to the referee to stop the timing and start the next track.
 At the end of the race, we add bonuses according to the results of the activities.
 
+## Update/create database
+`dotnet ef database update --project DataAccess_Project --startup-project WebApp_Project`
+
 ## Project overview
 This is a Blazor WebAssembly, client-side, Single Page Application made nearly exclusively in C#, HTML and CSS.
 It uses:

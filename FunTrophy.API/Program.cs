@@ -20,7 +20,7 @@ builder.Services.AddCors(options =>
 
 // Add services to the container.
 builder.Services.AddDbContext<FunTrophyContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("FunTrophyContext")));
+    options.UseSqlite(builder.Configuration.GetConnectionString("FunTrophyContext")));
 
 builder.Services
     .AddServices()
