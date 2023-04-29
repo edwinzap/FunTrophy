@@ -365,4 +365,4 @@ FodyWeavers.xsd
 # Custom
 *.Production.json
 .env
-*.sqlite
+*.sqlite*
