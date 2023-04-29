@@ -9,6 +9,7 @@
         <thead>
             <tr>
                 <th scope="col">Nom</th>
+                <th scope="col">Description</th>
                 <th></th>
             </tr>
         </thead>
@@ -29,13 +30,14 @@
             }
             else
             {
-                @foreach (var track in Categories)
+                @foreach (var category in Categories)
                 {
-                    <tr @key="@track.Id">
-                        <td>@track.Name</td>
+                    <tr @key="@category.Id">
+                        <td>@category.Name</td>
+                        <td>@category.Description</td>
                         <td>
-                            <a class="btn btn-secondary btn-sm" @onclick="() => ConfirmEditTrack(track)"><span class="fas fa-pencil"></span></a>
-                            <a class="btn btn-danger btn-sm" @onclick="() => ConfirmDeleteTrack(track)"><span class="fas fa-trash"></span></a>
+                            <a class="btn btn-secondary btn-sm" @onclick="() => ConfirmEditTrack(category)"><span class="fas fa-pencil"></span></a>
+                            <a class="btn btn-danger btn-sm" @onclick="() => ConfirmDeleteTrack(category)"><span class="fas fa-trash"></span></a>
                         </td>
                     </tr>
                 }
@@ -47,8 +49,12 @@
 <div>
     <EditForm Model="@addCategory" OnValidSubmit="@AddTrack" class="d-flex">
         <div class="p-2">
-            <label for="race-name" class="form-label">Nom</label>
-            <input id="race-name" class="form-control" type="text" @bind-value="@addCategory.Name" placeholder="Nom de la catégorie" />
+            <label for="category-name" class="form-label">Nom</label>
+            <input id="category-name" class="form-control" type="text" @bind-value="@addCategory.Name" placeholder="Nom de la catégorie" />
+        </div>
+        <div class="p-2">
+            <label for="category-description" class="form-label">Description</label>
+            <input id="category-description" class="form-control" type="text" @bind-value="@addCategory.Description" placeholder="Description" />
         </div>
         <div class="p-2 d-flex align-items-end">
             <button type="submit" class="btn btn-primary">Ajouter</button>
@@ -64,10 +70,14 @@
 <EditDialog @ref="EditDialog"
             Title="Editer la catégorie"
             ConfirmationChanged="(confirm) => UpdateTrack(confirm)">
-    <div class="d-flex">
-        <div class="p-2 flex-fill">
-            <label for="race-name" class="form-label">Nom</label>
-            <input id="race-name" class="form-control" type="text" @bind-value="@updateCategory.Name" placeholder="Nom de la catégorie" />
+    <div class="d-flex flex-column">
+        <div class="p-2">
+            <label for="category-name" class="form-label">Nom</label>
+            <input id="category-name" class="form-control" type="text" @bind-value="@updateCategory.Name" placeholder="Nom de la catégorie" />
+        </div>
+        <div class="p-2">
+            <label for="category-description" class="form-label">Description</label>
+            <input id="category-description" class="form-control" type="text" @bind-value="@updateCategory.Description" placeholder="Description" />
         </div>
     </div>
 </EditDialog>

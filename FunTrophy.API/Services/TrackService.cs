@@ -38,6 +38,7 @@ namespace FunTrophy.API.Services
         {
             var dbTrack = await _repository.Get(trackId);
             dbTrack.Name = track.Name;
+            dbTrack.Number = track.Number;
             await _repository.Update(dbTrack);
         }
     }

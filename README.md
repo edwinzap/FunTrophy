@@ -11,7 +11,11 @@ To begin, the team need to go to the referee of its color to know the next track
 At the end of the race, we add bonuses according to the results of the activities.
 
 ## Update/create database
-`dotnet ef database update --project DataAccess_Project --startup-project WebApp_Project`
+To add a migration:
+`dotnet ef migrations add MigrationName --project FunTrophy.Infrastructure --startup-project FunTrophy.API`
+
+To create/update the database:
+`dotnet ef database update --project FunTrophy.Infrastructure --startup-project FunTrophy.API`
 
 ## Project overview
 This is a Blazor WebAssembly, client-side, Single Page Application made nearly exclusively in C#, HTML and CSS.

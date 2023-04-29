@@ -38,6 +38,7 @@ namespace FunTrophy.API.Services
         {
             var dbCategory = await _repository.Get(categoryId);
             dbCategory.Name = category.Name;
+            dbCategory.Description = category.Description;
             await _repository.Update(dbCategory);
         }
     }

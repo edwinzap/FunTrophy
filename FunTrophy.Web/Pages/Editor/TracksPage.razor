@@ -9,6 +9,7 @@
     <table class="table table-striped">
         <thead>
             <tr>
+                <th scope="col">N°</th>
                 <th scope="col">Nom</th>
                 <th></th>
             </tr>
@@ -33,6 +34,7 @@
                 @foreach (var track in Tracks)
                 {
                     <tr @key="@track.Id">
+                        <td>@track.Number</td>
                         <td>@track.Name</td>
                         <td>
                             <a class="btn btn-secondary btn-sm" @onclick="() => ConfirmEditTrack(track)"><span class="fas fa-pencil"></span></a>
@@ -48,8 +50,12 @@
 <div>
     <EditForm Model="@addTrack" OnValidSubmit="@AddTrack" class="d-flex">
         <div class="p-2">
-            <label for="race-name" class="form-label">Nom</label>
-            <input id="race-name" class="form-control" type="text" @bind-value="@addTrack.Name" placeholder="Nom du parcours" />
+            <label for="track-name" class="form-label">Nom</label>
+            <input id="track-name" class="form-control" type="text" @bind-value="@addTrack.Name" placeholder="Nom du parcours" />
+        </div>
+        <div class="p-2">
+            <label for="track-number" class="form-label">Numéro</label>
+            <input id="track-number" class="form-control" type="number" min="1" @bind-value="@addTrack.Number" />
         </div>
         <div class="p-2 d-flex align-items-end">
             <button type="submit" class="btn btn-primary">Ajouter</button>
@@ -65,10 +71,14 @@
 <EditDialog @ref="EditDialog"
             Title="Editer le parcours"
             ConfirmationChanged="(confirm) => UpdateTrack(confirm)">
-    <div class="d-flex">
-        <div class="p-2 flex-fill">
+    <div class="d-flex flex-column">
+        <div class="p-2">
             <label for="race-name" class="form-label">Nom</label>
             <input id="race-name" class="form-control" type="text" @bind-value="@updateTrack.Name" placeholder="Nom du parcours" />
+        </div>
+        <div class="p-2">
+            <label for="track-number" class="form-label">Numéro</label>
+            <input id="track-number" class="form-control" type="number" @bind-value="@updateTrack.Number" />
         </div>
     </div>
 </EditDialog>

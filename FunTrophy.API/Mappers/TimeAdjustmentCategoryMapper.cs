@@ -25,6 +25,7 @@ namespace FunTrophy.API.Mappers
             {
                 Id = timeAdjustmentCategory.Id,
                 Name = timeAdjustmentCategory.Name,
+                Description = timeAdjustmentCategory.Description
             };
         }
 
