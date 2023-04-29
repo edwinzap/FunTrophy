@@ -1,136 +1,72 @@
 ﻿@attribute [AuthorizeRoles(UserRoles.Admin, UserRoles.User)]
 @layout EditorLayout
-@page "/editeur/old-bonus"
+@page "/editeur/bonus"
 
 <PageTitle>Bonus</PageTitle>
 <h1>Editer les bonus</h1>
 
-@if (Colors is null)
-{
-    <div class="spinner-border" role="status" />
-}
-else if (!Colors.Any())
-{
-    <p>Ajouter d'abord des couleurs</p>
-}
-else
-{
-    <ColorSwitcher Colors="@Colors" OnCurrentColorChanged="(value) => OnCurrentColorChanged(value)" />
-
-    <div class="d-flex flex-row flex-wrap">
-        <div class="col-12 col-lg-6 col-xl-4 d-flex flex-column p-2">
-            <div class="p-2">
-                <select id="team-type" class="form-select" @onchange="OnCurrentTeamChanged">
-                    @if (Teams is null)
-                    {
-                        <option>Chargement...</option>
-                    }
-                    else
-                    {
-                        @foreach (var team in Teams)
-                        {
-                            <option value="@team.Id" @key="@team">@(team.Number). @team.Name</option>
-                        }
-                    }
-                </select>
-            </div>
-
-            <div class="py-2">
-                <EditForm Model="@addTimeAdjustment" OnValidSubmit="@AddTimeAdjustment" class="d-flex flex-column">
-                    <div class="p-2">
-                        <label for="team-type" class="form-label">Catégorie</label>
-                        <select id="team-type" class="form-select" @bind="@SelectedCategoryId">
-                            @if (Categories is null)
-                            {
-                                <option>Chargement...</option>
-                            }
-                            else
-                            {
-                                @foreach (var category in Categories)
-                                {
-                                    <option value="@category.Id">@category.Name</option>
-                                }
-                            }
-                        </select>
-                    </div>
-                    <div class="p-2 my-3 d-flex flex-row @(isPositive? "positive": "negative")">
-                        <div class="p-2 d-flex flex-column justify-content-end">
-                            <InputRadioGroup @bind-Value="@isPositive">
-                                <div class="form-check">
-                                    <InputRadio Value="false" class="form-check-input" id="radio-less" />
-                                    <label class="form-check-label px-2" for="radio-less"><span class="fas fa-minus"></span></label>
-                                </div>
-                                <div class="form-check">
-                                    <InputRadio Value="true" class="form-check-input" id="radio-plus" />
-                                    <label class="form-check-label px-2" for="radio-plus"><span class="fas fa-plus"></span></label>
-                                </div>
-                            </InputRadioGroup>
-                        </div>
-                        <div class="p-2">
-                            <label for="minutes" class="form-label">Minutes</label>
-                            <input id="minutes" type="number" class="form-control border " @bind-value="@addMinutes" onfocus="this.select();" />
-                        </div>
-                        <div class="p-2">
-                            <label for="seconds" class="form-label">Secondes</label>
-                            <input id="seconds" type="number" class="form-control" @bind-value="@addSeconds" onfocus="this.select();" />
-                        </div>
-                    </div>
-
-                    <div class="p-2 d-flex align-items-end">
-                        <button type="submit" class="btn btn-primary">Ajouter</button>
-                    </div>
-                </EditForm>
-            </div>
-        </div>
-
-        <div class="p-2 d-flex d-none d-lg-flex">
-            <div class="vr"></div>
-        </div>
-
-        <div class="col-12 col-lg-5 col-xl-4 p-2">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">Catégorie</th>
-                        <th scope="col">Temps</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (TimeAdjustments is null)
-                    {
-                        <tr>
-                            <td colspan=3 class="text-center">
-                                <div class="spinner-border" role="status" />
-                            </td>
-                        </tr>
-                    }
-                    else if (!TimeAdjustments.Any())
-                    {
-                        <tr class="p-2">
-                            <td colspan=3 class="text-center">Aucun bonus</td>
-                        </tr>
-                    }
-                    else
-                    {
-                        @foreach (var timeAdjustment in TimeAdjustments)
-                        {
-                            <tr @key="@timeAdjustment.Id">
-                                <td>@timeAdjustment.CategoryName</td>
-                                <td>@(TimeSpan.FromSeconds(timeAdjustment.Seconds).ToTimeString())</td>
-                                <td>
-                                    <a class="btn btn-danger btn-sm" @onclick="() => ConfirmDeleteTimeAdjustment(timeAdjustment)"><span class="fas fa-trash"></span></a>
-                                </td>
-                            </tr>
-                        }
-                    }
-                </tbody>
-            </table>
-        </div>
+<div class="p-2 col-12 col-lg-8 col-xl-6">
+    <select id="team-type" class="form-select" @onchange="OnSelectedCategoryChanged">
+        @if (Categories is null)
+        {
+            <option>Chargement...</option>
+        }
+        else
+        {
+            @foreach (var category in Categories)
+            {
+                <option value="@category.Id">@category.Name</option>
+            }
+        }
+    </select>
+    
+    <div class="pt-2">
+        <p><em>@SelectedCategoryDescription</em></p>
     </div>
-}
+</div>
 
-<ConfirmDialog @ref="DeleteDialog"
-               Title="Supprimer le bonus"
-               ConfirmationChanged="(confirm) => RemoveTimeAdjustment(confirm)">
-</ConfirmDialog>
+
+<table class="table table-striped align-middle">
+    <thead>
+        <tr>
+            <th scope="col">N°</th>
+            <th scope="col">Couleur</th>
+            <th scope="col">Equipe</th>
+            <th scope="col">Secondes</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (TimeAdjustments is null)
+        {
+            <tr>
+                <td colspan=4 class="text-center">
+                    <div class="spinner-border" role="status" />
+                </td>
+            </tr>
+        }
+        else if (!TimeAdjustments.Any())
+        {
+            <tr class="p-2">
+                <td colspan=3 class="text-center">Aucun bonus</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var bonus in TimeAdjustments)
+            {
+                <tr @key="@bonus">
+                    <td class="fit">@bonus.Team.Number</td>
+                    <td class="fit">
+                        <div class="team-color" style="border-color:@bonus.Team.Color.Code">
+                            <span class="@(HtmlHelper.GetFaIcon(bonus.Team.Type))"></span>
+                        </div>
+                    </td>
+                    <td>@bonus.Team.Name</td>
+                    <td>
+                        <input type="number" class="form-control" @bind-value="@bonus.Seconds" @onblur="(_) => OnValidateTimeAdjustment(bonus)" onfocus="this.select();" />
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

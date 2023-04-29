@@ -1,7 +1,5 @@
 ﻿using FunTrophy.Shared.Model;
-using FunTrophy.Web.Components;
 using FunTrophy.Web.Contracts.Services;
-using FunTrophy.Web.Helpers;
 using Microsoft.AspNetCore.Components;
 
 namespace FunTrophy.Web.Pages.Editor
@@ -17,37 +15,19 @@ namespace FunTrophy.Web.Pages.Editor
         private ITimeAdjustmentService TimeAdjustmentService { get; set; } = default!;
 
         [Inject]
-        private ITeamService TeamService { get; set; } = default!;
-
-        [Inject]
         private ITimeAdjustmentCategoryService CategoryService { get; set; } = default!;
-
-        [Inject]
-        private IColorService ColorService { get; set; } = default!;
-
-        private ConfirmDialog DeleteDialog { get; set; } = default!;
-
-        private List<TimeAdjustmentDto>? TimeAdjustments { get; set; }
-
-        public List<ColorDto>? Colors { get; set; }
-
-        private List<TeamDto>? Teams { get; set; }
 
         private List<TimeAdjustmentCategoryDto>? Categories { get; set; }
 
-        private AddTimeAdjustmentDto addTimeAdjustment = new();
+        private List<TeamTimeAdjustmentDto>? TimeAdjustments { get; set; }
 
-        private int? SelectedCategoryId { get; set; }
-        private int addMinutes = 0;
-        private int addSeconds = 0;
-        private bool isPositive = true;
         private int? _selectedRaceId;
 
+        private int? SelectedCategoryId { get; set; }
+
+        private string? SelectedCategoryDescription { get; set; }
+
         public int? CurrentColorId { get; set; }
-
-        public int? CurrentTeamId { get; set; }
-
-        private int? DeleteTimeAdjustmentId { get; set; }
 
         #endregion Properties
 
@@ -55,34 +35,7 @@ namespace FunTrophy.Web.Pages.Editor
         {
             var selectedRace = await AppStateService.GetEditorSelectedRace();
             _selectedRaceId = selectedRace?.Id;
-            var task = await LoadColors().ContinueWith(_ => LoadTeams());
-            await Task.WhenAll(task, LoadCategories());
-        }
-
-        private async Task LoadColors()
-        {
-            if (!_selectedRaceId.HasValue)
-                return;
-
-            Colors = await ColorService.GetColors(_selectedRaceId.Value);
-            if (Colors.Any())
-            {
-                CurrentColorId = Colors.First().Id;
-            }
-        }
-
-        private async Task LoadTeams()
-        {
-            if (!CurrentColorId.HasValue)
-                return;
-
-            Teams = null;
-            Teams = await TeamService.GetTeamsByColor(CurrentColorId.Value);
-            if (Teams.Any())
-            {
-                CurrentTeamId = Teams.First().Id;
-               await LoadTimeAdjustments();
-            }
+            await LoadCategories();
         }
 
         private async Task LoadCategories()
@@ -93,64 +46,41 @@ namespace FunTrophy.Web.Pages.Editor
             Categories = null;
             Categories = await CategoryService.GetCategories(_selectedRaceId.Value);
             SelectedCategoryId = Categories.FirstOrDefault()?.Id;
+            SelectedCategoryDescription = Categories?.FirstOrDefault(x => x.Id == SelectedCategoryId)?.Description;
+            await LoadTimeAdjustements();
         }
 
-        private async Task LoadTimeAdjustments()
+        private async Task LoadTimeAdjustements()
         {
-            if (CurrentTeamId.HasValue)
-            {
-                TimeAdjustments = null;
-                TimeAdjustments = await TimeAdjustmentService.GetTimeAdjustments(CurrentTeamId.Value);
-            }
+            if (!SelectedCategoryId.HasValue)
+                return;
+            TimeAdjustments = null;
+            TimeAdjustments = (await TimeAdjustmentService.GetTimeAdjustmentForCategory(SelectedCategoryId.Value))
+                .OrderBy(x => x.Team.Color.Id)
+                .ThenBy(x => x.Team.Number)
+                .ToList();
         }
 
-        private async Task OnCurrentTeamChanged(ChangeEventArgs args)
+        private async Task OnSelectedCategoryChanged(ChangeEventArgs args)
         {
-            CurrentTeamId = int.Parse(args.Value!.ToString()!);
-            await LoadTimeAdjustments();
+            SelectedCategoryId = int.Parse(args.Value!.ToString()!);
+            SelectedCategoryDescription = Categories?.FirstOrDefault(x => x.Id == SelectedCategoryId)?.Description;
+            await LoadTimeAdjustements();
         }
 
-        private async Task AddTimeAdjustment()
+        private async Task OnValidateTimeAdjustment(TeamTimeAdjustmentDto bonus)
         {
-            var totalSeconds = addMinutes * 60 + addSeconds;
-            if (!CurrentTeamId.HasValue || !SelectedCategoryId.HasValue || totalSeconds == 0)
+            if (!SelectedCategoryId.HasValue)
                 return;
 
-            if (!isPositive)
-                totalSeconds = -totalSeconds;
-
-            addTimeAdjustment.TeamId = CurrentTeamId.Value;
-            addTimeAdjustment.Seconds = totalSeconds;
-            addTimeAdjustment.CategoryId = SelectedCategoryId.Value;
-
-            await TimeAdjustmentService.Add(addTimeAdjustment);
-            await LoadTimeAdjustments();
-
-            addTimeAdjustment.Seconds = 0;
-            addMinutes = 0;
-            addSeconds = 0;
-        }
-
-        private void ConfirmDeleteTimeAdjustment(TimeAdjustmentDto timeAdjustment)
-        {
-            DeleteTimeAdjustmentId = timeAdjustment.Id;
-            var message = $"Es-tu sûr de vouloir supprimer '{timeAdjustment.CategoryName}: {TimeSpan.FromSeconds(timeAdjustment.Seconds).ToTimeString()}'?";
-            DeleteDialog.Show(message);
-        }
-
-        private async Task RemoveTimeAdjustment(bool confirm)
-        {
-            if (confirm && DeleteTimeAdjustmentId.HasValue)
+            var updateTimeAdjustment = new AddTimeAdjustmentDto
             {
-                await TimeAdjustmentService.Remove(DeleteTimeAdjustmentId.Value);
-                await LoadTimeAdjustments();
-            }
-        }
+                CategoryId = SelectedCategoryId.Value,
+                TeamId = bonus.Team.Id,
+                Seconds = bonus.Seconds ?? 0
+            };
 
-        private async Task OnCurrentColorChanged(int colorId)
-        {
-            CurrentColorId = colorId;
-            await LoadTeams();
+            await TimeAdjustmentService.Update(updateTimeAdjustment);
         }
     }
 }
