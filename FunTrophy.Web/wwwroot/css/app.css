@@ -6,9 +6,9 @@ h1:focus {
     outline: none;
 }
 
-a, .btn-link {
+/*a, .btn-link {
     color: #0071c1;
-}
+}*/
 
 .content {
     padding-top: 1.1rem;
@@ -151,9 +151,9 @@ body {
     padding-top: 68px;
 }
 
-    .sidebar a.nav-link {
+/*    .sidebar a.nav-link {
         color: black;
-    }
+    }*/
 
 .form-signin {
     width: 100%;

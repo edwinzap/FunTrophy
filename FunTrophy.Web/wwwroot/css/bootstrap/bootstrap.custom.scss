@@ -1,5 +1,59 @@
-﻿
-$primary: #850000;
-$font-family-sans-serif: "thedarkestpearl";
+﻿@import "../../lib/bootstrap/scss/_functions.scss";
+@import "../../lib/bootstrap/scss/_variables.scss";
+@import "../app.css";
+
+$enable-rounded: false;
+
+$primary: #a58052;
+$secondary: #9c9891;
+$danger: #833939;
+$warning: #fdb827;
+$info: #a58052;
+$success: #728766;
+$dark: #27251f;
+$light: #e8ded3;
+
+$theme-colors: (
+    "primary":$primary, 
+    "secondary": $secondary, 
+    "danger": $danger, 
+    "warning": $warning, 
+    "info": $info, 
+    "success": $success, 
+    "dark": $dark, 
+    "light": $light
+);
+
+$link-hover-color: $primary;
+
+$nav-link-color: $light;
+
+$navbar-light-color: $light;
+$navbar-light-active-color: $primary;
+$navbar-light-hover-color: $navbar-light-active-color;
+$navbar-light-brand-color: $light;
+$navbar-light-brand-hover-color: $primary;
+
+$nav-pills-link-active-bg:  $primary;
+
+
 
 @import "../../lib/bootstrap/scss/bootstrap";
+
+html, body {
+    font-family: 'AllRoundGothic-Book ☞'
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: thedarkestpearl;
+}
+
+.top-menu {
+    background-color: $dark;
+    color: $light;
+}
+
+.sidebar {
+    background: $dark;
+    color: $light;
+}
