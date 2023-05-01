@@ -12,6 +12,7 @@ namespace FunTrophy.API.Mappers
             {
                 Name = track.Name,
                 RaceId = track.RaceId,
+                Number = track.Number,
             };
         }
 
@@ -21,6 +22,7 @@ namespace FunTrophy.API.Mappers
             {
                 Id = track.Id,
                 Name = track.Name,
+                Number = track.Number,
             };
         }
 

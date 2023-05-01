@@ -3,6 +3,7 @@ using System;
 using FunTrophy.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FunTrophy.Infrastructure.Migrations
 {
     [DbContext(typeof(FunTrophyContext))]
-    partial class FunTrophyContextModelSnapshot : ModelSnapshot
+    [Migration("20230429091232_AddTimeAdjustmentCategoryDescriptionAndTrackNumber")]
+    partial class AddTimeAdjustmentCategoryDescriptionAndTrackNumber
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.5");

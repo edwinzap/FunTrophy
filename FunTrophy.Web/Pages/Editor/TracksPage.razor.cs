@@ -61,11 +61,13 @@ namespace FunTrophy.Web.Pages.Editor
             await LoadTracks();
 
             addTrack.Name = string.Empty;
+            addTrack.Number = null;
         }
 
         private void ConfirmEditTrack(TrackDto track)
         {
             updateTrack.Name = track.Name;
+            updateTrack.Number = track.Number;
             updateTrackId = track.Id;
             EditDialog.Show();
         }

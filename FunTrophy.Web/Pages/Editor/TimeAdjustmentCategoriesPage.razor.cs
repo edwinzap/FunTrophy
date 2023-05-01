@@ -64,6 +64,7 @@ namespace FunTrophy.Web.Pages.Editor
         {
             updateCategory.Name = category.Name;
             updateCategoryId = category.Id;
+            updateCategory.Description = category.Description;
             EditDialog.Show();
         }
 

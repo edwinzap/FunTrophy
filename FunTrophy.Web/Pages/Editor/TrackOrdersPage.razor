@@ -41,7 +41,7 @@ else
                      @ondragstart="() => draggingItem = track"
                      @ondragend="() => draggingItem = null"
                      draggable=true>
-                                <span class="list-number">@(track.Order +1)</span> @track.Item.Name <i class="float-end fas fa-ellipsis-vertical"></i>
+                                <span class="list-number">@(track.Order + 1)</span> @(@track.Item.Number is not null? "[" + @track.Item.Number +"]": "") @track.Item.Name <i class="float-end fas fa-ellipsis-vertical"></i>
                             </div>
                         </li>
                     }
