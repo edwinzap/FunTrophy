@@ -36,12 +36,32 @@ $navbar-light-brand-hover-color: $primary;
 
 $nav-pills-link-active-bg:  $primary;
 
+$list-group-color: $light;
+$list-group-bg: $dark;
+$list-group-hover-bg: $danger;
+$list-group-hover-color: $light;
+$list-group-active-color: $light;
+$list-group-active-bg: $danger;
+$list-group-active-border-color: $dark;
+$list-group-action-hover-color: $light;
+
+/*$table-color: $light;
+$table-bg: $dark;
+$table-accent-bg: $danger;*/
+
+$table-striped-bg-factor: .4;
+$table-striped-bg: rgba($primary, $table-striped-bg-factor);
+
+$list-group-action-active-bg: $secondary;
 
 
 @import "../../lib/bootstrap/scss/bootstrap";
 
 html, body {
-    font-family: 'AllRoundGothic-Book ☞'
+    font-family: 'AllRoundGothic-Book ☞';
+}
+body {
+    background-image: url("../../img/pirate-bg-light.jpg")
 }
 
 h1, h2, h3, h4, h5 {
@@ -56,4 +76,17 @@ h1, h2, h3, h4, h5 {
 .sidebar {
     background: $dark;
     color: $light;
+}
+
+.result-item {
+    background: $table-striped-bg;
+}
+
+.slist li.dragged-on {
+    /*border: 1px solid $light;*/
+    background: $danger;
+}
+
+.slist li {
+    background: $primary;
 }
