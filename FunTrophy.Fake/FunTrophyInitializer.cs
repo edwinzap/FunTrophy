@@ -32,6 +32,12 @@ namespace FunTrophy.Fake
 
         #region Seed
 
+        public async Task CreateDatabase()
+        {
+            await _dbContext.Database.EnsureDeletedAsync();
+            await _dbContext.Database.EnsureCreatedAsync();
+        }
+
         public void SeedData()
         {
             SeedRaces();
@@ -45,9 +51,10 @@ namespace FunTrophy.Fake
 
         public async Task ApplySeeding()
         {
-            await _dbContext.Database.EnsureDeletedAsync();
-            await _dbContext.Database.EnsureCreatedAsync();
-
+            var isDbCreated = await _dbContext.Database.EnsureCreatedAsync();
+            if (!isDbCreated)
+                await CreateDatabase();
+            
             _dbContext.Races.AddRange(Races);
             _dbContext.Colors.AddRange(Colors);
             _dbContext.Teams.AddRange(Teams);

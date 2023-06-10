@@ -17,10 +17,25 @@ var serviceProvider = services
 
 var initializer = serviceProvider.GetService<FunTrophyInitializer>();
 
-if (initializer is not null)
+
+Console.WriteLine("Choose an option:\n1) Create empty database \n2) Seed with fake data");
+var selectedOption = Console.ReadLine();
+
+if (initializer is not null && initializer is FunTrophyInitializer && selectedOption != null)
 {
-    Console.WriteLine("Seed data...");
-    initializer.SeedData();
-    await initializer.ApplySeeding();
-    Console.WriteLine("Seeding done!");
+    if (selectedOption == "1")
+    {
+        Console.WriteLine("Create database");
+        await initializer.CreateDatabase();
+    }
+        
+    if (selectedOption == "2")
+    {
+        Console.WriteLine("Create database");
+        await initializer.CreateDatabase();
+        Console.WriteLine("Seeding data...");
+        initializer.SeedData();
+        await initializer.ApplySeeding();
+        Console.WriteLine("Seeding done!");
+    }
 }

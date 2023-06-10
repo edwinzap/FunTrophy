@@ -1,7 +1,9 @@
-﻿FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+﻿FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+
 WORKDIR /src
 COPY ["FunTrophy.Web/FunTrophy.Web.csproj", "FunTrophy.Web/"]
 COPY ["FunTrophy.Shared/FunTrophy.Shared.csproj", "FunTrophy.Shared/"]
+
 RUN dotnet restore "FunTrophy.Web/FunTrophy.Web.csproj"
 COPY . .
 WORKDIR "/src/FunTrophy.Web"
