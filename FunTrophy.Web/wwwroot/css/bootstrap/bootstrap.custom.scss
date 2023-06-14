@@ -2,6 +2,12 @@
 @import "../../lib/bootstrap/scss/_variables.scss";
 @import "../app.css";
 
+
+@font-face {
+    font-family: 'thedarkestpearl';
+    src: url('../fonts/TheDarkestPearl.ttf') format('truetype');
+}
+
 $enable-rounded: false;
 
 $primary: #a58052;
@@ -45,10 +51,13 @@ $list-group-active-bg: $danger;
 $list-group-active-border-color: $dark;
 $list-group-action-hover-color: $light;
 
-/*$table-color: $light;
-$table-bg: $dark;
-$table-accent-bg: $danger;*/
+$form-select-font-family: thedarkestpearl;
+$form-select-focus-border-color: $danger;
+$form-select-focus-box-shadow: none;
+$form-select-bg: $light;
+$form-select-border-color: $dark;
 
+    
 $table-striped-bg-factor: .4;
 $table-striped-bg: rgba($primary, $table-striped-bg-factor);
 
