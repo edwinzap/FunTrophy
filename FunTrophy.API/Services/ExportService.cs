@@ -12,7 +12,7 @@ namespace FunTrophy.API.Services
         private readonly ITimeAdjustmentCategoryRepository _categoryRepository;
         private readonly ITrackOrderRepository _trackOrderRepository;
         private readonly ITrackRepository _trackRepository;
-        private readonly int PORTRAIT_MAX_WIDTH = 140;
+        private readonly int PORTRAIT_MAX_WIDTH = 100;
 
         public ExportService(ITeamRepository teamRepository,
             ITimeAdjustmentCategoryRepository categoryRepository,
@@ -125,6 +125,7 @@ namespace FunTrophy.API.Services
             var colors = teams.GroupBy(x => x.Color)
                 .Select(x => x.First().Color)
                 .ToList();
+
             var tracks = await _trackRepository.GetOfRace(raceId);
 
             using var package = new ExcelPackage();
@@ -176,6 +177,77 @@ namespace FunTrophy.API.Services
                 
                 ResizeColumns(sheet.Columns[1, titleLen], widths);
             }         
+
+            var fileBytes = await package.GetAsByteArrayAsync();
+            return fileBytes;
+        }
+
+        public async Task<byte[]> GetTimeAdjustmentCategoriesByColor(int raceId)
+        {
+            var teams = (await _teamRepository.GetOfRace(raceId))
+                            .OrderBy(x => x.Color.Id)
+                            .ThenBy(x => x.Number)
+                            .ToList();
+            var colors = teams.GroupBy(x => x.Color)
+                .Select(x => x.First().Color)
+                .ToList();
+
+            var categories = await _categoryRepository.GetOfRace(raceId);
+
+            if (!categories.Any())
+                throw new InvalidDataException("No categories");
+
+            using var package = new ExcelPackage();
+            foreach (var color in colors)
+            {
+                var sheet = package.Workbook.Worksheets.Add(color.Code);
+                var teamsOfColor = teams.Where(x => x.ColorId == color.Id).ToList();
+
+                // title
+                var titleLen = 1 + teamsOfColor.Count;
+                var title = sheet.Cells[1, 1, 1, titleLen];
+                title.Merge = true;
+                title.Value = color.Code;
+
+                var htmlColor = ColorTranslator.FromHtml(color.Code);
+                title.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                title.Style.Fill.BackgroundColor.SetColor(htmlColor);
+                FormatTitle(title);
+
+                sheet.Cells["A2"].Value = "Bonus";
+
+                // teams
+                var index = 2;
+                for (int i = 0; i < teamsOfColor.Count; i++)
+                {
+                    var team = teamsOfColor[i];
+                    sheet.Cells[2, index++].Value = $"[{team.Number}] {team.Name}";
+                }
+                sheet.Cells[2, 2, 2, index].Style.TextRotation = 90;
+
+                FormatHeaders(sheet.Cells[2, 1, 2, titleLen]);
+
+                // categories
+                for (int i = 0; i < categories.Count; i++)
+                {
+                    var row = i + 3;
+                    var category = categories[i];
+
+                    sheet.Cells[row, 1].Value = category.Name;
+                }
+
+                //sheet.Cells["A3:A100"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                sheet.Cells["A3:A100"].Style.WrapText = true;
+                var range = sheet.Cells[1, 1, categories.Count + 2, titleLen];
+                SetBorders(range);
+
+                var widths = new[] { 45 }; //
+                var teamWidth = (PORTRAIT_MAX_WIDTH - 45) / teamsOfColor.Count;
+                var teamWidths = Enumerable.Repeat(teamWidth, teamsOfColor.Count).ToArray();
+                widths = widths.Concat(teamWidths).ToArray();
+
+                ResizeColumns(sheet.Columns[1, titleLen], widths);
+            }
 
             var fileBytes = await package.GetAsByteArrayAsync();
             return fileBytes;

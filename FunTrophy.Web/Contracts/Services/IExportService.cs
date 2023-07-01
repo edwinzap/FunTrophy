@@ -4,5 +4,7 @@
     {
         string GetTeamsByTimeAdjustmentCategoryFileUrl(int raceId);
         string GetTracksByColorFileUrl(int raceId);
+
+        string GetTimeAdjustmentCategoriesByColor(int raceId);
     }
 }
