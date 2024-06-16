@@ -1,11 +1,12 @@
 ﻿using FunTrophy.Shared.Model;
 using FunTrophy.Web.Contracts.Helpers;
 using FunTrophy.Web.Contracts.Services;
+using FunTrophy.Web.Models;
 using Microsoft.AspNetCore.Components;
 
 namespace FunTrophy.Web.Pages
 {
-    public partial class Chrono
+    public partial class Chrono: IAsyncDisposable
     {
         #region Properties
 
@@ -21,6 +22,9 @@ namespace FunTrophy.Web.Pages
         [Inject]
         public INotificationHubHelper NotificationHubHelper { get; set; } = default!;
 
+        [Inject]
+        public IScreenWakeLockService ScreenWakeLockService { get; set; } = default!;
+
         private List<ColorDto>? Colors { get; set; }
 
         private List<TeamLapInfoDto>? Laps { get; set; }
@@ -32,6 +36,7 @@ namespace FunTrophy.Web.Pages
         private Timer? _timer;
         private TimeSpan serverTimeDiff = TimeSpan.Zero;
         private int? _selectedRaceId;
+        private WakeLockSentinel? _sentinel;
 
         #endregion Properties
 
@@ -43,6 +48,11 @@ namespace FunTrophy.Web.Pages
             StartTime();
             await NotificationHubHelper.ConnectToServer();
             NotificationHubHelper.TrackTimeChanged += OnTrackTimeChanged;
+
+            var isSupported = await ScreenWakeLockService.IsSupportedAsync();
+            if (isSupported)
+                _sentinel = await ScreenWakeLockService.RequestWakeLockAsync();
+
         }
 
         private async Task OnTrackTimeChanged(int trackId, int teamId)
@@ -102,6 +112,15 @@ namespace FunTrophy.Web.Pages
         {
             await TrackTimeService.SaveLap(teamId);
             await LoadLaps();
+        }
+
+        public async ValueTask DisposeAsync()
+        {
+            if(_sentinel != null)
+            {
+                await ScreenWakeLockService.ReleaseWakeLockAsync(_sentinel);
+                _sentinel = null;
+            }
         }
     }
 }
