@@ -91,7 +91,7 @@ namespace FunTrophy.API.Services
                 }
                 var currentDate = DateTime.UtcNow;
                 laps.ForEach(x => x.ServerTime = currentDate);
-                return laps;
+                return laps.OrderBy(x => x.Team.Number).ToList();
             }
             finally
             {
