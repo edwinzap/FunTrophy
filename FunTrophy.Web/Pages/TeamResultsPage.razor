@@ -157,7 +157,7 @@
                         {
                             <tr @key="@adjustment">
                                 <td>@adjustment.CategoryName</td>
-                                <td class="@(adjustment.Seconds >= 0 ? "text-success": "text-danger")">@(TimeSpan.FromSeconds(adjustment.Seconds).ToTimeString())</td>
+                                <td class="@(adjustment.Seconds >= 0 ? "text-success": "text-danger")">@(TimeSpan.FromSeconds(adjustment.Seconds ?? 0).ToTimeString())</td>
                             </tr>
                         }
                     }

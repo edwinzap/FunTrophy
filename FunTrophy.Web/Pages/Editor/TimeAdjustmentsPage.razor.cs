@@ -77,7 +77,7 @@ namespace FunTrophy.Web.Pages.Editor
             {
                 CategoryId = SelectedCategoryId.Value,
                 TeamId = bonus.Team.Id,
-                Seconds = bonus.Seconds ?? 0
+                Seconds = bonus.Seconds
             };
 
             await TimeAdjustmentService.Update(updateTimeAdjustment);

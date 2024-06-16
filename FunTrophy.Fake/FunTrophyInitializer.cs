@@ -38,6 +38,11 @@ namespace FunTrophy.Fake
             await _dbContext.Database.EnsureCreatedAsync();
         }
 
+        public void SeedBasicData()
+        {
+            SeedUsers();
+        }
+
         public void SeedData()
         {
             SeedRaces();

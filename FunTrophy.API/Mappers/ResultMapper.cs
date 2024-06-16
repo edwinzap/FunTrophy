@@ -28,7 +28,7 @@ namespace FunTrophy.API.Mappers
             {
                 Team = _teamMapper.Map(team),
                 TracksTotalDuration = lastTrackTime.EndTime.Value.Subtract(firstTrackTime.StartTime.Value),
-                TimeAdjustmentsTotalDuration = TimeSpan.FromSeconds(timeAdjustments.Sum(x => x.Seconds)),
+                TimeAdjustmentsTotalDuration = TimeSpan.FromSeconds(timeAdjustments.Sum(x => x.Seconds ?? 0)),
             };
             return result;
         }
