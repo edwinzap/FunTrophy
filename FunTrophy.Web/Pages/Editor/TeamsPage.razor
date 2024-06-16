@@ -69,7 +69,7 @@ else
             </div>
             <div class="p-2">
                 <label for="team-number" class="form-label">Numéro</label>
-                <input id="team-number" class="form-control" type="number" value="@addTeam.Number" min="1" />
+                <input id="team-number" class="form-control" type="number" @bind-value="@addTeam.Number" min="1" />
             </div>
             <div class="p-2">
                 <label for="team-type" class="form-label">Type</label>

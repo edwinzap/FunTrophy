@@ -23,19 +23,18 @@ var selectedOption = Console.ReadLine();
 
 if (initializer is not null && initializer is FunTrophyInitializer && selectedOption != null)
 {
+
+    Console.WriteLine("Create database");
+    await initializer.CreateDatabase();
+    Console.WriteLine("Seeding data...");
     if (selectedOption == "1")
     {
-        Console.WriteLine("Create database");
-        await initializer.CreateDatabase();
+        initializer.SeedBasicData();
     }
-        
-    if (selectedOption == "2")
+    else
     {
-        Console.WriteLine("Create database");
-        await initializer.CreateDatabase();
-        Console.WriteLine("Seeding data...");
         initializer.SeedData();
-        await initializer.ApplySeeding();
-        Console.WriteLine("Seeding done!");
     }
+    await initializer.ApplySeeding();
+    Console.WriteLine("Seeding done!");
 }

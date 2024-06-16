@@ -65,17 +65,19 @@ namespace FunTrophy.API.Services
         {
             var dbTimeAdjustment = await _repository.GetByTeamAndCategory(timeAdjustment.TeamId, timeAdjustment.CategoryId);
 
-            if (dbTimeAdjustment?.Seconds == timeAdjustment.Seconds)
-                return dbTimeAdjustment.Id;
-
-            if (dbTimeAdjustment is not null)
+            if(dbTimeAdjustment != null)
             {
-                await _repository.Remove(dbTimeAdjustment.Id);
+                if(dbTimeAdjustment.Seconds == timeAdjustment.Seconds)
+                    return dbTimeAdjustment.Id;
+
+                if(timeAdjustment.Seconds == null)
+                {
+                    await _repository.Remove(dbTimeAdjustment.Id);
+                    return null;
+                }
             }
 
             await _notificationHelper.NotifyTimeAdjustementChanged(timeAdjustment.TeamId, timeAdjustment.CategoryId);
-            if (timeAdjustment.Seconds == 0)
-                return null;
 
             var newTimeAdjustment = _mapper.Map(timeAdjustment);
             var id = await _repository.Add(newTimeAdjustment);
