@@ -6,8 +6,8 @@ namespace FunTrophy.API.Contracts.Services
     {
         Task<List<TeamLapInfoDto>> GetTeamLaps(int colorId);
 
-        Task<TeamLapInfoDto> GetTeamLap(int teamId);
+        Task SaveTeamLap(int userId, int teamId);
 
-        Task SaveTeamLap(int teamId);
+        Task Undo(int userId);
     }
 }

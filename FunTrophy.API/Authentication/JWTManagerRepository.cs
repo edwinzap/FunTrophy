@@ -34,6 +34,7 @@ namespace FunTrophy.API.Authentication
             claims.Add(new Claim(ClaimTypes.Name, user.UserName));
             claims.Add(new Claim(ClaimTypes.GivenName, dbUser.FirstName));
             claims.Add(new Claim(ClaimTypes.Surname, dbUser.LastName));
+            claims.Add(new Claim("userId", dbUser.Id.ToString()));
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {

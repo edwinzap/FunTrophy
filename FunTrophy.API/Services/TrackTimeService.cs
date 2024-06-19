@@ -34,30 +34,31 @@ namespace FunTrophy.API.Services
 
         private async Task<TrackTime?> GetNextTrackTime(Team team, IEnumerable<TrackOrder> trackOrders, IEnumerable<TrackTime> teamTrackTimes)
         {
-            var nextTrackTime = teamTrackTimes.Where(x => !x.StartTime.HasValue && !x.EndTime.HasValue).LastOrDefault();
             trackOrders = trackOrders.OrderBy(x => x.SortOrder);
-            if (nextTrackTime is null) //create next track
+            var currentTrackTime = teamTrackTimes.Where(x => x.StartTime.HasValue).LastOrDefault();
+            int? nextTrackId;
+            if (currentTrackTime is null)
             {
-                var currentTrackTime = teamTrackTimes.Where(x => x.StartTime.HasValue).LastOrDefault();
+                nextTrackId = trackOrders.FirstOrDefault()?.TrackId;
+            }
+            else
+            {
+                nextTrackId = trackOrders
+                      .SkipWhile(p => p.TrackId != currentTrackTime.TrackId)
+                      .ElementAtOrDefault(1)?.TrackId;
+            }
+            if (!nextTrackId.HasValue)
+                throw new InvalidDataException();
 
-                var addNextTrackTime = new TrackTime() { TeamId = team.Id, };
-                if (currentTrackTime is null)
-                {
-                    var nextTrackId = trackOrders.First().TrackId;
-                    addNextTrackTime.TrackId = nextTrackId;
-                }
-                else
-                {
-                    var nextTrackOrder = trackOrders
-                        .SkipWhile(p => p.TrackId != currentTrackTime.TrackId)
-                        .ElementAtOrDefault(1);
+            var nextTrackTime = teamTrackTimes.Where(x => x.TrackId == nextTrackId.Value).FirstOrDefault();
 
-                    if (nextTrackOrder is not null)
-                    {
-                        addNextTrackTime.TrackId = nextTrackOrder.TrackId;
-                    }
-                    else return null;
-                }
+            if (nextTrackTime is null)
+            {
+                var addNextTrackTime = new TrackTime()
+                {
+                    TeamId = team.Id,
+                    TrackId = nextTrackId.Value
+                };
                 var newTrackTimeId = await _trackTimeRepository.Add(addNextTrackTime);
                 nextTrackTime = await _trackTimeRepository.Get(newTrackTimeId);
                 await _notificationHelper.NotifyTrackTimeChanged(nextTrackTime.TrackId, nextTrackTime.TeamId);
@@ -99,7 +100,7 @@ namespace FunTrophy.API.Services
             }
         }
 
-        public async Task SaveTeamLap(int teamId)
+        public async Task SaveTeamLap(int userId, int teamId)
         {
             var currentTime = DateTime.UtcNow;
             var team = await _teamRepository.Get(teamId);
@@ -116,6 +117,7 @@ namespace FunTrophy.API.Services
                     return;
                 }
                 currentTrackTime.EndTime = currentTime;
+                currentTrackTime.UpdatedBy = userId;
                 await _trackTimeRepository.Update(currentTrackTime);
                 await _notificationHelper.NotifyTrackTimeChanged(currentTrackTime.TrackId, currentTrackTime.TeamId);
             }
@@ -123,21 +125,31 @@ namespace FunTrophy.API.Services
             if (nextTrackTime is not null)
             {
                 nextTrackTime.StartTime = currentTime;
+                nextTrackTime.UpdatedBy = userId;
                 await _trackTimeRepository.Update(nextTrackTime);
                 await _notificationHelper.NotifyTrackTimeChanged(nextTrackTime.TrackId, nextTrackTime.TeamId);
             }
         }
 
-        public async Task<TeamLapInfoDto> GetTeamLap(int teamId)
+        public async Task Undo(int userId)
         {
-            var team = await _teamRepository.Get(teamId);
-            var trackOrders = (await _trackOrderRepository.GetOfColor(team.ColorId)).OrderBy(x => x.SortOrder);
-            var teamTrackTimes = (await _trackTimeRepository.GetOfTeam(teamId)).OrderBy(x => x.StartTime);
-            var nextTrackTime = await GetNextTrackTime(team, trackOrders, teamTrackTimes);
-            var currentTrackTime = teamTrackTimes.Where(x => x.StartTime.HasValue && !x.EndTime.HasValue).LastOrDefault();
+            var trackTimes = (await _trackTimeRepository.GetAll(x => x.UpdatedBy == userId && x.StartTime != null))
+                .OrderByDescending(x => x.StartTime);
 
-            var lapInfo = _mapper.Map(currentTrackTime, nextTrackTime, team);
-            return lapInfo;
+            var lastChanged = trackTimes.FirstOrDefault();
+            if (lastChanged != null)
+            {
+                var previousTracks = trackTimes.Where(x => x.TeamId == lastChanged.TeamId);
+                var previousChanged = previousTracks.ElementAtOrDefault(1);
+                if (previousChanged != null)
+                {
+                    previousChanged.EndTime = null;
+                    await _trackTimeRepository.Update(previousChanged);
+                }
+                lastChanged.StartTime = null;
+                await _trackTimeRepository.Update(lastChanged);
+                await _notificationHelper.NotifyTrackTimeChanged(lastChanged.TrackId, lastChanged.TeamId);
+            }
         }
     }
 }
