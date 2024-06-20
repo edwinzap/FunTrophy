@@ -49,7 +49,7 @@ namespace FunTrophy.Fake
             SeedColors();
             SeedTeams();
             SeedTracks();
-            SeedTrackOrder();
+            SeedTrackOrders();
             SeedTimeAdjustmentCategories();
             SeedUsers();
         }
@@ -75,7 +75,6 @@ namespace FunTrophy.Fake
         {
             Races = new List<Race>()
             {
-                new Race() { Name = "FunTrophy 2020", Date = new DateTime(2020, 6, 25) },
                 new Race() { Name = "FunTrophy 2021", Date = new DateTime(2021, 6, 25) },
                 new Race() { Name = "FunTrophy 2022", Date = new DateTime(2022, 6, 25) },
             };
@@ -112,14 +111,19 @@ namespace FunTrophy.Fake
             var race = Races.Last();
             for (int index = 1; index < Some.Int(6, 10); index++)
             {
-                var track = new Track { Name = Some.CompanyName(), Race = race };
+                var track = new Track 
+                { 
+                    Name = Some.CompanyName(), 
+                    Race = race,
+                    Number = index,
+                };
                 Tracks.Add(track);
             }
         }
 
         private static Random random = new Random();
 
-        private void SeedTrackOrder()
+        private void SeedTrackOrders()
         {
             foreach (var color in Colors)
             {
@@ -133,7 +137,7 @@ namespace FunTrophy.Fake
                     {
                         SortOrder = sortOrder,
                         Track = track,
-                        Color = color
+                        Color = color,
                     };
                     TrackOrders.Add(trackOrder);
                     tracks.RemoveAt(index);

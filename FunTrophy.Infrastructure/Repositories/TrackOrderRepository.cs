@@ -20,5 +20,12 @@ namespace FunTrophy.Infrastructure.Repositories
             _dbContext.TrackOrders.RemoveRange(trackOrders);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task RemoveAllOfTrack(int trackId)
+        {
+            var trackOrders = await GetAll(x => x.TrackId == trackId);
+            _dbContext.TrackOrders.RemoveRange(trackOrders);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

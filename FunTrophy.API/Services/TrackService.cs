@@ -9,11 +9,13 @@ namespace FunTrophy.API.Services
     public class TrackService : ServiceBase, ITrackService
     {
         private readonly ITrackRepository _repository;
+        private readonly ITrackOrderRepository _trackOrderRepository;
         private readonly ITrackMapper _mapper;
 
-        public TrackService(ITrackRepository repository, ITrackMapper mapper)
+        public TrackService(ITrackRepository repository, ITrackOrderRepository trackOrderRepository, ITrackMapper mapper)
         {
             _repository = repository;
+            _trackOrderRepository = trackOrderRepository;
             _mapper = mapper;
         }
 
@@ -29,9 +31,10 @@ namespace FunTrophy.API.Services
             return _mapper.Map(dbTracks);
         }
 
-        public Task Remove(int trackId)
+        public async Task Remove(int trackId)
         {
-            return _repository.Remove(trackId);
+            await _trackOrderRepository.RemoveAllOfTrack(trackId);
+            await _repository.Remove(trackId);
         }
 
         public async Task Update(int trackId, UpdateTrackDto track)
