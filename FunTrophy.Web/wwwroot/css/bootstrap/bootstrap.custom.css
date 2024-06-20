@@ -1,8 +1,12 @@
 ﻿@charset "UTF-8";
 @import "../app.css";
 @font-face {
-  font-family: "thedarkestpearl";
-  src: url("../fonts/TheDarkestPearl.ttf") format("truetype");
+  font-family: "CustomBodyFont";
+  src: url("../../fonts/WebServeroff.ttf") format("truetype");
+}
+@font-face {
+  font-family: "CustomHeaderFont";
+  src: url("../../fonts/NorseBold.otf") format("truetype");
 }
 :root .navbar {
   --bs-navbar-toggler-icon-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23e8ded3' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
@@ -2131,7 +2135,7 @@ textarea.form-control-lg {
   width: 100%;
   padding: 0.375rem 2.25rem 0.375rem 0.75rem;
   -moz-padding-start: calc(0.75rem - 3px);
-  font-family: thedarkestpearl;
+  font-family: CustomHeaderFont;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
@@ -10507,15 +10511,15 @@ textarea.form-control-lg {
   }
 }
 html, body {
-  font-family: "AllRoundGothic-Book ☞";
+  /*font-family: CustomBodyFont;*/
 }
 
 body {
-  background-image: url("../../img/pirate-bg-light.jpg");
+  background-image: url("../../img/viking-bg.png");
 }
 
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5 {
-  font-family: thedarkestpearl;
+  font-family: CustomHeaderFont;
 }
 
 .top-menu {

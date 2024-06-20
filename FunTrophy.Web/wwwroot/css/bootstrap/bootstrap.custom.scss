@@ -4,8 +4,13 @@
 
 
 @font-face {
-    font-family: 'thedarkestpearl';
-    src: url('../fonts/TheDarkestPearl.ttf') format('truetype');
+    font-family: 'CustomBodyFont';
+    src: url('../../fonts/WebServeroff.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'CustomHeaderFont';
+    //src: url('../../fonts/TheDarkestPearl.ttf') format('truetype');
+    src: url('../../fonts/NorseBold.otf') format('truetype');
 }
 
 $enable-rounded: false;
@@ -51,7 +56,7 @@ $list-group-active-bg: $danger;
 $list-group-active-border-color: $dark;
 $list-group-action-hover-color: $light;
 
-$form-select-font-family: thedarkestpearl;
+$form-select-font-family: CustomHeaderFont;
 $form-select-focus-border-color: $danger;
 $form-select-focus-box-shadow: none;
 $form-select-bg: $light;
@@ -82,14 +87,14 @@ $dropdown-link-active-bg: $danger;
 
 
 html, body {
-    font-family: 'AllRoundGothic-Book ☞';
+    /*font-family: CustomBodyFont;*/
 }
 body {
-    background-image: url("../../img/pirate-bg-light.jpg")
+    background-image: url("../../img/viking-bg.png")
 }
 
 h1, h2, h3, h4, h5 {
-    font-family: thedarkestpearl;
+    font-family: CustomHeaderFont;
 }
 
 .top-menu {

@@ -47,4 +47,10 @@
     <Folder Include="wwwroot\css\bootstrap\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\font\TheDarkestPearl.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
