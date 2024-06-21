@@ -8,6 +8,7 @@ namespace FunTrophy.Infrastructure.Model
         public DateTime? EndTime { get; set; }
         public int TrackId { get; set; }
         public int TeamId { get; set; }
+        public int? UpdatedBy { get; set; }
 
         public Track Track { get; set; }
         public Team Team { get; set; }

@@ -68,7 +68,7 @@ namespace FunTrophy.Infrastructure.Repositories
             return _dbContext.SaveChangesAsync();
         }
 
-        public async Task Remove(int id)
+        public virtual async Task Remove(int id)
         {
             var entity = await _dbSet.FirstAsync(x => x.Id == id);
             _dbSet.Remove(entity);

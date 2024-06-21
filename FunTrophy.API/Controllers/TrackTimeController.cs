@@ -3,6 +3,7 @@ using FunTrophy.API.Contracts.Services;
 using FunTrophy.Shared.Model;
 using FunTrophy.Shared.Model.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FunTrophy.API.Controllers
 {
@@ -29,9 +30,29 @@ namespace FunTrophy.API.Controllers
         [ProducesResponseType(200)]
         public async Task<IActionResult> SaveTeamLap(int teamId)
         {
-            await _trackTimeService.SaveTeamLap(teamId);
+            if (int.TryParse(HttpContext.User.FindFirstValue("userId"), out int userId))
+            {
+                await _trackTimeService.SaveTeamLap(userId, teamId);
+            }
             return Ok();
         }
+
+        /// <summary>
+        /// Undo the last change
+        /// </summary>
+        [AuthorizeRoles(UserRoles.Admin, UserRoles.User)]
+        [HttpPost("undo")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> Undo()
+        {
+            if (int.TryParse(HttpContext.User.FindFirstValue("userId"), out int userId))
+            {
+                await _trackTimeService.Undo(userId);
+            }
+            return Ok();
+        }
+
+
 
         /// <summary>
         /// Get all lap infos of color

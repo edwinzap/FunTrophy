@@ -7,5 +7,7 @@ namespace FunTrophy.Infrastructure.Contracts.Repositories
         Task<List<TrackOrder>> GetOfColor(int colorId);
 
         Task RemoveAllOfColor(int colorId);
+
+        Task RemoveAllOfTrack(int trackId);
     }
 }

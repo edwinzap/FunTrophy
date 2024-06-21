@@ -20,5 +20,11 @@ namespace FunTrophy.Web.Services
             var url = GetUrl("teamId", teamId);
             return PostAsync(url, null);
         }
+
+        public Task Undo()
+        {
+            var url = GetUrl() + "/undo";
+            return PostAsync(url, null);
+        }
     }
 }

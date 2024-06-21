@@ -1,8 +1,10 @@
 ﻿using FunTrophy.Shared.Model;
+using FunTrophy.Web.Components;
 using FunTrophy.Web.Contracts.Helpers;
 using FunTrophy.Web.Contracts.Services;
 using FunTrophy.Web.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace FunTrophy.Web.Pages
 {
@@ -24,6 +26,8 @@ namespace FunTrophy.Web.Pages
 
         [Inject]
         public IScreenWakeLockService ScreenWakeLockService { get; set; } = default!;
+
+        private ConfirmDialog UndoDialog { get; set; } = default!;
 
         private List<ColorDto>? Colors { get; set; }
 
@@ -110,8 +114,22 @@ namespace FunTrophy.Web.Pages
 
         private async Task OnStopClicked(int teamId)
         {
-            await TrackTimeService.SaveLap(teamId);
+            await TrackTimeService.SaveLap( teamId);
             await LoadLaps();
+        }
+
+        private void ConfirmUndo()
+        {
+            var message = $"Es-tu sûr de vouloir annuler la dernière opération?";
+            UndoDialog.Show(message);
+        }
+
+        private async Task Undo(bool confirm)
+        {
+            if (confirm)
+            {
+                await TrackTimeService.Undo();
+            }
         }
 
         public async ValueTask DisposeAsync()

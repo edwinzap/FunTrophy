@@ -4,7 +4,14 @@
 
 <PageTitle>Chrono</PageTitle>
 <div>
-    <ColorSelector Colors="@Colors" CurrentColorIdChanged="(value) => OnCurrentColorChanged(value)" />
+    <div class="d-flex">
+        <div class="flex-fill">
+            <ColorSelector Colors="@Colors" CurrentColorIdChanged="(value) => OnCurrentColorChanged(value)" />
+        </div>
+        <div class="p-2">
+            <button class="btn btn-secondary btn-sm" @onclick="() => ConfirmUndo()"><span class="fas fa-rotate-left"></span></button>
+        </div>
+    </div>
 
     <div class="py-2">
         <table class="table align-middle table-bordered table-striped border-dark">
@@ -84,3 +91,8 @@
         </table>
     </div>
 </div>
+
+<ConfirmDialog @ref="UndoDialog"
+               Title="Annulation de la dernière opération"
+               ConfirmationChanged="(confirm) => Undo(confirm)">
+</ConfirmDialog>
