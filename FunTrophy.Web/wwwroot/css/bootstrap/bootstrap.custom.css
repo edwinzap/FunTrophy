@@ -10515,6 +10515,9 @@ html, body {
 
 body {
   background-image: url("../../img/viking-bg.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
   background-size: cover;
 }
 
