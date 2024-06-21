@@ -56,7 +56,6 @@ $list-group-active-bg: $danger;
 $list-group-active-border-color: $dark;
 $list-group-action-hover-color: $light;
 
-$form-select-font-family: CustomHeaderFont;
 $form-select-focus-border-color: $danger;
 $form-select-focus-box-shadow: none;
 $form-select-bg: $light;
@@ -90,7 +89,8 @@ html, body {
     /*font-family: CustomBodyFont;*/
 }
 body {
-    background-image: url("../../img/viking-bg.png")
+    background-image: url("../../img/viking-bg.jpg");
+    background-size: cover;
 }
 
 h1, h2, h3, h4, h5 {

@@ -1,6 +1,6 @@
 ﻿@if (ShowDialog)
 {
-    <div class="modal fade show d-block " id="exampleModal" tabindex="-1" role="dialog">
+    <div class="modal fade show d-block " id="exampleModal" tabindex="-1" role="dialog" @onkeydown="OnKeyDown">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -16,7 +16,7 @@
 
                     @if (ShowCancelButton)
                     {
-                        <button type="button" class="btn btn-danger" data-dismiss="modal"
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
                         @onclick="() => OnConfirmationChange(false)">
                             @CancelButtonText
                         </button>

@@ -29,7 +29,7 @@ namespace FunTrophy.Web.Pages
         private List<TrackResultDto>? _results;
         private List<TrackResultDto>? Results { get; set; }
 
-        private int? SelectedTrackId { get; set; }
+        private TrackDto? CurrentTrack { get; set; }
 
         private EditDialog SettingsDialog { get; set; } = default!;
 
@@ -78,7 +78,7 @@ namespace FunTrophy.Web.Pages
 
         private async Task OnTrackTimeChanged(int trackId, int teamId)
         {
-            if (SelectedTrackId == trackId)
+            if (CurrentTrack?.Id == trackId)
             {
                 await LoadResults();
                 StateHasChanged();
@@ -97,7 +97,8 @@ namespace FunTrophy.Web.Pages
                 Tracks = await TrackService.GetTracks(_selectedRaceId.Value);
                 if (Tracks.Any())
                 {
-                    SelectedTrackId = Tracks.First().Id;
+                    CurrentTrack = Tracks.First();
+
                     await LoadResults();
                 }
             }
@@ -105,10 +106,10 @@ namespace FunTrophy.Web.Pages
 
         private async Task LoadResults()
         {
-            if (SelectedTrackId.HasValue)
+            if (CurrentTrack is not null)
             {
                 Results = null;
-                _results = (await ResultService.GetTrackResults(SelectedTrackId.Value))
+                _results = (await ResultService.GetTrackResults(CurrentTrack.Id))
                     .OrderByDescending(x => x.LapDuration.HasValue)
                     .ThenBy(x => x.LapDuration)
                     .ToList();
@@ -138,26 +139,19 @@ namespace FunTrophy.Web.Pages
             }
         }
 
-        private async Task OnSelectedTrackChanged(ChangeEventArgs args)
-        {
-            var trackId = int.Parse(args.Value!.ToString()!);
-            SelectedTrackId = trackId;
-            await LoadResults();
-        }
-
         private async void ChangeTrack(int value)
         {
-            if (Tracks?.Any() != true || !SelectedTrackId.HasValue)
+            if (Tracks?.Any() != true || CurrentTrack is null)
                 return;
 
             var addValue = value > 0 ? 1 : -1;
-            var currentTrack = Tracks.First(x => x.Id == SelectedTrackId);
+            var currentTrack = Tracks.First(x => x.Id == CurrentTrack.Id);
             var currentIndex = Tracks.IndexOf(currentTrack);
             var newIndex = (currentIndex + addValue) % Tracks.Count;
             if (newIndex < 0)
                 newIndex = Tracks.Count - 1;
 
-            SelectedTrackId = Tracks[newIndex].Id;
+            CurrentTrack = Tracks[newIndex];
             await LoadResults();
             StateHasChanged();
         }

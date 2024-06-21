@@ -35,5 +35,17 @@ namespace FunTrophy.Web.Components
             ShowDialog = false;
             await ConfirmationChanged.InvokeAsync(value);
         }
+        private async Task OnKeyDown(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs e)
+        {
+            switch(e.Key)
+            {
+                case "Enter":
+                    await OnConfirmationChange(true);
+                    break;
+                case "Escape":
+                    await OnConfirmationChange(false);
+                    break;
+            }
+        }
     }
 }
