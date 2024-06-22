@@ -90,17 +90,17 @@
             Title="Editer l'utilisateur"
             ConfirmationChanged="(confirm) => UpdateUser(confirm)">
     <div class="d-flex flex-column">
-        <div class="input-group p-2">
-            <span class="input-group-text fas fa-user"></span>
-            <input type="text" class="form-control" @bind-value="@UpdateUserModel.FirstName" placeholder="Prénom" required>
+        <div class="p-2">
+            <label for="firstname" class="form-label">Prénom</label>
+            <input type="text" id="firstname" class="form-control" @bind-value="@UpdateUserModel.FirstName" placeholder="Prénom" required>
         </div>
-        <div class="input-group p-2">
-            <span class="input-group-text fas fa-user"></span>
-            <input type="text" class="form-control" @bind-value="@UpdateUserModel.LastName" placeholder="Nom" required>
+        <div class="p-2">
+            <label for="lastname" class="form-label">Nom</label>
+            <input type="text" id="lastname" class="form-control" @bind-value="@UpdateUserModel.LastName" placeholder="Nom" required>
         </div>
-        <div class="input-group p-2">
-            <span class="input-group-text fas fa-user"></span>
-            <input type="text" class="form-control" @bind-value="@UpdateUserModel.UserName" placeholder="Pseudo" required>
+        <div class="p-2">
+            <label for="username" class="form-label">Pseudo</label>
+            <input type="text" id="username" class="form-control" @bind-value="@UpdateUserModel.UserName" placeholder="Pseudo" required>
         </div>
         <div class="form-check p-2 ms-4">
             <input class="form-check-input" type="checkbox" @bind-value="@UpdateUserModel.IsAdmin" id="update-isadmin" checked="@UpdateUserModel.IsAdmin">
@@ -114,7 +114,7 @@
             ConfirmationChanged="(confirm) => ChangeUserPassword(confirm)">
     <div class="p-2">
         <label for="race-name" class="form-label">Mot de passe</label>
-        <input id="race-name" class="form-control" type="password" @bind-value="@NewPassword" placeholder="Password" />
+        <input id="race-name" class="form-control" type="password" @bind="@NewPassword" placeholder="Password" />
     </div>
 </EditDialog>
 

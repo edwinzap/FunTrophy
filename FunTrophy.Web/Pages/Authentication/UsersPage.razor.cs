@@ -47,11 +47,15 @@ namespace FunTrophy.Web.Pages.Authentication
         private async Task AddUser()
         {
             await UserService.Add(AddUserModel);
+            AddUserModel = new AddUserDto();
             await LoadUsers();
         }
 
         private void ConfirmEditUser(UserDto user)
         {
+            if (user is null)
+                return;
+
             _updateUserId = user.Id;
             UpdateUserModel.FirstName = user.FirstName;
             UpdateUserModel.LastName = user.LastName;
