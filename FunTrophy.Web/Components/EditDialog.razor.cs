@@ -32,10 +32,10 @@ namespace FunTrophy.Web.Components
 
         protected async Task OnConfirmationChange(bool value)
         {
-            ShowDialog = false;
             await ConfirmationChanged.InvokeAsync(value);
+            ShowDialog = false;
         }
-        private async Task OnKeyDown(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs e)
+        private async Task OnKeyUp(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs e)
         {
             switch(e.Key)
             {

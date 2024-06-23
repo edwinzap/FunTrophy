@@ -51,7 +51,7 @@ namespace FunTrophy.Web.Pages.Authentication
             await LoadUsers();
         }
 
-        private void ConfirmEditUser(UserDto user)
+        private void EditUser(UserDto user)
         {
             if (user is null)
                 return;
@@ -64,7 +64,7 @@ namespace FunTrophy.Web.Pages.Authentication
             EditDialog.Show();
         }
 
-        private async Task UpdateUser(bool confirm)
+        private async Task ConfirmEditUser(bool confirm)
         {
             if (confirm && _updateUserId.HasValue)
             {
@@ -89,13 +89,13 @@ namespace FunTrophy.Web.Pages.Authentication
             }
         }
 
-        private void ConfirmChangePassword(int userId)
+        private void EditPassword(int userId)
         {
             _newPasswordUserId = userId;
             EditPasswordDialog.Show();
         }
 
-        private async Task ChangeUserPassword(bool confirm)
+        private async Task ConfirmEditPassword(bool confirm)
         {
             if (confirm && _newPasswordUserId.HasValue && !string.IsNullOrWhiteSpace(NewPassword))
             {

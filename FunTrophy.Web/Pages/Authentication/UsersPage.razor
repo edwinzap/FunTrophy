@@ -40,8 +40,8 @@
                         <td>@user.UserName</td>
                         <td><span class="fas fa-@(user.IsAdmin? "check text-success":"xmark text-danger")"></span></td>
                         <td>
-                            <button class="btn btn-secondary btn-sm" @onclick="() => ConfirmEditUser(user)"><span class="fas fa-pencil"></span></button>
-                            <button class="btn btn-warning btn-sm" @onclick="() => ConfirmChangePassword(user.Id)"><span class="fas fa-key"></span></button>
+                            <button class="btn btn-secondary btn-sm" @onclick="() => EditUser(user)"><span class="fas fa-pencil"></span></button>
+                            <button class="btn btn-warning btn-sm" @onclick="() => EditPassword(user.Id)"><span class="fas fa-key"></span></button>
                             <button class="btn btn-danger btn-sm" @onclick="() => ConfirmDeleteUser(user)"><span class="fas fa-trash"></span></button>
                         </td>
                     </tr>
@@ -88,7 +88,7 @@
                ConfirmationChanged="(confirm) => DeleteUser(confirm)" />
 <EditDialog @ref="EditDialog"
             Title="Editer l'utilisateur"
-            ConfirmationChanged="(confirm) => UpdateUser(confirm)">
+            ConfirmationChanged="(confirm) => ConfirmEditUser(confirm)">
     <div class="d-flex flex-column">
         <div class="p-2">
             <label for="firstname" class="form-label">Prénom</label>
@@ -111,10 +111,10 @@
 
 <EditDialog @ref="EditPasswordDialog"
             Title="Modifier le mot de passe"
-            ConfirmationChanged="(confirm) => ChangeUserPassword(confirm)">
+            ConfirmationChanged="(confirm) => ConfirmEditPassword(confirm)">
     <div class="p-2">
-        <label for="race-name" class="form-label">Mot de passe</label>
-        <input id="race-name" class="form-control" type="password" @bind="@NewPassword" placeholder="Password" />
+        <label for="password" class="form-label">Mot de passe</label>
+        <input type="password" id="password" class="form-control" @bind="@NewPassword" placeholder="Mot de passe" required>
     </div>
 </EditDialog>
 
