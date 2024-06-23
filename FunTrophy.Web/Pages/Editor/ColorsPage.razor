@@ -39,8 +39,8 @@
                             </div>
                         </td>
                         <td>
-                            <button class="btn btn-secondary btn-sm" @onclick="() => ConfirmEditColor(color)"><span class="fas fa-pencil"></span></button>
-                            <button class="btn btn-danger btn-sm" @onclick="() => ConfirmDeleteColor(color)"><span class="fas fa-trash"></span></button>
+                            <button class="btn btn-secondary btn-sm" @onclick="() => EditColor(color)"><span class="fas fa-pencil"></span></button>
+                            <button class="btn btn-danger btn-sm" @onclick="() => DeleteColor(color)"><span class="fas fa-trash"></span></button>
                         </td>
                     </tr>
                 }
@@ -65,12 +65,12 @@
 
 <ConfirmDialog @ref="DeleteDialog"
                Title="Supprimer la couleur"
-               ConfirmationChanged="(confirm) => RemoveColor(confirm)">
+               ConfirmationChanged="(confirm) => ConfirmDeleteColor(confirm)">
 </ConfirmDialog>
 
 <EditDialog @ref="EditDialog"
             Title="Editer la couleur"
-            ConfirmationChanged="(confirm) => UpdateColor(confirm)">
+            ConfirmationChanged="(confirm) => ConfirmEditColor(confirm)">
     <div class="d-flex">
         <div class="col-auto">
             <input class="form-control form-control-color" type="color" name="name" @bind-value="@updateColor.Code" />

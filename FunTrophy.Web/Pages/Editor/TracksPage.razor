@@ -37,8 +37,8 @@
                         <td>@track.Number</td>
                         <td>@track.Name</td>
                         <td>
-                            <a class="btn btn-secondary btn-sm" @onclick="() => ConfirmEditTrack(track)"><span class="fas fa-pencil"></span></a>
-                            <a class="btn btn-danger btn-sm" @onclick="() => ConfirmDeleteTrack(track)"><span class="fas fa-trash"></span></a>
+                            <a class="btn btn-secondary btn-sm" @onclick="() => EditTrack(track)"><span class="fas fa-pencil"></span></a>
+                            <a class="btn btn-danger btn-sm" @onclick="() => DeleteTrack(track)"><span class="fas fa-trash"></span></a>
                         </td>
                     </tr>
                 }
@@ -70,7 +70,7 @@
 
 <EditDialog @ref="EditDialog"
             Title="Editer le parcours"
-            ConfirmationChanged="(confirm) => UpdateTrack(confirm)">
+            ConfirmationChanged="(confirm) => ConfirmEditTrack(confirm)">
     <div class="d-flex flex-column">
         <div class="p-2">
             <label for="race-name" class="form-label">Nom</label>

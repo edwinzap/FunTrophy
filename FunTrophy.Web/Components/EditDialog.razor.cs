@@ -21,10 +21,15 @@ namespace FunTrophy.Web.Components
         [Parameter]
         public RenderFragment? ChildContent { get; set; }
 
-        public void Show()
+        [Parameter]
+        public ElementReference? FocusOn { get; set; }
+
+        public async Task ShowAsync()
         {
             ShowDialog = true;
             StateHasChanged();
+            if (FocusOn.HasValue)
+                await FocusOn.Value.FocusAsync();
         }
 
         [Parameter]
@@ -35,13 +40,15 @@ namespace FunTrophy.Web.Components
             await ConfirmationChanged.InvokeAsync(value);
             ShowDialog = false;
         }
+
         private async Task OnKeyUp(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs e)
         {
-            switch(e.Key)
+            switch (e.Key)
             {
                 case "Enter":
                     await OnConfirmationChange(true);
                     break;
+
                 case "Escape":
                     await OnConfirmationChange(false);
                     break;

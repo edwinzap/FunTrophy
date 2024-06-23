@@ -51,7 +51,7 @@ else
                             <td>@team.Name</td>
                             <td>@team.Type</td>
                             <td>
-                                <a class="btn btn-secondary btn-sm" @onclick="() => ConfirmEditTeam(team)"><span class="fas fa-pencil"></span></a>
+                                <a class="btn btn-secondary btn-sm" @onclick="() => EditTeam(team)"><span class="fas fa-pencil"></span></a>
                                 <a class="btn btn-danger btn-sm" @onclick="() => ConfirmDeleteTeam(team)"><span class="fas fa-trash"></span></a>
                             </td>
                         </tr>
@@ -88,12 +88,12 @@ else
 }
 <ConfirmDialog @ref="DeleteDialog"
                Title="Supprimer l'équipe"
-               ConfirmationChanged="(confirm) => DeleteTeam(confirm)">
+               ConfirmationChanged="(confirm) => ConfirmDeleteTeam(confirm)">
 </ConfirmDialog>
 
 <EditDialog @ref="EditDialog"
             Title="Editer l'équipe"
-            ConfirmationChanged="(confirm) => UpdateTeam(confirm)">
+            ConfirmationChanged="(confirm) => ConfirmEditTeam(confirm)">
     <div class="d-flex flex-column">
         <div class="p-2">
             <label for="team-name" class="form-label">Nom</label>

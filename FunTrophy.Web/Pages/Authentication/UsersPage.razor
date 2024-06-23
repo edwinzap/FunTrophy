@@ -42,7 +42,7 @@
                         <td>
                             <button class="btn btn-secondary btn-sm" @onclick="() => EditUser(user)"><span class="fas fa-pencil"></span></button>
                             <button class="btn btn-warning btn-sm" @onclick="() => EditPassword(user.Id)"><span class="fas fa-key"></span></button>
-                            <button class="btn btn-danger btn-sm" @onclick="() => ConfirmDeleteUser(user)"><span class="fas fa-trash"></span></button>
+                            <button class="btn btn-danger btn-sm" @onclick="() => DeleteUser(user)"><span class="fas fa-trash"></span></button>
                         </td>
                     </tr>
                 }
@@ -85,7 +85,7 @@
 
 <ConfirmDialog @ref="DeleteDialog"
                Title="Supprimer l'utilisateur"
-               ConfirmationChanged="(confirm) => DeleteUser(confirm)" />
+               ConfirmationChanged="(confirm) => ConfirmDeleteUser(confirm)" />
 <EditDialog @ref="EditDialog"
             Title="Editer l'utilisateur"
             ConfirmationChanged="(confirm) => ConfirmEditUser(confirm)">

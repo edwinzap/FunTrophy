@@ -64,18 +64,18 @@ namespace FunTrophy.Web.Pages.Editor
             addTrack.Number = null;
         }
 
-        private void ConfirmEditTrack(TrackDto track)
+        private async Task EditTrack(TrackDto track)
         {
             updateTrack.Name = track.Name;
             updateTrack.Number = track.Number;
             updateTrackId = track.Id;
-            EditDialog.Show();
+            await EditDialog.ShowAsync();
         }
 
-        private void ConfirmDeleteTrack(TrackDto track)
+        private void DeleteTrack(TrackDto track)
         {
             DeleteTrackId = track.Id;
-            var message = $"Es-tu sûr de vouloir supprimer '{track.Name}?";
+            var message = $"Es-tu sûr de vouloir supprimer '{track.Name}'?";
             DeleteDialog.Show(message);
         }
 
@@ -88,7 +88,7 @@ namespace FunTrophy.Web.Pages.Editor
             }
         }
 
-        private async Task UpdateTrack(bool confirm)
+        private async Task ConfirmEditTrack(bool confirm)
         {
             if (confirm && updateTrackId.HasValue)
             {

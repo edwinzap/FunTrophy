@@ -51,7 +51,7 @@ namespace FunTrophy.Web.Pages.Authentication
             await LoadUsers();
         }
 
-        private void EditUser(UserDto user)
+        private async Task EditUser(UserDto user)
         {
             if (user is null)
                 return;
@@ -61,7 +61,7 @@ namespace FunTrophy.Web.Pages.Authentication
             UpdateUserModel.LastName = user.LastName;
             UpdateUserModel.UserName = user.UserName;
             UpdateUserModel.IsAdmin = user.IsAdmin;
-            EditDialog.Show();
+            await EditDialog.ShowAsync();
         }
 
         private async Task ConfirmEditUser(bool confirm)
@@ -73,14 +73,14 @@ namespace FunTrophy.Web.Pages.Authentication
             }
         }
 
-        private void ConfirmDeleteUser(UserDto user)
+        private void DeleteUser(UserDto user)
         {
             _deleteUserId = user.Id;
             var message = $"Es-tu sûr de vouloir supprimer '{user.UserName}'?";
             DeleteDialog.Show(message);
         }
 
-        private async Task DeleteUser(bool confirm)
+        private async Task ConfirmDeleteUser(bool confirm)
         {
             if (confirm && _deleteUserId.HasValue)
             {
@@ -89,10 +89,10 @@ namespace FunTrophy.Web.Pages.Authentication
             }
         }
 
-        private void EditPassword(int userId)
+        private async Task EditPassword(int userId)
         {
             _newPasswordUserId = userId;
-            EditPasswordDialog.Show();
+            await EditPasswordDialog.ShowAsync();
         }
 
         private async Task ConfirmEditPassword(bool confirm)

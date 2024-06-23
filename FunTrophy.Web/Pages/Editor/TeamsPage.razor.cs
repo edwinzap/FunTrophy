@@ -78,7 +78,7 @@ namespace FunTrophy.Web.Pages.Editor
         private void ConfirmDeleteTeam(TeamDto team)
         {
             DeleteTeamId = team.Id;
-            var message = $"Es-tu sûr de vouloir supprimer '{team.Name}'";
+            var message = $"Es-tu sûr de vouloir supprimer '{team.Name}'?";
             DeleteDialog.Show(message);
         }
 
@@ -95,30 +95,30 @@ namespace FunTrophy.Web.Pages.Editor
             }
         }
 
-        private void ConfirmEditTeam(TeamDto team)
+        private async Task EditTeam(TeamDto team)
         {
             updateTeam.Number = team.Number;
             updateTeam.Name = team.Name;
             updateTeam.Type = team.Type;
             updateTeam.ColorId = team.Color.Id;
             updateTeamId = team.Id;
-            EditDialog.Show();
+            await EditDialog.ShowAsync();
         }
 
-        private async Task DeleteTeam(bool confirm)
-        {
-            if (confirm && DeleteTeamId.HasValue)
-            {
-                await TeamService.Remove(DeleteTeamId.Value);
-                await LoadTeams();
-            }
-        }
-
-        private async Task UpdateTeam(bool confirm)
+        private async Task ConfirmEditTeam(bool confirm)
         {
             if (confirm && updateTeamId.HasValue)
             {
                 await TeamService.Update(updateTeamId.Value, updateTeam);
+                await LoadTeams();
+            }
+        }
+
+        private async Task ConfirmDeleteTeam(bool confirm)
+        {
+            if (confirm && DeleteTeamId.HasValue)
+            {
+                await TeamService.Remove(DeleteTeamId.Value);
                 await LoadTeams();
             }
         }
