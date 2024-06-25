@@ -57,7 +57,7 @@ namespace FunTrophy.Web.Pages.Editor
             await TimeAdjustmentCategoryService.Add(addCategory);
             await LoadCategories();
 
-            addCategory.Name = string.Empty;
+            addCategory = new();
         }
 
         private async Task EditTrack(TimeAdjustmentCategoryDto category)
