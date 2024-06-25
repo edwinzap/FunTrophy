@@ -41,7 +41,7 @@ namespace FunTrophy.Web.Pages.Editor
         private string DownloadCategoriesFileUrl => SelectedRace is null ? string.Empty : ExportService.GetTeamsByTimeAdjustmentCategoryFileUrl(SelectedRace.Id);
         private string DownloadColorsFileUrl => SelectedRace is null ? string.Empty : ExportService.GetTracksByColorFileUrl(SelectedRace.Id);
         private string DownloadCategoriesByColorFileUrl => SelectedRace is null ? string.Empty : ExportService.GetTimeAdjustmentCategoriesByColor(SelectedRace.Id);
-        
+
         private Action OnEditorStateChanged => async () => await UpdateSelectedRace();
 
         #endregion Properties
@@ -102,15 +102,15 @@ namespace FunTrophy.Web.Pages.Editor
             }
         }
 
-        private void ConfirmEditRace(RaceDto race)
+        private async Task EditRace(RaceDto race)
         {
             updateRace.Name = race.Name;
             updateRace.Date = race.Date;
             updateRaceId = race.Id;
-            EditDialog.Show();
+            await EditDialog.ShowAsync();
         }
 
-        private async Task UpdateRace(bool confirm)
+        private async Task ConfirmEditRace(bool confirm)
         {
             if (confirm && updateRaceId.HasValue)
             {
@@ -130,13 +130,13 @@ namespace FunTrophy.Web.Pages.Editor
             }
         }
 
-        private void ConfirmResetRace()
+        private void ResetRace()
         {
             var message = "Es-tu sûr de vouloir réinitialiser la course? Cette opération ne peut pas être annulée!";
             ResetDialog.Show(message);
         }
 
-        private async Task ResetRace(bool confirm)
+        private async Task ConfirmResetRace(bool confirm)
         {
             if (confirm && SelectedRace?.Id is not null)
             {

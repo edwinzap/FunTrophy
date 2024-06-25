@@ -57,25 +57,33 @@ namespace FunTrophy.Web.Pages.Editor
             await TimeAdjustmentCategoryService.Add(addCategory);
             await LoadCategories();
 
-            addCategory.Name = string.Empty;
+            addCategory = new();
         }
 
-        private void ConfirmEditTrack(TimeAdjustmentCategoryDto category)
+        private async Task EditTrack(TimeAdjustmentCategoryDto category)
         {
             updateCategory.Name = category.Name;
             updateCategoryId = category.Id;
             updateCategory.Description = category.Description;
-            EditDialog.Show();
+            await EditDialog.ShowAsync();
+        }
+        private async Task ConfirmEditTrack(bool confirm)
+        {
+            if (confirm && updateCategoryId.HasValue)
+            {
+                await TimeAdjustmentCategoryService.Update(updateCategoryId.Value, updateCategory);
+                await LoadCategories();
+            }
         }
 
-        private void ConfirmDeleteTrack(TimeAdjustmentCategoryDto category)
+        private void DeleteTrack(TimeAdjustmentCategoryDto category)
         {
             DeleteCategoryId = category.Id;
-            var message = $"Es-tu sûr de vouloir supprimer '{category.Name}?";
+            var message = $"Es-tu sûr de vouloir supprimer '{category.Name}'?";
             DeleteDialog.Show(message);
         }
 
-        private async Task RemoveTrack(bool confirm)
+        private async Task ConfirmDeleteTrack(bool confirm)
         {
             if (confirm && DeleteCategoryId.HasValue)
             {
@@ -84,13 +92,5 @@ namespace FunTrophy.Web.Pages.Editor
             }
         }
 
-        private async Task UpdateTrack(bool confirm)
-        {
-            if (confirm && updateCategoryId.HasValue)
-            {
-                await TimeAdjustmentCategoryService.Update(updateCategoryId.Value, updateCategory);
-                await LoadCategories();
-            }
-        }
     }
 }

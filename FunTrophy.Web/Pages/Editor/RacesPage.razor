@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div class="p-2">
-                <button class="btn btn-danger" @onclick="ConfirmResetRace">Réinitialiser la course</button>
+                <button class="btn btn-danger" @onclick="ResetRace">Réinitialiser la course</button>
             </div>
         </div>
         <div class="mt-4">
@@ -85,7 +85,7 @@ else
                             <td>@race.Date.ToLongDateString()</td>
                             <td>
                                 <button class="btn btn-primary btn-sm" @onclick="() => SelectRace(race)"><span class="fas fa-eye"></span></button>
-                                <button class="btn btn-secondary btn-sm" @onclick="() => ConfirmEditRace(race)"><span class="fas fa-pencil"></span></button>
+                                <button class="btn btn-secondary btn-sm" @onclick="() => EditRace(race)"><span class="fas fa-pencil"></span></button>
                                 <button class="btn btn-danger btn-sm" @onclick="() => ConfirmDeleteRace(race)"><span class="fas fa-trash"></span></button>
                             </td>
                         </tr>
@@ -118,11 +118,11 @@ else
 
 <ConfirmDialog @ref="ResetDialog"
                Title="Réinitialiser la course"
-               ConfirmationChanged="(confirm) => ResetRace(confirm)" />
+               ConfirmationChanged="(confirm) => ConfirmResetRace(confirm)" />
 
 <EditDialog @ref="EditDialog"
             Title="Editer la course"
-            ConfirmationChanged="(confirm) => UpdateRace(confirm)">
+            ConfirmationChanged="(confirm) => ConfirmEditRace(confirm)">
     <div class="d-flex flex-column">
         <div class="p-2">
             <label for="race-name" class="form-label">Nom</label>

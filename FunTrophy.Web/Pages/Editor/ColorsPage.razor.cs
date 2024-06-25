@@ -58,34 +58,34 @@ namespace FunTrophy.Web.Pages.Editor
             await LoadColors();
         }
 
-        private void ConfirmEditColor(ColorDto color)
+        private async Task EditColor(ColorDto color)
         {
             updateColor.Code = color.Code;
             updateColorId = color.Id;
-            EditDialog.Show();
+            await EditDialog.ShowAsync();
         }
 
-        private void ConfirmDeleteColor(ColorDto color)
+        private async Task ConfirmEditColor(bool confirm)
+        {
+            if (confirm && updateColorId.HasValue)
+            {
+                await ColorService.Update(updateColorId.Value, updateColor);
+                await LoadColors();
+            }
+        }
+
+        private void DeleteColor(ColorDto color)
         {
             DeleteColorId = color.Id;
             var message = $"Es-tu sûr de vouloir supprimer cette couleur?";
             DeleteDialog.Show(message);
         }
 
-        private async Task RemoveColor(bool confirm)
+        private async Task ConfirmDeleteColor(bool confirm)
         {
             if (confirm && DeleteColorId.HasValue)
             {
                 await ColorService.Remove(DeleteColorId.Value);
-                await LoadColors();
-            }
-        }
-
-        private async Task UpdateColor(bool confirm)
-        {
-            if (confirm && updateColorId.HasValue)
-            {
-                await ColorService.Update(updateColorId.Value, updateColor);
                 await LoadColors();
             }
         }

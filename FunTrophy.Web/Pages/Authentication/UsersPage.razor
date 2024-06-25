@@ -40,9 +40,9 @@
                         <td>@user.UserName</td>
                         <td><span class="fas fa-@(user.IsAdmin? "check text-success":"xmark text-danger")"></span></td>
                         <td>
-                            <button class="btn btn-secondary btn-sm" @onclick="() => ConfirmEditUser(user)"><span class="fas fa-pencil"></span></button>
-                            <button class="btn btn-warning btn-sm" @onclick="() => ConfirmChangePassword(user.Id)"><span class="fas fa-key"></span></button>
-                            <button class="btn btn-danger btn-sm" @onclick="() => ConfirmDeleteUser(user)"><span class="fas fa-trash"></span></button>
+                            <button class="btn btn-secondary btn-sm" @onclick="() => EditUser(user)"><span class="fas fa-pencil"></span></button>
+                            <button class="btn btn-warning btn-sm" @onclick="() => EditPassword(user.Id)"><span class="fas fa-key"></span></button>
+                            <button class="btn btn-danger btn-sm" @onclick="() => DeleteUser(user)"><span class="fas fa-trash"></span></button>
                         </td>
                     </tr>
                 }
@@ -85,22 +85,22 @@
 
 <ConfirmDialog @ref="DeleteDialog"
                Title="Supprimer l'utilisateur"
-               ConfirmationChanged="(confirm) => DeleteUser(confirm)" />
+               ConfirmationChanged="(confirm) => ConfirmDeleteUser(confirm)" />
 <EditDialog @ref="EditDialog"
             Title="Editer l'utilisateur"
-            ConfirmationChanged="(confirm) => UpdateUser(confirm)">
+            ConfirmationChanged="(confirm) => ConfirmEditUser(confirm)">
     <div class="d-flex flex-column">
-        <div class="input-group p-2">
-            <span class="input-group-text fas fa-user"></span>
-            <input type="text" class="form-control" @bind-value="@UpdateUserModel.FirstName" placeholder="Prénom" required>
+        <div class="p-2">
+            <label for="firstname" class="form-label">Prénom</label>
+            <input type="text" id="firstname" class="form-control" @bind-value="@UpdateUserModel.FirstName" placeholder="Prénom" required>
         </div>
-        <div class="input-group p-2">
-            <span class="input-group-text fas fa-user"></span>
-            <input type="text" class="form-control" @bind-value="@UpdateUserModel.LastName" placeholder="Nom" required>
+        <div class="p-2">
+            <label for="lastname" class="form-label">Nom</label>
+            <input type="text" id="lastname" class="form-control" @bind-value="@UpdateUserModel.LastName" placeholder="Nom" required>
         </div>
-        <div class="input-group p-2">
-            <span class="input-group-text fas fa-user"></span>
-            <input type="text" class="form-control" @bind-value="@UpdateUserModel.UserName" placeholder="Pseudo" required>
+        <div class="p-2">
+            <label for="username" class="form-label">Pseudo</label>
+            <input type="text" id="username" class="form-control" @bind-value="@UpdateUserModel.UserName" placeholder="Pseudo" required>
         </div>
         <div class="form-check p-2 ms-4">
             <input class="form-check-input" type="checkbox" @bind-value="@UpdateUserModel.IsAdmin" id="update-isadmin" checked="@UpdateUserModel.IsAdmin">
@@ -111,10 +111,10 @@
 
 <EditDialog @ref="EditPasswordDialog"
             Title="Modifier le mot de passe"
-            ConfirmationChanged="(confirm) => ChangeUserPassword(confirm)">
+            ConfirmationChanged="(confirm) => ConfirmEditPassword(confirm)">
     <div class="p-2">
-        <label for="race-name" class="form-label">Mot de passe</label>
-        <input id="race-name" class="form-control" type="password" @bind-value="@NewPassword" placeholder="Password" />
+        <label for="password" class="form-label">Mot de passe</label>
+        <input type="password" id="password" class="form-control" @bind="@NewPassword" placeholder="Mot de passe" required>
     </div>
 </EditDialog>
 

@@ -156,9 +156,9 @@ namespace FunTrophy.Web.Pages
             StateHasChanged();
         }
 
-        private void ShowSettingsDialog()
+        private async Task ShowSettingsDialog()
         {
-            SettingsDialog.Show();
+            await SettingsDialog.ShowAsync();
         }
 
         private void OnTeamTypeFilterChanged(TeamTypeFilter filter)

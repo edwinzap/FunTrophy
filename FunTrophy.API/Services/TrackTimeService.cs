@@ -48,7 +48,7 @@ namespace FunTrophy.API.Services
                       .ElementAtOrDefault(1)?.TrackId;
             }
             if (!nextTrackId.HasValue)
-                throw new InvalidDataException();
+                return null;
 
             var nextTrackTime = teamTrackTimes.Where(x => x.TrackId == nextTrackId.Value).FirstOrDefault();
 

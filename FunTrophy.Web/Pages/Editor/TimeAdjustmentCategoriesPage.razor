@@ -17,7 +17,7 @@
             @if (Categories is null)
             {
                 <tr>
-                    <td colspan=2 class="text-center">
+                    <td colspan=3 class="text-center">
                         <div class="spinner-border" role="status" />
                     </td>
                 </tr>
@@ -25,7 +25,7 @@
             else if (!Categories.Any())
             {
                 <tr class="p-2">
-                    <td colspan=2 class="text-center">Aucune catégorie de bonus</td>
+                    <td colspan=3 class="text-center">Aucune catégorie de bonus</td>
                 </tr>
             }
             else
@@ -36,8 +36,8 @@
                         <td>@category.Name</td>
                         <td>@category.Description</td>
                         <td>
-                            <a class="btn btn-secondary btn-sm" @onclick="() => ConfirmEditTrack(category)"><span class="fas fa-pencil"></span></a>
-                            <a class="btn btn-danger btn-sm" @onclick="() => ConfirmDeleteTrack(category)"><span class="fas fa-trash"></span></a>
+                            <a class="btn btn-secondary btn-sm" @onclick="() => EditTrack(category)"><span class="fas fa-pencil"></span></a>
+                            <a class="btn btn-danger btn-sm" @onclick="() => DeleteTrack(category)"><span class="fas fa-trash"></span></a>
                         </td>
                     </tr>
                 }
@@ -64,12 +64,12 @@
 
 <ConfirmDialog @ref="DeleteDialog"
                Title="Supprimer la catégorie"
-               ConfirmationChanged="(confirm) => RemoveTrack(confirm)">
+               ConfirmationChanged="(confirm) => ConfirmDeleteTrack(confirm)">
 </ConfirmDialog>
 
 <EditDialog @ref="EditDialog"
             Title="Editer la catégorie"
-            ConfirmationChanged="(confirm) => UpdateTrack(confirm)">
+            ConfirmationChanged="(confirm) => ConfirmEditTrack(confirm)">
     <div class="d-flex flex-column">
         <div class="p-2">
             <label for="category-name" class="form-label">Nom</label>

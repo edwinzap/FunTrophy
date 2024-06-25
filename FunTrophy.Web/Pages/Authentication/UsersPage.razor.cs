@@ -47,20 +47,24 @@ namespace FunTrophy.Web.Pages.Authentication
         private async Task AddUser()
         {
             await UserService.Add(AddUserModel);
+            AddUserModel = new AddUserDto();
             await LoadUsers();
         }
 
-        private void ConfirmEditUser(UserDto user)
+        private async Task EditUser(UserDto user)
         {
+            if (user is null)
+                return;
+
             _updateUserId = user.Id;
             UpdateUserModel.FirstName = user.FirstName;
             UpdateUserModel.LastName = user.LastName;
             UpdateUserModel.UserName = user.UserName;
             UpdateUserModel.IsAdmin = user.IsAdmin;
-            EditDialog.Show();
+            await EditDialog.ShowAsync();
         }
 
-        private async Task UpdateUser(bool confirm)
+        private async Task ConfirmEditUser(bool confirm)
         {
             if (confirm && _updateUserId.HasValue)
             {
@@ -69,14 +73,14 @@ namespace FunTrophy.Web.Pages.Authentication
             }
         }
 
-        private void ConfirmDeleteUser(UserDto user)
+        private void DeleteUser(UserDto user)
         {
             _deleteUserId = user.Id;
             var message = $"Es-tu sûr de vouloir supprimer '{user.UserName}'?";
             DeleteDialog.Show(message);
         }
 
-        private async Task DeleteUser(bool confirm)
+        private async Task ConfirmDeleteUser(bool confirm)
         {
             if (confirm && _deleteUserId.HasValue)
             {
@@ -85,13 +89,13 @@ namespace FunTrophy.Web.Pages.Authentication
             }
         }
 
-        private void ConfirmChangePassword(int userId)
+        private async Task EditPassword(int userId)
         {
             _newPasswordUserId = userId;
-            EditPasswordDialog.Show();
+            await EditPasswordDialog.ShowAsync();
         }
 
-        private async Task ChangeUserPassword(bool confirm)
+        private async Task ConfirmEditPassword(bool confirm)
         {
             if (confirm && _newPasswordUserId.HasValue && !string.IsNullOrWhiteSpace(NewPassword))
             {
