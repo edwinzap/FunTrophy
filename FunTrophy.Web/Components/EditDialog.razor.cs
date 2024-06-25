@@ -1,9 +1,16 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace FunTrophy.Web.Components
 {
     public partial class EditDialog
     {
+        [Inject] private IJSRuntime JSRuntime { get; set; } = default!;
+
+        private string ModalId { get; } = $"modal-{Guid.NewGuid()}";
+
+        private bool _focusTrapActivated;
+
         protected bool ShowDialog { get; set; }
 
         [Parameter]
@@ -21,24 +28,29 @@ namespace FunTrophy.Web.Components
         [Parameter]
         public RenderFragment? ChildContent { get; set; }
 
-        [Parameter]
-        public ElementReference? FocusOn { get; set; }
-
         public async Task ShowAsync()
         {
             ShowDialog = true;
             StateHasChanged();
-            if (FocusOn.HasValue)
-                await FocusOn.Value.FocusAsync();
         }
 
         [Parameter]
         public EventCallback<bool> ConfirmationChanged { get; set; }
 
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (ShowDialog && !_focusTrapActivated)
+            {
+                _focusTrapActivated = true;
+                await JSRuntime.InvokeVoidAsync("setupFocusTrap", ModalId);
+            }
+        }
+
         protected async Task OnConfirmationChange(bool value)
         {
             await ConfirmationChanged.InvokeAsync(value);
             ShowDialog = false;
+            _focusTrapActivated = false;
         }
 
         private async Task OnKeyUp(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs e)
